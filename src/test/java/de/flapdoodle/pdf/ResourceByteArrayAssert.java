@@ -22,6 +22,7 @@ import org.assertj.core.api.Assertions;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.fail;
 
@@ -33,22 +34,21 @@ public class ResourceByteArrayAssert extends AbstractByteArrayAssert<ResourceByt
 	public void matchesResource(Class<?> baseClass,String name) {
 		var resourceURL = baseClass.getResource(name);
 
-		var resourceStream = baseClass.getResourceAsStream(name);
-		if (resourceStream==null) {
-			fail("resource stream for "+baseClass+" / "+name+" not found" + persistToTempFile(actual, name, resourceURL));
-		}
+		try(var resourceStream = baseClass.getResourceAsStream(name)) {
+			if (resourceStream == null) {
+				fail("resource stream for " + baseClass + " / " + name + " not found" + persistToTempFile(actual, name, resourceURL));
+				return;
+			}
 
-		byte[] expected;
-		try {
-			expected = resourceStream.readAllBytes();
-		}
-		catch (IOException e) {
+			byte[] expected = resourceStream.readAllBytes();
+
+			Assertions.assertThat(Arrays.equals(actual, expected))
+				.describedAs(() -> "expect binary match" + persistToTempFile(actual, name, resourceURL))
+				.isTrue();
+
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
-		Assertions.assertThat(java.util.Arrays.equals(actual, expected))
-			.describedAs("expect binary match" + persistToTempFile(actual, name, resourceURL))
-			.isTrue();
 	}
 
 	private String persistToTempFile(byte[] data, String fileName, URL resourceURL) {
@@ -56,9 +56,16 @@ public class ResourceByteArrayAssert extends AbstractByteArrayAssert<ResourceByt
 			var tempFile = Files.createTempFile("match", "--"+fileName);
 			Files.write(tempFile, data);
 			var resourceName = resourceURL != null ? resourceURL.toString()
-																							 .replace("/build/resources/test/", "/src/test/resources/")
+																							 .replace("/target/test-classes/", "/src/test/resources/")
 																							 .replace("file:/", "/") : null;
-			return "\n,you can find the actual value in\n   "+tempFile+" \nfor\n   "+resourceName+"\n\n--> "+tempFile+" "+resourceName+"\n\n";
+			return "\n" +
+				",you can find the actual value in\n" +
+				"   " + tempFile + " \n" +
+				"for\n" +
+				"   " + resourceName + "\n\n" +
+				"diffpdf " + tempFile + " " + resourceName + "\n\n"+
+				"cp " + tempFile + " " + resourceName + "\n\n"
+				;
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);

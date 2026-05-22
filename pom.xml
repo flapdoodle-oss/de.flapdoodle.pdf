@@ -512,8 +512,8 @@
         <dependency>
             <groupId>com.github.librepdf</groupId>
             <artifactId>openpdf</artifactId>
-            <!-- TODO: change to 2.0.5 -->
-            <version>1.3.7</version>
+            <!-- java17 can only use 2.x.x -->
+            <version>2.0.5</version>
         </dependency>
 
         <dependency>
