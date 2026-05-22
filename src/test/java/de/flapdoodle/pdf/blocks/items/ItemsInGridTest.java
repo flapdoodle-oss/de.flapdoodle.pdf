@@ -38,7 +38,6 @@ class ItemsInGridTest {
 	void renderTableWithTitle() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(
 				ItemsInGrid.<TableWithTitle>builder()
 					.gridFactory(it -> {
@@ -63,7 +62,6 @@ class ItemsInGridTest {
 	void renderTableWithTitleAndShrinkGrid() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(
 				ItemsInGrid.<TableWithTitle>builder()
 					.gridFactory(it -> {

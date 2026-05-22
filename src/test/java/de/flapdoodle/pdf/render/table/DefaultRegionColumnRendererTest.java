@@ -55,7 +55,6 @@ class DefaultRegionColumnRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.addBlocks(new RenderTableIntoColum(table))
 			.build())
 			.expectRendering()
@@ -71,7 +70,6 @@ class DefaultRegionColumnRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.addBlocks(new RenderTableIntoColum(table))
 			.build())
 			.expectRendering()
@@ -91,7 +89,6 @@ class DefaultRegionColumnRendererTest {
 
 			assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
-				.fileName("test.pdf")
 				.addBlocks(new RenderTableIntoColum(
 					table,
 					0.5f,

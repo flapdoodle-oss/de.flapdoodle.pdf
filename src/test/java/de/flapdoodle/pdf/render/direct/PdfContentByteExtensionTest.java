@@ -35,7 +35,6 @@ class PdfContentByteExtensionTest {
 	void setVerticalPosition() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("headerPdf.pdf")
 			.addBlocks(
 				new Text("before"),
 				new IncrementVerticalPosition(100f),

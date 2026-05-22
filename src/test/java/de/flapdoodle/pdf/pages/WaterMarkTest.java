@@ -38,7 +38,6 @@ class WaterMarkTest {
 
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
-				.fileName("test.pdf")
 				.blocks(List.of(new Text("sample text")))
 				.onPageEvents(new WaterMark(waterMarkContent))
 				.build())
@@ -54,7 +53,6 @@ class WaterMarkTest {
 
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4.rotate())
-				.fileName("test.pdf")
 				.blocks(List.of(new Text("sample text")))
 				.onPageEvents(new WaterMark(waterMarkContent))
 				.build())

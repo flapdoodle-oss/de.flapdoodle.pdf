@@ -49,7 +49,6 @@ class GridRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(render(grid)))
 			.build())
 			.expectRendering()
@@ -63,7 +62,6 @@ class GridRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(new Text("before grid"), render(grid)))
 			.build())
 			.expectRendering()
@@ -79,7 +77,6 @@ class GridRendererTest {
 
 			assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
-				.fileName("test.pdf")
 				.blocks(List.of(render(grid)))
 				.build())
 				.expectRendering()
@@ -95,7 +92,6 @@ class GridRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(new Text("before grid"), render(grid)))
 			.build())
 			.expectRendering()
@@ -110,7 +106,6 @@ class GridRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(new Text("before grid"), render(grid, new HorizontalSpaceBetweenCellsLayouter())))
 			.build())
 			.expectRendering()
@@ -125,7 +120,6 @@ class GridRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(new Text("before grid"), render(grid, new HorizontalSpaceBetweenCellsLayouter())))
 			.build())
 			.expectRendering()
@@ -143,7 +137,6 @@ class GridRendererTest {
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(new Text("something on this page will move the start down"), render(grid, new HorizontalSpaceBetweenCellsLayouter())))
 			.build())
 			.expectRendering()

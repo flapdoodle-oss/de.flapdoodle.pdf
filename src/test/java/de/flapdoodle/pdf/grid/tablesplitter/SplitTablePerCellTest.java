@@ -48,7 +48,6 @@ class SplitTablePerCellTest {
 	void renderTablesInGrid() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(
 				TablesInGrid.builder()
 					.gridFactory(it -> {
@@ -75,7 +74,6 @@ class SplitTablePerCellTest {
 	void tryRenderTablesWhenHeightNotEnough() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(
 				TablesInGrid.builder()
 					.gridFactory(it -> {

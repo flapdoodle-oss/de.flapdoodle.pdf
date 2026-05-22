@@ -59,7 +59,6 @@ class SplitTableIntoRegionsWithSameHeightTest {
 	void renderTablesInGrid() {
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
-				.fileName("test.pdf")
 				.blocks(List.of(
 					TablesInGrid.builder()
 						.gridFactory(it -> {
@@ -85,7 +84,6 @@ class SplitTableIntoRegionsWithSameHeightTest {
 	void tryRenderTablesWhenHeightIsNotEnough() {
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
-				.fileName("test.pdf")
 				.blocks(List.of(
 					TablesInGrid.builder()
 						.gridFactory(it -> {

@@ -57,7 +57,6 @@ class ColumnTableRendererTest {
 	void minimalTableSizeForTableWithSameColumnWeights() {
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
-				.fileName("test.pdf")
 				.blocks(List.of(new Render(table)))
 				.build())
 			.expectRendering()
@@ -69,7 +68,6 @@ class ColumnTableRendererTest {
 	void minimalTableSizeForTableWithBiggerFirstColumn() {
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
-				.fileName("test.pdf")
 				.blocks(List.of(new Render(TableFromMap.builder()
 					.from(table)
 					.columnWeights(ColumnWeights.fromMap(Map.of(0, 2f)))

@@ -33,7 +33,6 @@ class DocumentFactoryTest {
 	void renderEmptyPdf() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("emptyPage.pdf")
 			.addBlocks(new DummyBlock())
 			.build())
 			.expectRendering()

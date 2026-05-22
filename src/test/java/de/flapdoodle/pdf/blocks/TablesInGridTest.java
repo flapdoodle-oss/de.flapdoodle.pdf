@@ -49,7 +49,6 @@ class TablesInGridTest {
 	void renderTablesInGrid() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.addBlocks(TablesInGrid.builder()
 				.gridFactory(it -> {
 						var innerBox = PageBox.innerBox(it);
@@ -73,7 +72,6 @@ class TablesInGridTest {
 	void renderTablesInShrinkedGrid() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.addBlocks(TablesInGrid.builder()
 				.gridFactory(it -> {
 					var innerBox = PageBox.innerBox(it);

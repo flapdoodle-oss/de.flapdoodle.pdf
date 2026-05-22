@@ -38,7 +38,6 @@ public abstract class DocumentFactory {
 //	private val pageSize: Rectangle,
 	protected abstract Rectangle pageSize();
 
-	protected abstract String fileName();
 	protected abstract List<Block> blocks();
 
 	@Value.Default

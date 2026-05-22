@@ -55,7 +55,6 @@ class TableWithTitleRendererTest {
 
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.blocks(List.of(
 				new Delegate(tableWithTitle, it -> {
 			assertThat(it)

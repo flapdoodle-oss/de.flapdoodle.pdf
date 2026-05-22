@@ -42,7 +42,6 @@ class PageHeaderTest {
 	void renderHeader() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("test.pdf")
 			.addBlocks(new FirstBlockAfterHeader())
 			.onPageEvents(PageHeaders.builder()
 				.headerFactory(new PageHeader("page header", Optional.of(

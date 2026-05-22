@@ -33,7 +33,6 @@ class SectionTest {
 	void renderSection() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
-			.fileName("sectionPdf.pdf")
 			.addBlocks(Section.builder()
 				.title("Section Title")
 				.font(new Font(Font.HELVETICA, 12f, Font.NORMAL, Color.WHITE))
