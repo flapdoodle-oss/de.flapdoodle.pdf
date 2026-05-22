@@ -82,6 +82,7 @@
                         </goals>
                         <configuration>
                             <rules>
+                                <dependencyConvergence />
                                 <banDuplicateClasses>
                                     <ignoreClasses>
                                         <!-- example of ignoring one specific class -->
@@ -132,7 +133,7 @@
                         <exclude>**/live/**</exclude>
                     </excludes>
                     <systemPropertyVariables>
-                        <de.flapdoodle.testdoc.destination>${project.basedir}</de.flapdoodle.testdoc.destination>
+                        <de.flapdoodle.testdoc.destination>${project.basedir}/docs</de.flapdoodle.testdoc.destination>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -493,7 +494,13 @@
         <dependency>
             <groupId>de.flapdoodle.testdoc</groupId>
             <artifactId>de.flapdoodle.testdoc</artifactId>
-            <version>1.6.2</version>
+            <version>1.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
