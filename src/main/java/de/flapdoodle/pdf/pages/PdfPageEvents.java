@@ -19,14 +19,25 @@ package de.flapdoodle.pdf.pages;
 import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.events.PdfPageEventForwarder;
 
+import java.util.Collection;
+
 public final class PdfPageEvents {
 	private PdfPageEvents() {
 	}
 
-	PdfPageEvent andThen(PdfPageEvent event, PdfPageEvent next) {
+	public static PdfPageEvent all(PdfPageEvent ... events) {
 		var ret = new PdfPageEventForwarder();
-		ret.addPageEvent(event);
-		ret.addPageEvent(next);
+		for (PdfPageEvent event : events) {
+			ret.addPageEvent(event);
+		}
+		return ret;
+	}
+
+	public static PdfPageEvent all(Collection<? extends PdfPageEvent> events) {
+		var ret = new PdfPageEventForwarder();
+		for (PdfPageEvent event : events) {
+			ret.addPageEvent(event);
+		}
 		return ret;
 	}
 }

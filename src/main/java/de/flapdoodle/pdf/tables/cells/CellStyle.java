@@ -18,6 +18,8 @@ package de.flapdoodle.pdf.tables.cells;
 
 import com.lowagie.text.Font;
 import de.flapdoodle.pdf.Optionals;
+import de.flapdoodle.pdf.types.BorderProperty;
+import de.flapdoodle.pdf.types.ImmutableBorderProperty;
 import org.immutables.value.Value;
 
 import java.awt.*;
@@ -29,15 +31,19 @@ public interface CellStyle {
 
 	Optional<Font> font();
 
-	Optional<BorderStyle> borderTop();
+	@Value.Default
+	default BorderProperty<Float> padding() {
+		return ImmutableBorderProperty.of();
+	}
 
-	Optional<BorderStyle> borderLeft();
-
-	Optional<BorderStyle> borderRight();
-
-	Optional<BorderStyle> borderBottom();
+	@Value.Default
+	default BorderProperty<BorderStyle> bordeStyle() {
+		return ImmutableBorderProperty.of();
+	}
 
 	Optional<HorizontalAlignment> horizontalAlignment();
+
+	Optional<VerticalAlignment> verticalAlignment();
 
 	static ImmutableCellStyle empty() {
 		return ImmutableCellStyle.of();
@@ -48,35 +54,22 @@ public interface CellStyle {
 			return ImmutableCellStyle.copyOf(this)
 				.withBackgroundColor(Optionals.firstOf(specific.backgroundColor(), this.backgroundColor()))
 				.withFont(Optionals.firstOf(specific.font(), this.font()))
-				.withBorderTop(Optionals.firstOf(specific.borderTop(), this.borderTop()))
-				.withBorderLeft(Optionals.firstOf(specific.borderLeft(), this.borderLeft()))
-				.withBorderRight(Optionals.firstOf(specific.borderRight(), this.borderRight()))
-				.withBorderBottom(Optionals.firstOf(specific.borderBottom(), this.borderBottom()))
-				.withHorizontalAlignment(Optionals.firstOf(specific.horizontalAlignment(), this.horizontalAlignment()));
+				.withPadding(padding().overrideWith(specific.padding()))
+				.withBordeStyle(bordeStyle().overrideWith(specific.bordeStyle()))
+				.withHorizontalAlignment(Optionals.firstOf(specific.horizontalAlignment(), this.horizontalAlignment()))
+				.withVerticalAlignment(Optionals.firstOf(specific.verticalAlignment(), this.verticalAlignment()));
 		}
 		return this;
 	}
 
 
-	default CellStyle withBorder(BorderStyle border) {
+	default ImmutableCellStyle withBorder(BorderStyle border) {
 		return ImmutableCellStyle.copyOf(this)
-			.withBorderLeft(border)
-			.withBorderRight(border)
-			.withBorderTop(border)
-			.withBorderBottom(border);
+			.withBordeStyle(BorderProperty.of(border, border, border, border));
 	}
 
-	default boolean sameStyleForAllBorders() {
-		return borderTop().equals(borderLeft())
-			&& borderLeft().equals(borderBottom())
-			&& borderBottom().equals(borderRight());
+	default ImmutableCellStyle withBorder(BorderProperty<BorderStyle> border) {
+		return ImmutableCellStyle.copyOf(this)
+			.withBordeStyle(border);
 	}
-
-	default Optional<BorderStyle> border() {
-		if (sameStyleForAllBorders()) {
-			return borderTop();
-		}
-		return Optional.empty();
-	}
-
 }

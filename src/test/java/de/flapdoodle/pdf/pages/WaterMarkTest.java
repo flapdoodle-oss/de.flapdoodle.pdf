@@ -39,7 +39,7 @@ class WaterMarkTest {
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
 				.blocks(List.of(new Text("sample text")))
-				.onPageEvents(new WaterMark(waterMarkContent))
+				.addOnPageEvents(new WaterMark(waterMarkContent))
 				.build())
 			.expectRendering()
 			.matchesResource(getClass(),"watermark.pdf");
@@ -54,7 +54,7 @@ class WaterMarkTest {
 		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4.rotate())
 				.blocks(List.of(new Text("sample text")))
-				.onPageEvents(new WaterMark(waterMarkContent))
+				.addOnPageEvents(new WaterMark(waterMarkContent))
 				.build())
 			.expectRendering()
 			.matchesResource(getClass(),"watermarkLandscape.pdf");

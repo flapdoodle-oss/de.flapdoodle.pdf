@@ -16,28 +16,6 @@
  */
 package de.flapdoodle.pdf.tables.cells;
 
-import org.immutables.value.Value;
-
-import java.awt.*;
-import java.util.Optional;
-
-@Value.Immutable(singleton = true)
-public interface BorderStyle {
-	Optional<Color> color();
-	@Value.Default
-	default Optional<Float> width() {
-		return Optional.of(0.f);
-	}
-
-	static ImmutableBorderStyle noBorder() {
-		return ImmutableBorderStyle.of();
-	}
-
-	static BorderStyle of(Color color, float width) {
-		return ImmutableBorderStyle.builder().color(color).width(width).build();
-	}
-
-	static BorderStyle of(float width) {
-		return ImmutableBorderStyle.builder().width(width).build();
-	}
+public enum VerticalAlignment {
+	TOP, MIDDLE, BOTTOM
 }

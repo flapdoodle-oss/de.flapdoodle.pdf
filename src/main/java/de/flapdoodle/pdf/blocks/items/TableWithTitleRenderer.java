@@ -20,7 +20,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.ColumnText;
 import de.flapdoodle.pdf.render.column.ColumnTexts;
-import de.flapdoodle.pdf.render.elements.Elements;
+import de.flapdoodle.pdf.elements.Elements;
 import de.flapdoodle.pdf.render.table.DefaultRegionColumnRenderer;
 import de.flapdoodle.pdf.render.table.RegionColumnRenderer;
 

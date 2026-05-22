@@ -22,6 +22,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
+import de.flapdoodle.pdf.tables.cells.VerticalAlignment;
 
 public class PdfPCells {
 	public static PdfPCell applyStyle(PdfPCell cell, CellStyle style) {
@@ -35,8 +36,23 @@ public class PdfPCells {
 			default -> Element.ALIGN_LEFT;
 		});
 
-		if (style.sameStyleForAllBorders()) {
-			style.border().ifPresent(borderStyle -> {
+		cell.setVerticalAlignment(switch (style.verticalAlignment().orElse(VerticalAlignment.TOP)) {
+			case MIDDLE -> Element.ALIGN_MIDDLE;
+			case BOTTOM -> Element.ALIGN_BOTTOM;
+			default -> Element.ALIGN_TOP;
+		});
+
+		if (style.padding().sameForAllBorders()) {
+			style.padding().value().ifPresent(cell::setPadding);
+		} else {
+			style.padding().left().ifPresent(cell::setPaddingLeft);
+			style.padding().top().ifPresent(cell::setPaddingTop);
+			style.padding().right().ifPresent(cell::setPaddingRight);
+			style.padding().bottom().ifPresent(cell::setPaddingBottom);
+		}
+
+		if (style.bordeStyle().sameForAllBorders()) {
+			style.bordeStyle().value().ifPresent(borderStyle -> {
 				cell.setBorder(Rectangle.BOX);
 				borderStyle.width().ifPresent(cell::setBorderWidth);
 				borderStyle.color().ifPresent(cell::setBorderColor);
@@ -44,25 +60,25 @@ public class PdfPCells {
 		} else {
 			cell.setUseVariableBorders(true);
 			cell.setBorder(Rectangle.NO_BORDER);
-			style.borderTop().ifPresent(borderStyle -> {
+			style.bordeStyle().top().ifPresent(borderStyle -> {
 				cell.enableBorderSide(Rectangle.TOP);
 				borderStyle.width().ifPresent(cell::setBorderWidthTop);
 				borderStyle.color().ifPresent(cell::setBorderColorTop);
 			});
 
-			style.borderLeft().ifPresent(borderStyle -> {
+			style.bordeStyle().left().ifPresent(borderStyle -> {
 				cell.enableBorderSide(Rectangle.LEFT);
 				borderStyle.width().ifPresent(cell::setBorderWidthLeft);
 				borderStyle.color().ifPresent(cell::setBorderColorLeft);
 			});
 
-			style.borderRight().ifPresent(borderStyle -> {
+			style.bordeStyle().right().ifPresent(borderStyle -> {
 				cell.enableBorderSide(Rectangle.RIGHT);
 				borderStyle.width().ifPresent(cell::setBorderWidthRight);
 				borderStyle.color().ifPresent(cell::setBorderColorRight);
 			});
 
-			style.borderBottom().ifPresent(borderStyle -> {
+			style.bordeStyle().bottom().ifPresent(borderStyle -> {
 				cell.enableBorderSide(Rectangle.BOTTOM);
 				borderStyle.width().ifPresent(cell::setBorderWidthBottom);
 				borderStyle.color().ifPresent(cell::setBorderColorBottom);

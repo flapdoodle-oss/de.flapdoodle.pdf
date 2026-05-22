@@ -43,7 +43,7 @@ class PageHeaderTest {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
 			.addBlocks(new FirstBlockAfterHeader())
-			.onPageEvents(PageHeaders.builder()
+			.addOnPageEvents(PageParagraphDecorators.builder()
 				.headerFactory(new PageHeader("page header", Optional.of(
 					new Font(Font.HELVETICA, 12f, Font.NORMAL, Color.BLACK)
 				)))

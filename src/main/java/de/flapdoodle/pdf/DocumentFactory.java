@@ -25,6 +25,7 @@ import de.flapdoodle.pdf.internals.PdfFileIdGenerator;
 import de.flapdoodle.pdf.internals.StaticPdfFileIdGenerator;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.pages.OnDocumentInit;
+import de.flapdoodle.pdf.pages.PdfPageEvents;
 import org.immutables.value.Value;
 
 import java.io.OutputStream;
@@ -43,7 +44,7 @@ public abstract class DocumentFactory {
 	@Value.Default
 	protected Margin pageMargin() { return DEFAULT_PAGE_MARGINS; }
 
-	protected abstract Optional<PdfPageEvent> onPageEvents();
+	protected abstract List<PdfPageEvent> onPageEvents();
 	protected abstract Optional<OnDocumentInit> onDocumentInit();
 	
 	@Value.Default
@@ -66,7 +67,9 @@ public abstract class DocumentFactory {
 		//document.addSubject("This is a test.")
 		//document.setHeader()
 
-		writer.setPageEvent(onPageEvents().orElse(null));
+		if (!onPageEvents().isEmpty()) writer.setPageEvent(
+			PdfPageEvents.all(onPageEvents())
+		);
 
 		if (onDocumentInit().isPresent()) {
 			onDocumentInit().get().onInit(document);

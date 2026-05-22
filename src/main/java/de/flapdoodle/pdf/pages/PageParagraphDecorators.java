@@ -17,7 +17,6 @@
 package de.flapdoodle.pdf.pages;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import de.flapdoodle.pdf.columns.ColumnFactory;
 import org.immutables.value.Value;
@@ -25,7 +24,7 @@ import org.immutables.value.Value;
 import java.util.Optional;
 
 @Value.Immutable
-public abstract class PageHeaders extends PdfPageEventHelper {
+public abstract class PageParagraphDecorators extends EnhancedPdfPageEventHelper {
 	protected abstract Optional<PageHeaderOrFooterFactory> headerFactory();
 	protected abstract Optional<PageHeaderOrFooterFactory> footerFactory();
 	
@@ -38,11 +37,11 @@ public abstract class PageHeaders extends PdfPageEventHelper {
 	public void onEndPage(PdfWriter writer, Document document) {
 		if (headerFactory().isPresent()) {
 			var headerContent = headerFactory().get().forPage(document.getPageNumber());
-			var leading = headerContent.getTotalLeading() + leadingOffset();
+			var heightWithLeading = headerContent.getTotalLeading() + leadingOffset();
 
 			var headerColumn = ColumnFactory.DEFAULT.create(
 				writer.getDirectContentUnder(),
-				headerBox(document).withHeight(leading)
+				headerBox(document).withHeight(heightWithLeading)
 			);
 
 			headerColumn.addElement(headerContent);
@@ -61,25 +60,7 @@ public abstract class PageHeaders extends PdfPageEventHelper {
 		}
 	}
 
-	private PageBox headerBox(Document document) {
-		var innerBox = PageBox.innerBox(document);
-		var pageHeight = document.getPageSize().getHeight();
-
-		return new PageBox(
-			innerBox.left(),
-			innerBox.bottom() + innerBox.height(),
-			innerBox.width(),
-			pageHeight - (innerBox.bottom() + innerBox.height())
-		);
-	}
-
-	private PageBox footerBox(Document document) {
-		var innerBox = PageBox.innerBox(document) ;
-		return new PageBox(innerBox.left(), 0f, innerBox.width(), innerBox.bottom());
-	}
-
-
-	public static ImmutablePageHeaders.Builder builder() {
-		return ImmutablePageHeaders.builder();
+	public static ImmutablePageParagraphDecorators.Builder builder() {
+		return ImmutablePageParagraphDecorators.builder();
 	}
 }

@@ -16,10 +16,13 @@
  */
 package de.flapdoodle.pdf.pages;
 
+import com.google.common.base.Preconditions;
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.ColumnText;
 import de.flapdoodle.pdf.layout.Margin;
+import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
+import de.flapdoodle.pdf.tables.cells.VerticalAlignment;
 import de.flapdoodle.pdf.types.Dimension;
 
 /**
@@ -54,6 +57,41 @@ public record PageBox(float left, float bottom, float width, float height) {
 			height - margin.bottom() - margin.top()
 		);
 	}
+
+	public PageBox boxAt(
+		Dimension dimension,
+		HorizontalAlignment horizontalAlignment,
+		VerticalAlignment verticalAlignment
+	) {
+		float leftWidth = this.width-dimension.width();
+		float leftHeight = this.height-dimension.height();
+
+		Preconditions.checkArgument(leftWidth>=0.0,"no width left");
+		Preconditions.checkArgument(leftHeight>=0.0,"no height left");
+
+		float newLeft = switch (horizontalAlignment) {
+			case LEFT -> left;
+			case RIGHT -> left+leftWidth;
+			case CENTER -> left+this.width/2.0f-dimension.width()/2.0f;
+		};
+
+		float newBottom = switch (verticalAlignment) {
+			case BOTTOM -> bottom;
+			case MIDDLE -> bottom+this.height/2.0f-dimension.height()/2.0f;
+			case TOP -> bottom + leftHeight;
+		};
+
+		return new PageBox(newLeft,newBottom,dimension.width(),dimension.height());
+	}
+
+	public PageBox rowAt(float height, VerticalAlignment verticalAlignment) {
+		return boxAt(new Dimension(width, height), HorizontalAlignment.LEFT, verticalAlignment);
+	}
+
+	public PageBox columnAt(float width, HorizontalAlignment horizontalAlignment) {
+		return boxAt(new Dimension(width, height), horizontalAlignment, VerticalAlignment.BOTTOM);
+	}
+
 
 	public Rectangle asRectangle() {
 		return new Rectangle(left, bottom, left + width, bottom + height);

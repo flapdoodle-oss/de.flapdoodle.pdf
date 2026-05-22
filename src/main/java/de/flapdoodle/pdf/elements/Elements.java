@@ -14,33 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.pdf.render.elements;
+package de.flapdoodle.pdf.elements;
 
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
+import com.lowagie.text.Image;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
 import de.flapdoodle.pdf.render.table.PdfPCells;
+import de.flapdoodle.pdf.tables.cells.BorderStyle;
+import de.flapdoodle.pdf.tables.cells.CellStyle;
+import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
+import de.flapdoodle.pdf.tables.cells.VerticalAlignment;
+import de.flapdoodle.pdf.types.BorderProperty;
 
 import java.awt.*;
 import java.util.Optional;
 
 public class Elements {
 	public static Element title(String text, Optional<Color> background, Optional<Font> font) {
-		var table = new PdfPTable(1);
-		table.setWidthPercentage(100f);
-
-		var cell = PdfPCells.clone(table.getDefaultCell());
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setBorder(Rectangle.NO_BORDER);
-		cell.setBorderWidth(0f);
-		background.ifPresent(cell::setBackgroundColor);
-		cell.setPadding(2f);
-		cell.setPaddingBottom(5f);
-
-		table.addCell(PdfPCells.with(cell, new Phrase(text, font.orElse(new Font()))));
-		return table;
+		return TableElement.builder()
+			.columns(TableElement.Columns.count(1))
+			.widthPercentage(100.0f)
+			.addCells(PdfPCellFactory.builder()
+				.phrase(PhraseElement.of(text, font))
+				.cellStyle(CellStyle.empty()
+					.withBackgroundColor(background)
+					.withHorizontalAlignment(HorizontalAlignment.CENTER)
+					.withVerticalAlignment(VerticalAlignment.MIDDLE)
+					.withBorder(BorderStyle.noBorder())
+					.withPadding(BorderProperty.of(2f)
+						.withBottom(5f)))
+				.build())
+			.build().create();
 	}
 }
