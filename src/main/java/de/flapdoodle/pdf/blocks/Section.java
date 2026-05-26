@@ -36,10 +36,15 @@ public interface Section extends Block {
 
 	Optional<Font> font();
 
+	@Value.Default
+	default float minPageHeightLeft() {
+		return 0.2f;
+	}
+
 	@Override
 	@Value.Auxiliary
 	default void render(Document document, Supplier<PdfContentByte> directContent) {
-		if (Documents.partOfPageHeightLeft(document, directContent) < 0.2f) {
+		if (Documents.partOfPageHeightLeft(document, directContent) < minPageHeightLeft()) {
 			document.newPage();
 		}
 

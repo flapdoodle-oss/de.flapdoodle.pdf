@@ -19,4 +19,5 @@ Stable (Maven Central Repository, Released: 26.05.2026 - wait 24hrs for [maven c
 ### Usage
 
 - [Basics](docs/Basics.md)
+- [Blocks](docs/Blocks.md)
 - [Page Decorations](docs/PageDecoration.md)
