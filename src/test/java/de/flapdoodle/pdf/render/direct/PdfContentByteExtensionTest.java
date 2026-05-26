@@ -16,16 +16,12 @@
  */
 package de.flapdoodle.pdf.render.direct;
 
-import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfContentByte;
-import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
+import de.flapdoodle.pdf.blocks.Space;
 import de.flapdoodle.pdf.blocks.Text;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.function.Supplier;
 
 import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
 
@@ -37,21 +33,12 @@ class PdfContentByteExtensionTest {
 			.pageSize(PageSize.A4)
 			.addBlocks(
 				new Text("before"),
-				new IncrementVerticalPosition(100f),
+				new Space(100f),
 				new Text("after")
 			)
 			.build())
 			.expectRendering()
 			.matchesResource(getClass(),"setVerticalPosition.pdf");
-	}
-
-	record IncrementVerticalPosition(
-		Float offset
-	) implements Block {
-		@Override
-		public void render(Document document, Supplier<PdfContentByte> directContent) {
-			PdfContentByteExtension.setVerticalPosition(directContent.get(), PdfContentByteExtension.verticalPosition(directContent.get()) - offset);
-		}
 	}
 
 }

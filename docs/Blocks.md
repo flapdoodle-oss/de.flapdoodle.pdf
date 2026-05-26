@@ -32,7 +32,7 @@ Section title = Section.builder()
   .font(new Font(Font.HELVETICA, 24, Font.BOLD))
   .build();
 Section withSpace = Section.builder()
-  .title("... need more Space:o")
+  .title("... need more NewLine:o")
   .font(new Font(Font.HELVETICA, 24, Font.BOLD))
   .minPageHeightLeft(PageSize.A4.getHeight()*0.66f)
   .build();
