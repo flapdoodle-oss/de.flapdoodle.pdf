@@ -7,6 +7,7 @@
 DocumentFactory factory = DocumentFactory.builder()
   .pageSize(PageSize.A4)
   .addBlocks(new Text("Background Image"))
+  .addOnPageEvents(PageBorders.renderDocumentHints())
   .addOnPageEvents(PageDecorator.builder()
     .elementFactory(pageNumber -> Optional.of(image))
     .boxFactory(doc -> PageBox.fullPageBox(doc)
@@ -54,6 +55,7 @@ PageDecorator footer = PageDecorator.builder()
 
 DocumentFactory factory = DocumentFactory.builder()
   .pageSize(PageSize.A4)
+  .addOnPageEvents(PageBorders.renderDocumentHints())
   .addBlocks(new Text("Header and Footer"))
   .addOnPageEvents(header, footer)
   .build();

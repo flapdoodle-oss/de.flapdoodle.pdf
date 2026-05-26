@@ -56,6 +56,7 @@ public class PageDecorationTest {
 		DocumentFactory factory = DocumentFactory.builder()
 			.pageSize(PageSize.A4)
 			.addBlocks(new Text("Background Image"))
+			.addOnPageEvents(PageBorders.renderDocumentHints())
 			.addOnPageEvents(PageDecorator.builder()
 				.elementFactory(pageNumber -> Optional.of(image))
 				.boxFactory(doc -> PageBox.fullPageBox(doc)
@@ -105,14 +106,13 @@ public class PageDecorationTest {
 
 		DocumentFactory factory = DocumentFactory.builder()
 			.pageSize(PageSize.A4)
+			.addOnPageEvents(PageBorders.renderDocumentHints())
 			.addBlocks(new Text("Header and Footer"))
 			.addOnPageEvents(header, footer)
 			.build();
 		recording.end();
 
-		byte[] content = IO.withOutputStream(out -> {
-			factory.render(out);
-		});
+		byte[] content = IO.withOutputStream(factory::render);
 
 		recording.file("pdf", "page-header.pdf", content);
 		recording.file("png", "page-header.png", PdfImageGenerator.renderPageAsPng(content, 0));
