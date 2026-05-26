@@ -18,9 +18,7 @@ package de.flapdoodle.pdf;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfPageEvent;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.*;
 import de.flapdoodle.pdf.internals.PdfFileIdGenerator;
 import de.flapdoodle.pdf.internals.StaticPdfFileIdGenerator;
 import de.flapdoodle.pdf.layout.Margin;
@@ -29,6 +27,9 @@ import de.flapdoodle.pdf.pages.PdfPageEvents;
 import org.immutables.value.Value;
 
 import java.io.OutputStream;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,11 @@ public abstract class DocumentFactory {
 	protected abstract Rectangle pageSize();
 
 	protected abstract List<Block> blocks();
+
+	@Value.Default
+	protected Meta meta() {
+		return Meta.empty();
+	}
 
 	@Value.Default
 	protected Margin pageMargin() { return DEFAULT_PAGE_MARGINS; }
@@ -56,16 +62,23 @@ public abstract class DocumentFactory {
 		var document = new Document(pageSize(), pageMargin().left(), pageMargin().right(), pageMargin().top(), pageMargin().bottom());
 		var writer = pdfWriter(document, outputStream);
 
-//    val cal = Calendar.getInstance()
-//    cal.set(2023, Calendar.JUNE, 15, 12, 0, 0)
-//    writer.getInfo().put(PdfName.CREATIONDATE, PdfDate(cal))
-		writer.getInfo().remove(PdfName.CREATIONDATE);
-		writer.getInfo().remove(PdfName.PRODUCER);
+		PdfDictionary writerInfo = writer.getInfo();
+		writerInfo.remove(PdfName.PRODUCER);
 
-		// TODO add metadata
-		//document.addAuthor("Me")
-		//document.addSubject("This is a test.")
-		//document.setHeader()
+		// TODO somehow this line does not work
+		// meta().creationDate().ifPresent(date -> document.addCreationDate(new PdfDate(GregorianCalendar.from(date))));
+		// TODO and is replaced with that:
+		meta().creationDate().ifPresentOrElse(
+			date ->  writerInfo.put(PdfName.CREATIONDATE, new PdfDate(GregorianCalendar.from(date))),
+			() -> writerInfo.remove(PdfName.CREATIONDATE)
+		);
+
+
+		meta().title().ifPresent(document::addTitle);
+		meta().subject().ifPresent(document::addSubject);
+		meta().author().ifPresent(document::addAuthor);
+		meta().creator().ifPresent(document::addCreator);
+		meta().producer().ifPresent(document::addProducer);
 
 		if (!onPageEvents().isEmpty()) writer.setPageEvent(
 			PdfPageEvents.all(onPageEvents())

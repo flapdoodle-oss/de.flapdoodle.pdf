@@ -16,3 +16,16 @@ ${helloWorld.render}
 ![hello-world.png](${helloWorld.png})
 
 [hello-world.pdf](${helloWorld.pdf})
+
+## Meta Data
+
+Add creation date and producer:
+
+```java
+${metaData.factory}
+```
+
+![meta-data.png](${metaData.png})
+
+[meta-data.pdf](${metaData.pdf})
+

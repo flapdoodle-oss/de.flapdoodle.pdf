@@ -18,6 +18,7 @@ package de.flapdoodle.pdf.howto;
 
 import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
+import de.flapdoodle.pdf.Meta;
 import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.testdoc.Recorder;
 import de.flapdoodle.testdoc.Recording;
@@ -26,6 +27,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class BasicsTest {
 	@RegisterExtension
@@ -48,5 +53,33 @@ public class BasicsTest {
 
 		recording.file("pdf", "hello-world.pdf", content);
 		recording.file("png", "hello-world.png", PdfImageGenerator.renderPageAsPng(content, 0));
+	}
+
+	@Test
+	public void metaData() {
+		ZonedDateTime creationDate = ZonedDateTime.of(
+			LocalDate.of(2026, 3, 12),
+			LocalTime.of(13, 0),
+			ZoneId.systemDefault()
+		);
+
+		recording.begin("factory");
+		DocumentFactory factory = DocumentFactory.builder()
+			.pageSize(PageSize.A4)
+			.meta(Meta.empty()
+				.withCreationDate(creationDate)
+				.withTitle("MetaData Sample")
+				.withSubject("this is how we do it")
+				.withAuthor("Its me:)")
+				.withCreator("flapdoodle test")
+				.withProducer("OpenPDF"))
+			.addBlocks(new Text("created at "+creationDate))
+			.build();
+		recording.end();
+
+		byte[] content = IO.withOutputStream(factory::render);
+
+		recording.file("pdf", "meta-data.pdf", content);
+		recording.file("png", "meta-data.png", PdfImageGenerator.renderPageAsPng(content, 0));
 	}
 }
