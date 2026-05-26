@@ -8,14 +8,15 @@ openpdf base page renderer
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 22.05.2026 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/pdf/de.flapdoodle.pdf/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 26.05.2026 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/pdf/de.flapdoodle.pdf/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.pdf</groupId>
 		<artifactId>de.flapdoodle.pdf</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</dependency>
 
 ### Usage
 
 - [Basics](docs/Basics.md)
+- [Page Decorations](docs/PageDecoration.md)
