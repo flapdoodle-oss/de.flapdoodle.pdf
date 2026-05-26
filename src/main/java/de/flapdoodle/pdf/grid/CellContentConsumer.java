@@ -16,20 +16,9 @@
  */
 package de.flapdoodle.pdf.grid;
 
-import de.flapdoodle.pdf.pages.PageBox;
-import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Position;
+import com.lowagie.text.pdf.ColumnText;
 
-import java.util.List;
-import java.util.Set;
-
-public interface GridLayouter {
-	List<CellLayout> layout(Grid grid, Position topLeft, Set<Cell> cells, PageBox container);
-
-	record CellLayout(
-		Cell cell,
-		PageBox cellBox,
-		PageBox renderBox
-	) {
-	}
+@FunctionalInterface
+public interface CellContentConsumer<T> {
+	void fillCell(ColumnText columnText, T t);
 }

@@ -22,10 +22,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
-import de.flapdoodle.pdf.grid.Grid;
-import de.flapdoodle.pdf.grid.GridCellDecorator;
-import de.flapdoodle.pdf.grid.GridContent;
-import de.flapdoodle.pdf.grid.GridRenderer;
+import de.flapdoodle.pdf.grid.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -61,7 +58,7 @@ class PageHeaderTest {
 			GridRenderer.<String>builder()
 				.renderBoxDecorator(GridCellDecorator.renderBorder(Color.GRAY))
 				.build()
-				.render(document, directContent, grid, GridContent.fromMap(Map.of()), (columnText, s) -> {
+				.render(document, directContent, grid, CellContentLookup.fromMap(Map.of()), (columnText, s) -> {
 
 				});
 		}

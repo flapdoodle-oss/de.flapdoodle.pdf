@@ -21,10 +21,10 @@ import de.flapdoodle.pdf.types.Cell;
 import java.util.Map;
 import java.util.Optional;
 
-public interface GridContent<T> {
+public interface CellContentLookup<T> {
 	Optional<T> get(Cell cell);
 
-	static <T> GridContent<T> fromMap(Map<Cell, T> map) {
+	static <T> CellContentLookup<T> fromMap(Map<Cell, T> map) {
 		return cell -> Optional.ofNullable(map.get(cell));
 	}
 }

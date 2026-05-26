@@ -17,7 +17,7 @@
 package de.flapdoodle.pdf.grid.layout;
 
 import de.flapdoodle.pdf.grid.Grid;
-import de.flapdoodle.pdf.grid.GridLayouter;
+import de.flapdoodle.pdf.grid.CellLayout;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.Position;
@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-public abstract class AbstractCellsLayouter implements GridLayouter {
+public abstract class AbstractCellsLayouter implements CellLayout {
 	@Override
-	public List<CellLayout> layout(
+	public List<CellPosition> layout(
 		Grid grid,
 		Position topLeft,
 		Set<Cell> cells,
@@ -43,7 +43,7 @@ public abstract class AbstractCellsLayouter implements GridLayouter {
 			var renderBox = grid.innerBox(cell)
 				.translate(-topLeft.x() + leftOffset.apply(cell), -topLeft.y())
 				.asPageBox(container);
-			return new GridLayouter.CellLayout(
+			return new CellPosition(
 				cell,
 				cellBox,
 				renderBox

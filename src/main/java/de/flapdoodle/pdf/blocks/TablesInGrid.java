@@ -17,7 +17,6 @@
 package de.flapdoodle.pdf.blocks;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.pdf.ColumnText;
 import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.extensions.MapExtensions;
@@ -32,7 +31,6 @@ import org.immutables.value.Value;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -73,7 +71,7 @@ public abstract class TablesInGrid implements Block {
 				));
 		}
 
-		BiConsumer<ColumnText, TableSplitter.GridCellContent> onCell = (column, entry) ->
+		CellContentConsumer<TableSplitter.GridCellContent> onCell = (column, entry) ->
 			regionRenderer.render(column, entry.table(), entry.region());
 
 		BiFunction<TableSplitter.GridCellContent, PageBox, PageBox> processRenderBox = (entry, pageBox) ->
@@ -88,7 +86,7 @@ public abstract class TablesInGrid implements Block {
 				document,
 				directContent,
 				grid,
-				GridContent.fromMap(cellContent),
+				CellContentLookup.fromMap(cellContent),
 				onCell
 			);
 	}

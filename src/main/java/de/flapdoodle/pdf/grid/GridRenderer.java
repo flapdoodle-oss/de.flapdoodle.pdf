@@ -17,7 +17,6 @@
 package de.flapdoodle.pdf.grid;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.pdf.ColumnText;
 import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.columns.ColumnFactory;
 import de.flapdoodle.pdf.grid.layout.NoSpaceBetweenCellsLayouter;
@@ -27,7 +26,6 @@ import org.immutables.value.Value;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -37,7 +35,7 @@ public abstract class GridRenderer<T> {
 	protected abstract Optional<GridCellDecorator> renderBoxDecorator();
 
 	@Value.Default
-	protected GridLayouter gridLayouter() {
+	protected CellLayout gridLayouter() {
 		return new NoSpaceBetweenCellsLayouter();
 	};
 
@@ -49,15 +47,15 @@ public abstract class GridRenderer<T> {
 	public void render(
 		Document document,
 		Supplier<PdfContentByte> directContent,
-	Grid grid,
-	GridContent<T> cellContent,
-	BiConsumer<ColumnText, T> onCell
+		Grid grid,
+		CellContentLookup<T> contentLookup,
+		CellContentConsumer<T> contentRenderer
   ) {
 		final AtomicReference<Float> currentOffset = new AtomicReference<>(PdfContentByteExtension.verticalPosition(directContent.get()));
 		var innerBox = PageBox.innerBox(document);
 		var pageDim = innerBox.dimension();
 
-		var sets = GridPartitioner.partition(grid.trim(cellContent),
+		var sets = GridPartitioner.partition(grid.trim(contentLookup),
 			document.top() - currentOffset.get(), pageDim);
 
 
@@ -73,10 +71,10 @@ public abstract class GridRenderer<T> {
 				cellBoxDecorator().ifPresent(it -> it.decorate(directContent.get(), cellLayout.cellBox()));
 				renderBoxDecorator().ifPresent(it -> it.decorate(directContent.get(), cellLayout.renderBox()));
 
-				var cellCon = cellContent.get(cellLayout.cell());
+				var cellCon = contentLookup.get(cellLayout.cell());
 				if (cellCon.isPresent()) {
 					var column = ColumnFactory.DEFAULT.create(directContent.get(), processRenderBox().apply(cellCon.get(), cellLayout.renderBox()));
-					onCell.accept(column, cellCon.get());
+					contentRenderer.fillCell(column, cellCon.get());
 					column.go();
 				}
 

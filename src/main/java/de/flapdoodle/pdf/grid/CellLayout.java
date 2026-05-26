@@ -14,20 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.pdf.blocks;
+package de.flapdoodle.pdf.grid;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfContentByte;
-import de.flapdoodle.pdf.Block;
-import de.flapdoodle.pdf.render.direct.PdfContentByteExtension;
+import de.flapdoodle.pdf.pages.PageBox;
+import de.flapdoodle.pdf.types.Cell;
+import de.flapdoodle.pdf.types.Position;
 
-import java.util.function.Supplier;
+import java.util.List;
+import java.util.Set;
 
-public record Space(
-	float offset
-) implements Block {
-	@Override
-	public void render(Document document, Supplier<PdfContentByte> directContent) {
-		PdfContentByteExtension.setVerticalPosition(directContent.get(), PdfContentByteExtension.verticalPosition(directContent.get()) - offset);
+public interface CellLayout {
+	List<CellPosition> layout(Grid grid, Position topLeft, Set<Cell> cells, PageBox container);
+
+	record CellPosition(
+		Cell cell,
+		PageBox cellBox,
+		PageBox renderBox
+	) {
 	}
 }

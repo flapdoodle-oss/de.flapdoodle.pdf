@@ -16,13 +16,11 @@
  */
 package de.flapdoodle.pdf.grid;
 
-import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfContentByte;
-import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
+import de.flapdoodle.pdf.blocks.grid.RenderGrid;
 import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.pdf.grid.layout.HorizontalSpaceBetweenCellsLayouter;
 import de.flapdoodle.pdf.grid.layout.NoSpaceBetweenCellsLayouter;
@@ -32,10 +30,9 @@ import de.flapdoodle.pdf.types.Cell;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
 
@@ -147,45 +144,28 @@ class GridRendererTest {
 		return render(grid, new NoSpaceBetweenCellsLayouter());
 	}
 
-	private RenderGrid<String> render(Grid grid, GridLayouter layouter) {
-		return new RenderGrid<>(grid, new CellAsString(), layouter, new RenderString());
+	private RenderGrid<String> render(Grid grid, CellLayout layouter) {
+		return RenderGrid.<String>builder()
+			.grid(grid)
+			.cellBoxDecorator(GridCellDecorator.renderBorder())
+			.renderBoxDecorator(GridCellDecorator.renderBorder())
+			.layouter(layouter)
+			.contentLookup(new CellAsStringLookup())
+			.contentRenderer(new RenderString())
+			.build();
 	}
 
-	private static class CellAsString implements GridContent<String> {
+	private static class CellAsStringLookup implements CellContentLookup<String> {
 		@Override
 		public Optional<String> get(Cell cell) {
 			return Optional.of(cell.column() + ":" + cell.row());
 		}
 	}
 
-	private static class RenderString implements BiConsumer<ColumnText, String> {
+	private static class RenderString implements CellContentConsumer<String> {
 		@Override
-		public void accept(ColumnText columnText, String s) {
+		public void fillCell(ColumnText columnText, String s) {
 			columnText.addElement(new Phrase(s));
-		}
-	}
-
-	private record RenderGrid<T>(
-		Grid grid,
-		GridContent<T> content,
-		GridLayouter layouter,
-		BiConsumer<ColumnText, T> onCell
-	) implements Block {
-
-		@Override
-		public void render(Document document, Supplier<PdfContentByte> directContent) {
-			GridRenderer.<T>builder()
-				.cellBoxDecorator(GridCellDecorator.renderBorder())
-				.renderBoxDecorator(GridCellDecorator.renderBorder())
-				.gridLayouter(layouter)
-				.build()
-				.render(
-					document,
-					directContent,
-					grid,
-					content,
-					onCell
-				);
 		}
 	}
 

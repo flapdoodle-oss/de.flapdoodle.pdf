@@ -150,13 +150,13 @@ public final class Grid {
 		return new Box(topLeft, dim);
 	}
 
-	public Grid trim(GridContent<?> gridContent) {
+	public Grid trim(CellContentLookup<?> cellContentLookup) {
 		var maxColumn = 0;
 		var maxRow = 0;
 
 		for (int c = 0; c < columns(); c++) {
 			for (int r = 0; r < rows(); r++) {
-				if (gridContent.get(new Cell(c, r)).isPresent()) {
+				if (cellContentLookup.get(new Cell(c, r)).isPresent()) {
 					maxColumn = Math.max(maxColumn, c);
 					maxRow = Math.max(maxRow, r);
 				}

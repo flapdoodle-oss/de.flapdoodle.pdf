@@ -32,7 +32,6 @@ import org.immutables.value.Value;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -56,7 +55,7 @@ public abstract class ItemsInGrid<T> implements Block {
 	}
 
 	@Value.Default
-	protected GridLayouter gridLayouter() {
+	protected CellLayout cellLayout() {
 		return new NoSpaceBetweenCellsLayouter();
 	}
 
@@ -91,7 +90,7 @@ public abstract class ItemsInGrid<T> implements Block {
 			grid = grid.shrinkHeight(cellHeights);
 		}
 
-		BiConsumer<ColumnText, ItemInGridPlacement.GridCellContent<T>> onCell = (column, entry) -> {
+		CellContentConsumer<ItemInGridPlacement.GridCellContent<T>> onCell = (column, entry) -> {
 			itemRenderer().render(column, entry.item());
 		};
 
@@ -102,7 +101,7 @@ public abstract class ItemsInGrid<T> implements Block {
 
 		GridRenderer.<ItemInGridPlacement.GridCellContent<T>>builder()
 			.processRenderBox(processRenderBox)
-			.gridLayouter(gridLayouter())
+			.gridLayouter(cellLayout())
 			.cellBoxDecorator(cellBoxDecorator())
 			.renderBoxDecorator(renderBoxDecorator())
 			.build()
@@ -110,7 +109,7 @@ public abstract class ItemsInGrid<T> implements Block {
 				document,
 				directContent,
 				grid,
-				GridContent.fromMap(cellContent),
+				CellContentLookup.fromMap(cellContent),
 				onCell
 			);
 

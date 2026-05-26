@@ -71,7 +71,7 @@ public class BlocksTest {
 			.font(new Font(Font.HELVETICA, 24, Font.BOLD))
 			.build();
 		Section withSpace = Section.builder()
-			.title("... need more NewLine:o")
+			.title("... need more Space:o")
 			.font(new Font(Font.HELVETICA, 24, Font.BOLD))
 			.minPageHeightLeft(PageSize.A4.getHeight()*0.66f)
 			.build();
