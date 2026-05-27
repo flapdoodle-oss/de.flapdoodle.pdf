@@ -20,6 +20,7 @@ import com.google.common.math.DoubleMath;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.pages.PageBox;
+import de.flapdoodle.pdf.render.table.MinimalTableWidth;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.TableFromMap;
@@ -46,17 +47,21 @@ class PosterSplitWithRepeatingFirstColumnTest {
 		var firstColumnWidth = 10f;
 		var tableWithoutFirstColumnWidth = 250f;
 
+		var minimalTableWith = new MinimalTableWidth() {
+			@Override
+			public float of(TableRenderer renderer, Table table, float startingWidth) {
+				if (table.columns() == 1)
+					return firstColumnWidth;
+				if (table.columns() == tableColumnsWithoutFirstColumn)
+					return tableWithoutFirstColumnWidth;
+				throw new IllegalArgumentException("unexpected columns: "+table.columns());
+			}
+		};
+
 		var tableRenderer = new TableRenderer() {
 			@Override
 			public Result render(Table table, Region region, PageBox pageBox) {
 				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public float minimalWidthOf(Table table, float startingWidth) {
-				if (table.columns() == 1) return firstColumnWidth;
-				if (table.columns() == tableColumnsWithoutFirstColumn) return tableWithoutFirstColumnWidth;
-				throw new IllegalArgumentException("unexpected columns: "+table.columns());
 			}
 		};
 
@@ -67,7 +72,10 @@ class PosterSplitWithRepeatingFirstColumnTest {
 				.stream().collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row())))
 			.build();
 
-		PosterSplitter.Split split = new PosterSplitWithRepeatingFirstColumn()
+		PosterSplitter.Split split = new PosterSplitWithRepeatingFirstColumn(
+			new PutColumnIntoSlotIfMostOfItWillFit(),
+			minimalTableWith
+		)
 			.split(tableRenderer, grid, table);
 		var newTable = split.table();
 		var parts = split.part();

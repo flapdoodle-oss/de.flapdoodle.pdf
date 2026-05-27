@@ -18,6 +18,8 @@ package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
 import de.flapdoodle.pdf.extensions.ListExtensions;
 import de.flapdoodle.pdf.grid.Grid;
+import de.flapdoodle.pdf.render.table.MinimalTableWidth;
+import de.flapdoodle.pdf.render.table.TableRenderHelper;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.Tables;
@@ -33,10 +35,11 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public record PosterSplitWithRepeatingFirstColumn(
-	ColumnWidthsSlotMapper columnWidthsSlotMapper
+	ColumnWidthsSlotMapper columnWidthsSlotMapper,
+	MinimalTableWidth minimalTableWidth
 ) implements PosterSplitter {
 	public PosterSplitWithRepeatingFirstColumn() {
-		this(new PutColumnIntoSlotIfMostOfItWillFit());
+		this(new PutColumnIntoSlotIfMostOfItWillFit(), new MinimalTableWidth.Default());
 	}
 	@Override
 	public Split split(TableRenderer tableRenderer, Grid grid, Table table) {
@@ -47,13 +50,10 @@ public record PosterSplitWithRepeatingFirstColumn(
 		var smallestGridCell = grid.innerWidths().stream()
 			.min(Comparator.naturalOrder())
 			.orElseThrow(() -> new IllegalArgumentException("no min?"));
-		var firstColumnWidth = tableRenderer.minimalWidthOf(firstColumnTable, smallestGridCell);
+		var firstColumnWidth = minimalTableWidth().of(tableRenderer, firstColumnTable, smallestGridCell);
 
 		var gridWithoutFirstColumn = grid.innerWidths().stream().map(it -> it - firstColumnWidth).toList();
-		var tableWidthWithoutFirstColumn = tableRenderer.minimalWidthOf(
-			tableWithoutFirstColumn,
-			Floats.sum(gridWithoutFirstColumn)
-		);
+		var tableWidthWithoutFirstColumn = minimalTableWidth().of(tableRenderer, tableWithoutFirstColumn, Floats.sum(gridWithoutFirstColumn));
 
 		var columnWidths = Tables.columnWidths(
 			new Range(0, tableWithoutFirstColumn.columns() - 1),

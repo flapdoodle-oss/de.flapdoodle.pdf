@@ -21,12 +21,17 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.jspecify.annotations.NonNull;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
+import javax.imageio.metadata.IIOInvalidTreeException;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.util.Iterator;
 
 public final class PdfImageGenerator implements AutoCloseable {
 	private final PDDocument document;
@@ -40,17 +45,6 @@ public final class PdfImageGenerator implements AutoCloseable {
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-//		try (PDDocument document = Loader.loadPDF(pdfFile)) {
-//			PDFRenderer renderer = new PDFRenderer(document);
-//
-//			for (int page = 0; page < document.getNumberOfPages(); page++) {
-//				// 300 DPI gives print-quality output; 72 is screen resolution
-//				BufferedImage image = renderer.renderImageWithDPI(page, 300, ImageType.RGB);
-//
-//				String filename = String.format("page-%d.png", page + 1);
-//				ImageIO.write(image, "png", new File(filename));
-//			}
-//		}
 	}
 
 	public int pages() {
@@ -72,7 +66,20 @@ public final class PdfImageGenerator implements AutoCloseable {
 
 		try (ByteArrayOutputStream imageOut = new ByteArrayOutputStream()) {
 			BufferedImage image = page2BufferedImage(pageNum);
-			ImageIO.write(image, "png", imageOut);
+
+			ImageWriter writer = pngWriter();
+			ImageWriteParam param = writer.getDefaultWriteParam();
+
+			ImageTypeSpecifier type = ImageTypeSpecifier.createFromRenderedImage(image);
+			IIOMetadata metadata = cleanedMetaData(writer, type, param);
+
+			try (ImageOutputStream ios = ImageIO.createImageOutputStream(imageOut)) {
+				writer.setOutput(ios);
+				writer.write(null, new IIOImage(image, null, metadata), param);
+			} finally {
+				writer.dispose();
+			}
+
 			return imageOut.toByteArray();
 		} catch (IOException iox) {
 			throw new RuntimeException(iox);
@@ -82,6 +89,39 @@ public final class PdfImageGenerator implements AutoCloseable {
 	public static byte[] renderPageAsPng(byte[] page, int pageNum) {
 		try(PdfImageGenerator imageGenerator = new PdfImageGenerator(page)) {
 			return imageGenerator.renderPageAsPng(pageNum);
+		}
+	}
+
+	private static ImageWriter pngWriter() {
+		Iterator<ImageWriter> pngWriters = ImageIO.getImageWritersByFormatName("png");
+		Preconditions.checkState(pngWriters.hasNext(),"no png writers found");
+		ImageWriter writer = pngWriters.next();
+
+		ImageWriteParam param = writer.getDefaultWriteParam();
+		if (param.canWriteCompressed()) {
+			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+			param.setCompressionType("Deflate");
+			param.setCompressionQuality(0.0f); // konsistent, egal welcher Wert – Hauptsache fix
+		}
+		return writer;
+	}
+
+	private static IIOMetadata cleanedMetaData(ImageWriter writer, ImageTypeSpecifier type, ImageWriteParam param) throws IIOInvalidTreeException {
+		IIOMetadata metadata = writer.getDefaultImageMetadata(type, param);
+		String formatName = metadata.getNativeMetadataFormatName(); // "javax_imageio_png_1.0"
+		IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(formatName);
+		removeNode(root, "tIME");
+		removeNode(root, "tEXt");
+		removeNode(root, "iTXt");
+		removeNode(root, "zTXt");
+		metadata.setFromTree(formatName, root);
+		return metadata;
+	}
+
+	private static void removeNode(IIOMetadataNode root, String name) {
+		var nodes = root.getElementsByTagName(name);
+		for (int i = nodes.getLength() - 1; i >= 0; i--) {
+			nodes.item(i).getParentNode().removeChild(nodes.item(i));
 		}
 	}
 

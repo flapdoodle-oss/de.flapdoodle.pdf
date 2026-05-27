@@ -1,0 +1,141 @@
+/*
+ * Copyright (C) 2016
+ *   Michael Mosmann <michael@mosmann.de>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package de.flapdoodle.pdf.render.table;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfContentByte;
+import de.flapdoodle.pdf.Block;
+import de.flapdoodle.pdf.DocumentFactory;
+import de.flapdoodle.pdf.pages.PageBox;
+import de.flapdoodle.pdf.tables.Table;
+import de.flapdoodle.pdf.tables.TableColumnsFromNameList;
+import de.flapdoodle.pdf.tables.TableFromMap;
+import de.flapdoodle.pdf.tables.cells.CellStyles;
+import de.flapdoodle.pdf.tables.cells.HeaderStyles;
+import de.flapdoodle.pdf.tables.cells.LayeredCellStyles;
+import de.flapdoodle.pdf.types.Cell;
+import de.flapdoodle.pdf.types.IntRange;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.data.Percentage;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class MinimalTableWidthTest {
+
+	private final CellStyles DEFAULT_STYLES = LayeredCellStyles.empty();
+	private final HeaderStyles DEFAULT_HEADER_STYLES = DEFAULT_STYLES.asHeaderStyles();
+
+	@Test
+	void minWidthOfSmallTable() {
+		var table = TableFromMap.builder()
+			.header(defaultHeader("Column"))
+			.cells(Map.of(new Cell(0, 0), "Value"))
+			.build();
+
+		assertThat(DocumentFactory.builder()
+			.pageSize(PageSize.A4)
+			.addBlocks(expectMinWidth(table, 45.343f))
+			.build())
+			.expectRendering()
+			.matchesResource(getClass(),"minimalTable-small.pdf");
+	}
+
+	@Test
+	void minWidthOfWideTable() {
+		int columns = 15;
+		
+		String[] columnNames = IntRange.until(0, columns)
+			.map(it -> "C " + it)
+			.toArray(String[]::new);
+
+		Map<Cell, String> cells = IntRange.until(0, columns)
+			.map(it -> new Cell(it, 0))
+			.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row()));
+
+		var table = TableFromMap.builder()
+			.header(defaultHeader(columnNames))
+			.cells(cells)
+			.build();
+
+		assertThat(DocumentFactory.builder()
+			.pageSize(PageSize.A4)
+			.addBlocks(expectMinWidth(table, 440.160f))
+			.build())
+			.expectRendering()
+			.matchesResource(getClass(),"minimalTable-wide.pdf");
+	}
+
+	@Test
+	void minWidthOfSmallLongTable() {
+		int columns = 5;
+		int rows = 100;
+
+		String[] columnNames = IntRange.until(0, columns)
+			.map(it -> "C " + it)
+			.toArray(String[]::new);
+
+		Map<Cell, String> cells = IntRange.until(0, rows)
+			.map(it -> new Cell( 0, it))
+			.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row()));
+
+		var table = TableFromMap.builder()
+			.header(defaultHeader(columnNames))
+			.cells(cells)
+			.build();
+
+		assertThat(DocumentFactory.builder()
+			.pageSize(PageSize.A4)
+			.addBlocks(expectMinWidth(table, 136.763f))
+			.build())
+			.expectRendering()
+			.matchesResource(getClass(),"minimalTable-long.pdf");
+	}
+
+	private static Block expectMinWidth(Table table, float expectedMinWidth) {
+		return new Block() {
+			@Override
+			public void render(Document document, Supplier<PdfContentByte> directContent) {
+				var testee = new MinimalTableWidth.Default();
+				ColumnTableRenderer renderer = new ColumnTableRenderer(directContent.get(), new DefaultRegionColumnRenderer());
+
+				float minWidth = testee.of(renderer, table, PageSize.A4.getWidth()*10.0f);
+				assertThat(minWidth)
+					.isCloseTo(expectedMinWidth, Percentage.withPercentage(1.0d));
+
+				renderer.render(table, table.maxRegion(), PageBox.innerBox(document).withWidth(minWidth)).go();
+			}
+		};
+	}
+
+	private TableColumnsFromNameList defaultHeader(String... names) {
+		return TableColumnsFromNameList.builder()
+			.addColumnNames(names)
+			.styles(DEFAULT_HEADER_STYLES)
+			.build();
+	}
+
+}

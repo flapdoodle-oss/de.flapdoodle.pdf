@@ -17,12 +17,10 @@
 package de.flapdoodle.pdf.render.table;
 
 import de.flapdoodle.pdf.pages.PageBox;
-import de.flapdoodle.pdf.pages.PagePosition;
 import de.flapdoodle.pdf.tables.Table;
-import de.flapdoodle.pdf.types.Dimension;
-import de.flapdoodle.pdf.types.Floats;
 import de.flapdoodle.pdf.types.Region;
 
+@FunctionalInterface
 public interface TableRenderer {
 	/**
 	 * don't commit rendering to column from inside
@@ -33,34 +31,9 @@ public interface TableRenderer {
 		int lastVisibleRow,
 		float tableHeight, // can contain invisible parts bc of clipping
 		Runnable commit
-	) {	}
-
-	default float minimalWidthOf(Table table, float startingWidth) {
-		var minInitialHeight = tableHeight(table, startingWidth);
-
-		var startRange = 0f;
-		var endRange = startingWidth;
-
-		var loops = 1;
-		do {
-			loops++;
-			var testWidth = startRange + (endRange - startRange) / 2;
-//      println("width($loops) -> $testWidth")
-			var height = tableHeight(table, testWidth);
-			if (height > minInitialHeight) {
-				// to small
-				startRange = testWidth;
-			} else {
-				// not small enought
-				endRange = testWidth;
-			}
-		} while (!Floats.isNearBy(startRange, endRange) && loops < 100);
-
-		return endRange;
+	) {
+		void go() {
+			commit.run();
+		}
 	}
-
-	private float tableHeight(Table table, float width) {
-		return render(table, table.maxRegion(), new PageBox(PagePosition.ZERO, new Dimension(width, 100f))).tableHeight;
-	}
-
 }

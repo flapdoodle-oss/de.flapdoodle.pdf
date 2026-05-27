@@ -119,6 +119,15 @@ public final class Range {
 		return Objects.hash(start, end, isEmpty);
 	}
 
+	@Override
+	public String toString() {
+		return "Range{" +
+			"start=" + start +
+			", end=" + end +
+			", isEmpty=" + isEmpty +
+			'}';
+	}
+	
 	public static Range at(int start) {
 		return new Range(start, start);
 	}

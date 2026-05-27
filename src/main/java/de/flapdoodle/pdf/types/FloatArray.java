@@ -30,6 +30,10 @@ public class FloatArray {
 	public int length() {
 		return array.length;
 	}
+
+	public float get(int index) {
+		return array[index];
+	}
 	
 	public float[] array() {
 		return Arrays.copyOf(array,  array.length);

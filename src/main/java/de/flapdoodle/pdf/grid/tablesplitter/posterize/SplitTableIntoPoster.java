@@ -20,6 +20,7 @@ import de.flapdoodle.pdf.extensions.MapExtensions;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.grid.TableSplitter;
 import de.flapdoodle.pdf.pages.PagePosition;
+import de.flapdoodle.pdf.render.table.MinimalTableWidth;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.types.Cell;
@@ -34,6 +35,14 @@ public record SplitTableIntoPoster(
 ) implements TableSplitter {
 	public SplitTableIntoPoster(TableRenderer tableRenderer) {
 		this(tableRenderer, new PosterSplitWithRepeatingFirstColumn());
+	}
+
+	public static SplitTableIntoPoster repeatFirstColumn(TableRenderer tableRenderer) {
+		return new SplitTableIntoPoster(tableRenderer, new PosterSplitWithRepeatingFirstColumn());
+	}
+
+	public static SplitTableIntoPoster split(TableRenderer tableRenderer) {
+		return new SplitTableIntoPoster(tableRenderer, DefaultPosterSplitter.splitColumn());
 	}
 
 	@Override
