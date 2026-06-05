@@ -22,7 +22,7 @@ import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.tables.TableFromMap;
 import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class ItemsInGridTest {
 				ItemsInGrid.<TableWithTitle>builder()
 					.gridFactory(it -> {
 						var innerBox = PageBox.innerBox(it);
-						return new Grid(2, innerBox.width() / 2, 3, innerBox.height() / 3);
+						return Grid.of(2, innerBox.width() / 2, 3, innerBox.height() / 3);
 					})
 					.itemRenderer(new TableWithTitleRenderer())
 					.items(List.of(
@@ -66,7 +66,7 @@ class ItemsInGridTest {
 				ItemsInGrid.<TableWithTitle>builder()
 					.gridFactory(it -> {
 						var innerBox = PageBox.innerBox(it);
-						return new Grid(2, innerBox.width() / 2, 3, innerBox.height() / 3);
+						return Grid.of(2, innerBox.width() / 2, 3, innerBox.height() / 3);
 					})
 					.shrinkGrid(true)
 					.itemRenderer(new TableWithTitleRenderer())
@@ -84,7 +84,7 @@ class ItemsInGridTest {
 
 	private TableWithTitle tableWithTitle(String title, int columns, int rows) {
 		return new TableWithTitle(title, TableFromMap.builder()
-			.cells(new Region(new Range(0, columns - 1), new Range(0, rows - 1))
+			.cells(new Region(IntRange.until(0, columns), IntRange.until(0, rows))
 				.map(Cell::new)
 				.stream()
 				.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row())))

@@ -22,7 +22,10 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
-import de.flapdoodle.pdf.grid.*;
+import de.flapdoodle.pdf.grid.CellContentLookup;
+import de.flapdoodle.pdf.grid.Grid;
+import de.flapdoodle.pdf.grid.GridCellDecorator;
+import de.flapdoodle.pdf.grid.GridRenderer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +38,7 @@ import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
 
 class PageHeaderTest {
 	@Test
-	@DisplayName("render header")
+	@DisplayName("render headerRows")
 	void renderHeader() {
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
@@ -54,7 +57,7 @@ class PageHeaderTest {
 		@Override
 		public void render(Document document, Supplier<PdfContentByte> directContent) {
 			var innerBox = PageBox.innerBox(document);
-			var grid = new Grid(innerBox.width(), innerBox.height());
+			var grid = Grid.of(innerBox.width(), innerBox.height());
 			GridRenderer.<String>builder()
 				.renderBoxDecorator(GridCellDecorator.renderBorder(Color.GRAY))
 				.build()

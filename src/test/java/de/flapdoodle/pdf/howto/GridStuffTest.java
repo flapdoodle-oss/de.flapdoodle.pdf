@@ -16,31 +16,29 @@
  */
 package de.flapdoodle.pdf.howto;
 
-import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
-import de.flapdoodle.pdf.blocks.ImmutableTablesInGrid;
-import de.flapdoodle.pdf.blocks.Section;
+import de.flapdoodle.pdf.blocks.AutosplitTable;
 import de.flapdoodle.pdf.blocks.TablesInGrid;
-import de.flapdoodle.pdf.blocks.grid.ImmutableRenderGrid;
 import de.flapdoodle.pdf.blocks.grid.RenderGrid;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.grid.GridCellDecorator;
-import de.flapdoodle.pdf.grid.layout.HorizontalSpaceBetweenCellsLayouter;
 import de.flapdoodle.pdf.grid.layout.NoSpaceBetweenCellsLayouter;
-import de.flapdoodle.pdf.grid.tablesplitter.posterize.DefaultPosterSplitter;
-import de.flapdoodle.pdf.grid.tablesplitter.posterize.PutColumnIntoSlotIfAllOfItWillFit;
 import de.flapdoodle.pdf.grid.tablesplitter.posterize.SplitTableIntoPoster;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.pages.PageBox;
-import de.flapdoodle.pdf.render.table.MinimalTableWidth;
-import de.flapdoodle.pdf.tables.*;
-import de.flapdoodle.pdf.tables.cells.*;
+import de.flapdoodle.pdf.tables.ColumnWeights;
+import de.flapdoodle.pdf.tables.TableColumnsFromNameList;
+import de.flapdoodle.pdf.tables.TableFromMap;
+import de.flapdoodle.pdf.tables.cells.CellStyle;
+import de.flapdoodle.pdf.tables.cells.HeaderStyles;
+import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
+import de.flapdoodle.pdf.tables.cells.LayeredCellStyles;
 import de.flapdoodle.pdf.types.BorderProperty;
 import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 import de.flapdoodle.testdoc.Recorder;
 import de.flapdoodle.testdoc.Recording;
@@ -61,7 +59,7 @@ public class GridStuffTest {
 	public void twoColumns3Rows() {
 		recording.begin();
 		RenderGrid<String> renderGrid = RenderGrid.<String>builder()
-			.grid(new Grid(Margin.of(5.0f, 5.0f, 5.0f, 5.0f),
+			.grid(Grid.of(Margin.of(5.0f, 5.0f, 5.0f, 5.0f),
 				List.of(100.0f, 50.0f),
 				List.of(50.0f, 150.0f, 50.0f)))
 			.cellBoxDecorator(GridCellDecorator.renderBorder(Color.DARK_GRAY))
@@ -84,7 +82,7 @@ public class GridStuffTest {
 				.addColumnNames("A", "B", "C", "D","E","F","G","H","I")
 				.styles(HeaderStyles.asHeaderStyles(LayeredCellStyles.empty()
 					.withDefault(CellStyle.empty()
-						// TODO wenn der header breiter ist als die Spalte,
+						// TODO wenn der headerRows breiter ist als die Spalte,
 						//  dann wird der Header zusammen gestutzt?
 						.withBackgroundColor(Color.LIGHT_GRAY)
 						.withPadding(BorderProperty.of(5.0f))
@@ -95,7 +93,7 @@ public class GridStuffTest {
 					.withPadding(BorderProperty.of(20.f, 10.0f, 20.f, 10.f))
 					.withHorizontalAlignment(HorizontalAlignment.CENTER)))
 			.columnWeights(ColumnWeights.EMPTY)
-			.cells(new Region(new Range(0, 9 - 1), new Range(0, 30 - 1))
+			.cells(new Region(IntRange.until(0, 9), IntRange.until(0, 30))
 				.map(Cell::new)
 				.stream()
 				.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row())))
@@ -105,7 +103,7 @@ public class GridStuffTest {
 		TablesInGrid tablesInGrid = TablesInGrid.builder()
 			.gridFactory(doc -> {
 				PageBox innerBox = PageBox.innerBox(doc);
-				return new Grid(Margin.none(), 2, innerBox.width(), 4, innerBox.height());
+				return Grid.of(Margin.none(), 2, innerBox.width(), 4, innerBox.height());
 			})
 			.tableSplitterFactory(SplitTableIntoPoster::split)
 			.addTables(table)
@@ -118,6 +116,46 @@ public class GridStuffTest {
 		recording.file("png-1", "grid-posterize-1.png", PdfImageGenerator.renderPageAsPng(content, 1));
 		recording.file("png-2", "grid-posterize-2.png", PdfImageGenerator.renderPageAsPng(content, 2));
 		recording.file("png-3", "grid-posterize-3.png", PdfImageGenerator.renderPageAsPng(content, 3));
+	}
+
+	@Test
+	public void autoPosterizeTable() {
+		TableFromMap table = TableFromMap.builder()
+			.header(TableColumnsFromNameList.builder()
+				.addColumnNames("A", "B", "C", "D","E","F","G","H","I")
+				.styles(HeaderStyles.asHeaderStyles(LayeredCellStyles.empty()
+					.withDefault(CellStyle.empty()
+						.withBackgroundColor(Color.LIGHT_GRAY)
+						.withPadding(BorderProperty.of(5.0f))
+						.withHorizontalAlignment(HorizontalAlignment.CENTER))))
+				.build())
+			.styles(LayeredCellStyles.empty()
+				.forColumn(0, CellStyle.empty()
+					.withBackgroundColor(Color.LIGHT_GRAY))
+				.withDefault(CellStyle.empty()
+					.withPadding(BorderProperty.of(20.f, 10.0f, 20.f, 10.f))
+					.withHorizontalAlignment(HorizontalAlignment.CENTER)))
+			.columnWeights(ColumnWeights.EMPTY)
+			.cells(new Region(IntRange.until(0, 9), IntRange.until(0, 30))
+				.map(Cell::new)
+				.stream()
+				.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row())))
+			.build();
+
+		recording.begin();
+		AutosplitTable autosplitTable = AutosplitTable.builder()
+			.table(table)
+			.repeatHeader(true)
+			.keyColumns(1)
+			.build();
+		recording.end();
+
+		byte[] content = render(autosplitTable);
+		recording.file("pdf", "grid-auto-posterize.pdf", content);
+		recording.file("png-0", "grid-auto-posterize-0.png", PdfImageGenerator.renderPageAsPng(content, 0));
+		recording.file("png-1", "grid-auto-posterize-1.png", PdfImageGenerator.renderPageAsPng(content, 1));
+		recording.file("png-2", "grid-auto-posterize-2.png", PdfImageGenerator.renderPageAsPng(content, 2));
+		recording.file("png-3", "grid-auto-posterize-3.png", PdfImageGenerator.renderPageAsPng(content, 3));
 	}
 
 	private byte[] render(Block... blocks) {

@@ -18,9 +18,9 @@ package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
 import de.flapdoodle.pdf.extensions.MapExtensions;
 import de.flapdoodle.pdf.grid.Grid;
+import de.flapdoodle.pdf.grid.GridCellTableRegion;
 import de.flapdoodle.pdf.grid.TableSplitter;
 import de.flapdoodle.pdf.pages.PagePosition;
-import de.flapdoodle.pdf.render.table.MinimalTableWidth;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.types.Cell;
@@ -46,8 +46,8 @@ public record SplitTableIntoPoster(
 	}
 
 	@Override
-	public List<GridCellContent> split(Grid grid, List<Table> tables) {
-		var result = new ArrayList<GridCellContent>();
+	public List<GridCellTableRegion> split(Grid grid, List<Table> tables) {
+		var result = new ArrayList<GridCellTableRegion>();
 
 		var currentGridLine = 0;
 		for (Table src : tables) {
@@ -63,7 +63,7 @@ public record SplitTableIntoPoster(
 				var minLastLine = minimalLastLine(lineRegions);
 
 				result.addAll(lineRegions.stream().map(it -> {
-					return new TableSplitter.GridCellContent(
+					return new GridCellTableRegion(
 						it.first,
 						table,
 						it.second.untilRow(minLastLine),

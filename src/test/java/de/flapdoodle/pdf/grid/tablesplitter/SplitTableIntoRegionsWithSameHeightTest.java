@@ -63,7 +63,7 @@ class SplitTableIntoRegionsWithSameHeightTest {
 					TablesInGrid.builder()
 						.gridFactory(it -> {
 							var innerBox = PageBox.innerBox(it);
-							return new Grid(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 4);
+							return Grid.of(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 4);
 						})
 						.tableSplitterFactory(SplitTableIntoRegionsWithSameHeight::new)
 						.tables(List.of(
@@ -88,7 +88,7 @@ class SplitTableIntoRegionsWithSameHeightTest {
 					TablesInGrid.builder()
 						.gridFactory(it -> {
 							var innerBox = PageBox.innerBox(it);
-							return new Grid(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 4);
+							return Grid.of(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 4);
 						})
 						.tableSplitterFactory(SplitTableIntoRegionsWithSameHeight::new)
 						.tables(List.of(

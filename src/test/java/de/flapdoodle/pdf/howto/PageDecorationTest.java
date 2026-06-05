@@ -114,7 +114,7 @@ public class PageDecorationTest {
 
 		byte[] content = IO.withOutputStream(factory::render);
 
-		recording.file("pdf", "page-header.pdf", content);
-		recording.file("png", "page-header.png", PdfImageGenerator.renderPageAsPng(content, 0));
+		recording.file("pdf", "page-headerRows.pdf", content);
+		recording.file("png", "page-headerRows.png", PdfImageGenerator.renderPageAsPng(content, 0));
 	}
 }

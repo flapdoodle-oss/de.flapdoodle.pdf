@@ -18,7 +18,6 @@ package de.flapdoodle.pdf.render.table;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
-import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
@@ -33,19 +32,15 @@ import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.IntRange;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Percentage;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
 
-class MinimalTableWidthTest {
-
+class FindSmallestTableWidthWithoutColumnBreakTest {
 	private final CellStyles DEFAULT_STYLES = LayeredCellStyles.empty();
 	private final HeaderStyles DEFAULT_HEADER_STYLES = DEFAULT_STYLES.asHeaderStyles();
 
@@ -61,18 +56,20 @@ class MinimalTableWidthTest {
 			.addBlocks(expectMinWidth(table, 45.343f))
 			.build())
 			.expectRendering()
-			.matchesResource(getClass(),"minimalTable-small.pdf");
+			.matchesResource(getClass(),"minimalTable-withoutbreaking-small.pdf");
 	}
 
 	@Test
 	void minWidthOfWideTable() {
 		int columns = 15;
-		
+
 		String[] columnNames = IntRange.until(0, columns)
+			.stream().boxed()
 			.map(it -> "C " + it)
 			.toArray(String[]::new);
 
 		Map<Cell, String> cells = IntRange.until(0, columns)
+			.stream().boxed()
 			.map(it -> new Cell(it, 0))
 			.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row()));
 
@@ -86,8 +83,36 @@ class MinimalTableWidthTest {
 			.addBlocks(expectMinWidth(table, 440.160f))
 			.build())
 			.expectRendering()
-			.matchesResource(getClass(),"minimalTable-wide.pdf");
+			.matchesResource(getClass(),"minimalTable-withoutbreaking-wide.pdf");
 	}
+
+	@Test
+	void minWidthOfWideTableStartingSmall() {
+		int columns = 15;
+
+		String[] columnNames = IntRange.until(0, columns)
+			.stream().boxed()
+			.map(it -> "C " + it)
+			.toArray(String[]::new);
+
+		Map<Cell, String> cells = IntRange.until(0, columns)
+			.stream().boxed()
+			.map(it -> new Cell(it, 0))
+			.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row()));
+
+		var table = TableFromMap.builder()
+			.header(defaultHeader(columnNames))
+			.cells(cells)
+			.build();
+
+		assertThat(DocumentFactory.builder()
+			.pageSize(PageSize.A4)
+			.addBlocks(expectMinWidth(table, 440.16138f, PageSize.A4.getWidth()/2.0f))
+			.build())
+			.expectRendering()
+			.matchesResource(getClass(),"minimalTable-withoutbreaking-wide-small-start.pdf");
+	}
+
 
 	@Test
 	void minWidthOfSmallLongTable() {
@@ -95,10 +120,12 @@ class MinimalTableWidthTest {
 		int rows = 100;
 
 		String[] columnNames = IntRange.until(0, columns)
+			.stream().boxed()
 			.map(it -> "C " + it)
 			.toArray(String[]::new);
 
 		Map<Cell, String> cells = IntRange.until(0, rows)
+			.stream().boxed()
 			.map(it -> new Cell( 0, it))
 			.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row()));
 
@@ -112,18 +139,22 @@ class MinimalTableWidthTest {
 			.addBlocks(expectMinWidth(table, 136.763f))
 			.build())
 			.expectRendering()
-			.matchesResource(getClass(),"minimalTable-long.pdf");
+			.matchesResource(getClass(),"minimalTable-withoutbreaking-long.pdf");
 	}
 
 	private static Block expectMinWidth(Table table, float expectedMinWidth) {
+		return expectMinWidth(table, expectedMinWidth, PageSize.A4.getWidth()*10.0f);
+	}
+
+	private static Block expectMinWidth(Table table, float expectedMinWidth, float startingWidth) {
 		return new Block() {
 			@Override
 			public void render(Document document, Supplier<PdfContentByte> directContent) {
-				var testee = new MinimalTableWidth.Default();
+				var testee = new FindSmallestTableWidthWithoutColumnBreak();
 				ColumnTableRenderer renderer = new ColumnTableRenderer(directContent.get(), new DefaultRegionColumnRenderer());
 
-				float minWidth = testee.of(renderer, table, PageSize.A4.getWidth()*10.0f);
-				assertThat(minWidth)
+				float minWidth = testee.of(renderer, table, startingWidth).width();
+				Assertions.assertThat(minWidth)
 					.isCloseTo(expectedMinWidth, Percentage.withPercentage(1.0d));
 
 				renderer.render(table, table.maxRegion(), PageBox.innerBox(document).withWidth(minWidth)).go();

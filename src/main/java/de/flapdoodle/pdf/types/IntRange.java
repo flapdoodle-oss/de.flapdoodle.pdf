@@ -16,27 +16,43 @@
  */
 package de.flapdoodle.pdf.types;
 
+import com.google.common.base.Preconditions;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
-public record IntRange(int start, int end) implements Iterable<Integer> {
-	public static final IntRange EMPTY = new IntRange(1, 0);
+public sealed abstract class IntRange implements Iterable<Integer> {
+	protected final int start;
+	protected final int end;
 
-	public <T> Stream<T> map(Function<Integer, ? extends T> mapper) {
-		return stream().map(mapper);
+	protected IntRange(int start, int end) {
+		this.start = start;
+		this.end = end;
 	}
-	public @NonNull Stream<Integer> stream() {
-		return Stream.iterate(start, i -> i <= end, i -> i + 1);
+	public int start() {
+		return start;
 	}
 
-	public static IntRange until(int start, int excludedEnd) {
-		return new IntRange(start, excludedEnd-1);
+	public int end() {
+		return end;
 	}
-	
+
+	public abstract boolean isEmpty();
+
+	public abstract int size();
+
+	protected abstract boolean hasNext(int current);
+
+	public boolean contains(int value) {
+		return !isEmpty() && start <= value && hasNext(value);
+	}
+
+	public abstract IntStream stream();
+
 	@Override
 	public @NonNull Iterator<Integer> iterator() {
 		return new Iterator<>() {
@@ -44,7 +60,7 @@ public record IntRange(int start, int end) implements Iterable<Integer> {
 
 			@Override
 			public boolean hasNext() {
-				return current <= end;
+				return IntRange.this.hasNext(current);
 			}
 
 			@Override
@@ -54,4 +70,149 @@ public record IntRange(int start, int end) implements Iterable<Integer> {
 			}
 		};
 	}
+
+	public float[] mapToFloat(Function<Integer, Float> mapper) {
+		float[] mapped = new float[size()];
+		for (int i = 0; i < size(); i++) {
+			mapped[i] = mapper.apply(start() + i);
+		}
+		return mapped;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		IntRange that = (IntRange) o;
+		return start == that.start && end == that.end;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(start, end);
+	}
+
+	public static final class Open extends IntRange {
+		public static final Open EMPTY = new Open();
+
+		// empty
+		private Open() {
+			super(0, 0);
+		}
+
+		private Open(int start, int end) {
+			super(start, end);
+			Preconditions.checkArgument(start < end, "%s must be > %s", start, end);
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return !(start < end);
+		}
+
+		@Override
+		public int size() {
+			return isEmpty() ? 0 : end - start;
+		}
+
+		@Override
+		protected boolean hasNext(int current) {
+			return current < end;
+		}
+
+		public boolean contains(Open other) {
+			return !isEmpty() && !other.isEmpty() && start <= other.start && end >= other.end;
+		}
+
+		@Override
+		public IntStream stream() {
+			return isEmpty() ? IntStream.empty() : IntStream.range(start, end);
+		}
+
+		public Closed asClosed() {
+			return isEmpty()
+				? Closed.EMPTY
+				: Closed.of(this.start, this.end - 1);
+		}
+
+		@Override
+		public String toString() {
+			return "Open{" +
+				"start=" + start +
+				", end=" + end +
+				'}';
+		}
+		public static Open until(int start, int end) {
+			return new Open(start, end);
+		}
+	}
+
+	public static final class Closed extends IntRange {
+
+		public static final Closed EMPTY = new Closed();
+
+		private Closed() {
+			super(0, -1);
+		}
+
+		private Closed(int start, int end) {
+			super(start, end);
+			Preconditions.checkArgument(start <= end, "%s must be less than or equal to %s", start, end);
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return !(start <= end);
+		}
+
+		@Override
+		public int size() {
+			return isEmpty() ? 0 : end - start + 1;
+		}
+
+		@Override
+		protected boolean hasNext(int current) {
+			return current <= end;
+		}
+
+		public boolean contains(Closed other) {
+			return !isEmpty() && !other.isEmpty() && start <= other.start && end >= other.end;
+		}
+
+		@Override
+		public IntStream stream() {
+			return isEmpty() ? IntStream.empty() : IntStream.rangeClosed(start, end);
+		}
+
+		public Open asOpen() {
+			return isEmpty()
+				? Open.EMPTY
+				: Open.until(this.start, this.end + 1);
+		}
+
+		@Override
+		public String toString() {
+			return "Closed{" +
+				"start=" + start +
+				", end=" + end +
+				'}';
+		}
+		
+		public static Closed of(int start, int end) {
+			return new Closed(start, end);
+		}
+	}
+
+	public static IntRange.Closed to(int start, int end) {
+		return new IntRange.Closed(start, end);
+	}
+
+	public static IntRange.Closed at(int start) {
+		return to(start, start);
+	}
+
+
+	public static IntRange.Open until(int start, int end) {
+		return new IntRange.Open(start, end);
+	}
+
 }

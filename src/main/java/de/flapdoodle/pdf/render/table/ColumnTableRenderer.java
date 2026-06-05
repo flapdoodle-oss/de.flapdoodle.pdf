@@ -28,12 +28,15 @@ public record ColumnTableRenderer(
 ) implements TableRenderer {
 
 	@Override
-	public Result render(Table table, Region region, PageBox pageBox) {
+	public Result render(Table table, TableAttributes attributes, Region region, PageBox pageBox) {
 		var column = ColumnFactory.DEFAULT.create(directContent, pageBox);
-		RegionColumnRenderer.Status render = regionColumnRenderer.render(column, table, region);
+		RegionColumnRenderer.Status render = regionColumnRenderer.render(column, table, attributes, region);
 		return new TableRenderer.Result(
 			render.lastVisibleRow(),
+			render.tableWidth(),
 			render.tableHeight(),
+			render.columnWidths(),
+			render.rowHeights(),
 			column::go
 		);
 	}

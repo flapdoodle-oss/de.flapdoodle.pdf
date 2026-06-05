@@ -22,53 +22,24 @@ import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.pages.PagePosition;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.types.Dimension;
-import de.flapdoodle.pdf.types.Floats;
 
 @FunctionalInterface
 public interface MinimalTableWidth {
-	float of(TableRenderer renderer, Table table, float startingWidth);
+	RenderedTableDimension of(TableRenderer renderer, Table table, float startingWidth);
 
-	class Default implements MinimalTableWidth {
+	@Deprecated
+	static float tableHeight(TableRenderer renderer, Table table, float width) {
+		return renderTable(renderer, table, width).tableHeight();
+	}
 
-		public static final int MAX_LOOPS = 100;
-
-		@Override
-		public float of(TableRenderer renderer, Table table, float startingWidth) {
-			var minInitialHeight = tableHeight(renderer, table, startingWidth);
-
-			var startRange = 0f;
-			var endRange = startingWidth;
-
-			var loops = 1;
-			do {
-				loops++;
-				var testWidth = startRange + (endRange - startRange) / 2;
-//      println("width($loops) -> $testWidth")
-				var height = tableHeight(renderer, table, testWidth);
-				if (height > minInitialHeight) {
-					// to small
-					startRange = testWidth;
-				} else {
-					// not small enought
-					endRange = testWidth;
-				}
-			} while (!Floats.isNearBy(startRange, endRange) && loops < MAX_LOOPS);
-
-			Preconditions.checkArgument(loops < 100,"exceeded maximum number of loops (%s ... %s)", startRange, endRange);
-
-			return endRange;
-		}
-
-		private static float tableHeight(TableRenderer renderer, Table table, float width) {
-			TableRenderer.Result result = renderer.render(
-				table,
-				table.maxRegion(),
-				new PageBox(PagePosition.ZERO, new Dimension(width, PageSize.A4.getHeight()*100))
-			);
-			Preconditions.checkArgument(table.rows() == (result.lastVisibleRow() +1),
-				"table truncated at %s (%s)", result.lastVisibleRow(), table.rows());
-			
-			return result.tableHeight();
-		}
+	static TableRenderer.Result renderTable(TableRenderer renderer, Table table, float width) {
+		TableRenderer.Result result = renderer.render(
+			table,
+			table.maxRegion(),
+			new PageBox(PagePosition.ZERO, new Dimension(width, PageSize.A4.getHeight() * 100))
+		);
+		Preconditions.checkArgument(table.rows() == (result.lastVisibleRow() + 1),
+			"table truncated at %s (%s)", result.lastVisibleRow(), table.rows());
+		return result;
 	}
 }

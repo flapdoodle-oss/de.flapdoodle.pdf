@@ -18,13 +18,13 @@ package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
 import de.flapdoodle.pdf.extensions.ListExtensions;
 import de.flapdoodle.pdf.grid.Grid;
+import de.flapdoodle.pdf.render.table.FindSmallestTableWidth;
 import de.flapdoodle.pdf.render.table.MinimalTableWidth;
-import de.flapdoodle.pdf.render.table.TableRenderHelper;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.Tables;
 import de.flapdoodle.pdf.types.Floats;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +34,12 @@ public record DefaultPosterSplitter(
 	MinimalTableWidth minimalTableWidth
 ) implements PosterSplitter {
 	public DefaultPosterSplitter() {
-		this(new PutColumnIntoSlotIfMostOfItWillFit(), new MinimalTableWidth.Default());
+		this(new PutColumnIntoSlotIfMostOfItWillFit(), new FindSmallestTableWidth());
 	}
 
 	public static DefaultPosterSplitter splitColumn() {
 		return new DefaultPosterSplitter(new PutColumnIntoSlotIfAllOfItWillFit(),
-			new MinimalTableWidth.Default());
+			new FindSmallestTableWidth());
 	}
 
 	@Override
@@ -54,9 +54,9 @@ public record DefaultPosterSplitter(
 	) {
 		var columnWeights = table.columnWeights();
 		var gridWidth = Floats.sum(grid.innerWidths());
-		var tableWidth = minimalTableWidth.of(tableRenderer, table, gridWidth);
+		var tableWidth = minimalTableWidth.of(tableRenderer, table, gridWidth).width();
 
-		var columnWidths = Tables.columnWidths(new Range(0, table.columns() - 1), tableWidth, columnWeights);
+		var columnWidths = Tables.columnWidths(IntRange.until(0, table.columns()), tableWidth, columnWeights);
 
 		var mapped = columnWidthsSlotMapper.map(columnWidths, grid.innerWidths());
 		var lastGridColumnIndex = mapped.size() - 1;

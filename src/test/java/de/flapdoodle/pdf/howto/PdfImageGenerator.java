@@ -21,7 +21,6 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
-import org.jspecify.annotations.NonNull;
 
 import javax.imageio.*;
 import javax.imageio.metadata.IIOInvalidTreeException;

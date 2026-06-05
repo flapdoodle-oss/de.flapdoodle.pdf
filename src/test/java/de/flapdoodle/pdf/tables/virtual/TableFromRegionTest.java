@@ -93,8 +93,8 @@ class TableFromRegionTest {
 
 		var testee = new TableFromRegion(sourceTable, subRegion);
 
-		assertThat(testee.columns()).isEqualTo(subRegion.columns().count());
-		assertThat(testee.rows()).isEqualTo(subRegion.rows().count());
+		assertThat(testee.columns()).isEqualTo(subRegion.columns().size());
+		assertThat(testee.rows()).isEqualTo(subRegion.rows().size());
 
 		for (int c : IntRange.until(0, testee.columns())) {
 			assertThat(testee.columnWeights().get(c)).isEqualTo(sourceTable.columnWeights().get(c + columnOffset));

@@ -18,9 +18,15 @@ package de.flapdoodle.pdf.render.table;
 
 import com.lowagie.text.pdf.ColumnText;
 import de.flapdoodle.pdf.tables.Table;
+import de.flapdoodle.pdf.types.FloatArray;
 import de.flapdoodle.pdf.types.Region;
 
 public interface RegionColumnRenderer {
+	@Deprecated
+	default Status render(ColumnText column, Table table, Region region) {
+		return render(column, table, TableAttributes.defaults(), region);
+	}
+
 	/**
 	 * column text works this way:
 	 *   you add stuff to it, and it will do nothing until you call
@@ -30,10 +36,15 @@ public interface RegionColumnRenderer {
 	 * stuff to render, you must not commit rendering to column from inside by calling
 	 *   column.go()
 	 */
-	Status render(ColumnText column, Table table, Region region);
+	Status render(ColumnText column, Table table, TableAttributes tableAttributes, Region region);
 
 	record Status(
 		int lastVisibleRow,
+		FloatArray columnWidths,
+		FloatArray rowHeights,
+		float tableWidth,
 		float tableHeight // can contain invisible parts bc of clipping
-	) {}
+	) {
+	}
+
 }

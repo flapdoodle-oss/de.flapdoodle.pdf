@@ -16,6 +16,8 @@
  */
 package de.flapdoodle.pdf.tables;
 
+import de.flapdoodle.pdf.types.FloatArray;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,5 +33,9 @@ public interface ColumnWeights {
 
 	static ColumnWeights fromList(List<Float> weights) {
 		return column -> Optional.ofNullable(weights.get(column));
+	}
+
+	static ColumnWeights fromList(FloatArray weights) {
+		return column -> Optional.of(weights.get(column));
 	}
 }

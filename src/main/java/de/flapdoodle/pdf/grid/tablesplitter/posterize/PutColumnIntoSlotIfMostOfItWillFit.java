@@ -19,7 +19,6 @@ package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 import com.google.common.base.Preconditions;
 import de.flapdoodle.pdf.types.Floats;
 import de.flapdoodle.pdf.types.IntRange;
-import de.flapdoodle.pdf.types.Range;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,7 +27,7 @@ import java.util.Map;
 
 public class PutColumnIntoSlotIfMostOfItWillFit implements ColumnWidthsSlotMapper {
 	@Override
-	public List<Range> map(Map<Integer, Float> columnWidths, List<Float> slots) {
+	public List<IntRange.Closed> map(Map<Integer, Float> columnWidths, List<Float> slots) {
 		if (columnWidths.isEmpty()) throw new IllegalArgumentException("no columns");
 		if (slots.isEmpty()) throw new IllegalArgumentException("no slots");
 
@@ -37,7 +36,7 @@ public class PutColumnIntoSlotIfMostOfItWillFit implements ColumnWidthsSlotMappe
 		if (!Floats.isNearBy(sumOfColumnWidth, sumOfDestinationWiths) && (sumOfColumnWidth > sumOfDestinationWiths))
 			throw new IllegalArgumentException("all columns("+sumOfColumnWidth+") does not fit into "+sumOfDestinationWiths);
 
-		var ranges = new ArrayList<Range>();
+		var ranges = new ArrayList<IntRange.Closed>();
 
 		int currentColumn = columnWidths.keySet().stream()
 			.min(Comparator.naturalOrder())
@@ -47,7 +46,7 @@ public class PutColumnIntoSlotIfMostOfItWillFit implements ColumnWidthsSlotMappe
 			var spaceLeft = width;
 			if (currentColumn < columnWidths.size()) {
 				int lastColumnInThisBlock = currentColumn;
-				for (int c : new IntRange(currentColumn,  columnWidths.size() -1)) {
+				for (int c : IntRange.until(currentColumn,  columnWidths.size())) {
 					var columnWidth = Preconditions.checkNotNull(columnWidths.get(c), "no width found for column %s", c);
 
 					if (columnWidth < spaceLeft || (columnWidth > spaceLeft && (columnWidth / 2 < spaceLeft))) {
@@ -60,7 +59,7 @@ public class PutColumnIntoSlotIfMostOfItWillFit implements ColumnWidthsSlotMappe
 						break;
 					}
 				}
-				ranges.add(new Range(currentColumn, lastColumnInThisBlock));
+				ranges.add(IntRange.to(currentColumn, lastColumnInThisBlock));
 				currentColumn = lastColumnInThisBlock + 1;
 			}
 		}

@@ -18,6 +18,7 @@ package de.flapdoodle.pdf.grid.tablesplitter;
 
 import com.google.common.base.Preconditions;
 import de.flapdoodle.pdf.grid.Grid;
+import de.flapdoodle.pdf.grid.GridCellTableRegion;
 import de.flapdoodle.pdf.grid.TableSplitter;
 import de.flapdoodle.pdf.pages.PagePosition;
 import de.flapdoodle.pdf.render.table.TableRenderer;
@@ -32,8 +33,8 @@ public record SplitTablePerCell(
 	TableRenderer tableRenderer
 ) implements TableSplitter {
 	@Override
-	public List<GridCellContent> split(Grid grid, List<Table> tables) {
-		var ret = new ArrayList<GridCellContent>();
+	public List<GridCellTableRegion> split(Grid grid, List<Table> tables) {
+		var ret = new ArrayList<GridCellTableRegion>();
 
 		var current = new Cell(0, 0);
 
@@ -47,7 +48,7 @@ public record SplitTablePerCell(
 				pageBox, renderStatus.tableHeight()
 			);
 
-			ret.add(new TableSplitter.GridCellContent(
+			ret.add(new GridCellTableRegion(
 				current,
 				it,
 				it.maxRegion(),

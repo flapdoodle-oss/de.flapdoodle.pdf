@@ -17,7 +17,6 @@
 package de.flapdoodle.pdf.pages;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 
 public class EnhancedPdfPageEventHelper extends PdfPageEventHelper {

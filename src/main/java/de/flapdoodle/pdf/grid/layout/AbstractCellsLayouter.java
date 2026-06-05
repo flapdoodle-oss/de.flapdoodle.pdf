@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.grid.layout;
 
-import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.grid.CellLayout;
+import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.Position;

@@ -27,8 +27,6 @@ import de.flapdoodle.pdf.pages.PdfPageEvents;
 import org.immutables.value.Value;
 
 import java.io.OutputStream;
-import java.time.ZonedDateTime;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;

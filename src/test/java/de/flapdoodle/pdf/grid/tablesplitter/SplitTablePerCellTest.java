@@ -52,7 +52,7 @@ class SplitTablePerCellTest {
 				TablesInGrid.builder()
 					.gridFactory(it -> {
 							var innerBox = PageBox.innerBox(it);
-							return new Grid(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 2);
+							return Grid.of(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 2);
 					})
 					.tableSplitterFactory(SplitTablePerCell::new)
 					.tables(List.of(
@@ -78,7 +78,7 @@ class SplitTablePerCellTest {
 				TablesInGrid.builder()
 					.gridFactory(it -> {
 						var innerBox = PageBox.innerBox(it);
-						return new Grid(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 2);
+						return Grid.of(Margin.none(), 3, innerBox.width() / 3, 4, innerBox.height() / 2);
 					})
 					.tableSplitterFactory(SplitTablePerCell::new)
 					.tables(List.of(

@@ -18,13 +18,15 @@ package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
 import com.google.common.base.Preconditions;
 import de.flapdoodle.pdf.types.Floats;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class PutColumnIntoSlotIfAllOfItWillFit implements ColumnWidthsSlotMapper {
 	@Override
-	public List<Range> map(Map<Integer, Float> columnWidths, List<Float> slots) {
+	public List<IntRange.Closed> map(Map<Integer, Float> columnWidths, List<Float> slots) {
 		if (columnWidths.isEmpty()) throw new IllegalArgumentException("no columns");
 		if (slots.isEmpty()) throw new IllegalArgumentException("no slots");
 
@@ -35,14 +37,14 @@ public class PutColumnIntoSlotIfAllOfItWillFit implements ColumnWidthsSlotMapper
 
 		ColumnWidths widths = ColumnWidths.ofMap(columnWidths);
 
-		List<Range> result = new ArrayList<>();
+		List<IntRange.Closed> result = new ArrayList<>();
 		int currentColumn = widths.start();
 
 		for (Float width : slots) {
 			if (currentColumn<=widths.lastColumn()) {
 				var lastColumn = widths.lastFittingColumn(currentColumn, width);
 				Preconditions.checkArgument(lastColumn.isPresent(),"could not fit columns %s into %s",widths,width);
-				result.add(new Range(currentColumn, lastColumn.getAsInt()));
+				result.add(IntRange.to(currentColumn, lastColumn.getAsInt()));
 				currentColumn = lastColumn.getAsInt() + 1;
 			}
 		}

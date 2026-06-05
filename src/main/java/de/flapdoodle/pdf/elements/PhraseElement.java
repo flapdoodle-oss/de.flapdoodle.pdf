@@ -20,7 +20,6 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Phrase;
 import org.immutables.value.Value;
 
-import java.awt.*;
 import java.util.Optional;
 
 @Value.Immutable

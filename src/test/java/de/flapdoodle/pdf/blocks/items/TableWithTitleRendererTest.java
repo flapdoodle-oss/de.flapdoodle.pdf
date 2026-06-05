@@ -27,7 +27,7 @@ import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.render.table.DefaultRegionColumnRenderer;
 import de.flapdoodle.pdf.tables.TableFromMap;
 import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class TableWithTitleRendererTest {
 	@DisplayName("render table with title")
 	void renderTableWithTitle() {
 		var table = TableFromMap.builder()
-			.cells(new Region(new Range(0, 1), new Range(0, 10))
+			.cells(new Region(IntRange.to(0, 1), IntRange.to(0, 10))
 				.map(Cell::new)
 				.stream()
 				.collect(Collectors.toMap(it -> it, it -> it.column()+":"+it.row())))

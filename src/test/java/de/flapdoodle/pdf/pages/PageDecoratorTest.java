@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.*;
 import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;

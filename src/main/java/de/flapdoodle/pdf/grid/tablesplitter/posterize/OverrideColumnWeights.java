@@ -21,6 +21,7 @@ import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.TableColumns;
 import de.flapdoodle.pdf.tables.cells.CellStyles;
 import de.flapdoodle.pdf.types.Cell;
+import de.flapdoodle.pdf.types.FloatArray;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +54,10 @@ public record OverrideColumnWeights(
 	}
 
 	public static Table using(Table table, List<Float> weights) {
+		return new OverrideColumnWeights(table, ColumnWeights.fromList(weights));
+	}
+
+	public static Table using(Table table, FloatArray weights) {
 		return new OverrideColumnWeights(table, ColumnWeights.fromList(weights));
 	}
 

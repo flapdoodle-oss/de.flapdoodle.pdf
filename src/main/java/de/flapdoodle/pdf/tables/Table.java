@@ -18,7 +18,7 @@ package de.flapdoodle.pdf.tables;
 
 import de.flapdoodle.pdf.tables.cells.CellStyles;
 import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 
 import java.util.Optional;
@@ -41,6 +41,6 @@ public interface Table {
 	}
 
 	default Region maxRegion() {
-		return new Region(new Range(0, columns() - 1), new Range(0, rows() - 1));
+		return new Region(IntRange.until(0, columns()).asClosed(), IntRange.until(0, rows()).asClosed());
 	}
 }

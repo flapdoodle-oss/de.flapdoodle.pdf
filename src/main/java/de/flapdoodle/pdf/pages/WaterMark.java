@@ -69,7 +69,7 @@ public class WaterMark extends PdfPageEventHelper {
 
 			var startYoffset = -box.width();
 
-			for (int l : new IntRange(0, linesNeeded)) {
+			for (int l : IntRange.to(0, linesNeeded)) {
 				var xoffset = l * lineHeight * 0.3f;
 				direct.showTextAligned(
 					Element.ALIGN_LEFT,

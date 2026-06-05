@@ -25,3 +25,15 @@ ${posterizeTable}
 
 [PDF](${posterizeTable.pdf})
 
+## auto posterize large table
+
+```java
+${autoPosterizeTable}
+```
+
+![Page 1](${autoPosterizeTable.png-0})
+![Page 2](${autoPosterizeTable.png-1})
+![Page 3](${autoPosterizeTable.png-2})
+![Page 4](${autoPosterizeTable.png-3})
+
+[PDF](${autoPosterizeTable.pdf})

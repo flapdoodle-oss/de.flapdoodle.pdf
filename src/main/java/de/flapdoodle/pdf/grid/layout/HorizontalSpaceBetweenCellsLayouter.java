@@ -21,7 +21,7 @@ import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.Floats;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -37,7 +37,7 @@ public class HorizontalSpaceBetweenCellsLayouter extends AbstractCellsLayouter {
 
 	protected static	Function<Cell, Float> internalLeftOffset(Grid grid, Set<Cell> cells, PageBox container) {
 			float width;
-			Range columnRange;
+			IntRange.Closed columnRange;
 
 			var gridWidth = Floats.sum(grid.widths());
 			if (gridWidth > container.width()) {
@@ -46,7 +46,7 @@ public class HorizontalSpaceBetweenCellsLayouter extends AbstractCellsLayouter {
 				columnRange = boundingBox.range();
 			} else {
 				width = gridWidth;
-				columnRange = new Range(0, grid.columns() - 1);
+				columnRange = IntRange.until(0, grid.columns()).asClosed();
 			}
 
 			var spaceLeft = container.width() - width;
@@ -60,7 +60,7 @@ public class HorizontalSpaceBetweenCellsLayouter extends AbstractCellsLayouter {
 				spaceBetween = 0f;
 			} else {
 				spaceBefore = 0f;
-				spaceBetween = spaceLeft / (columnRange.count() - 1);
+				spaceBetween = spaceLeft / (columnRange.size() - 1);
 			}
 
 			return it -> {
@@ -95,9 +95,9 @@ public class HorizontalSpaceBetweenCellsLayouter extends AbstractCellsLayouter {
 				.max(Comparator.naturalOrder())
 				.orElseThrow(() -> new IllegalArgumentException("must be a max"));
 
-			return new BoundingBox(new Range(leftColumn, rightColumn), mostLeftPosition, mostRightPosition);
+			return new BoundingBox(IntRange.to(leftColumn, rightColumn), mostLeftPosition, mostRightPosition);
 		}
 
 		record Pair<L, R>(L first, R second) {}
-		record BoundingBox(Range range, float mostLeftPosition, float mostRightPosition) {}
+		record BoundingBox(IntRange.Closed range, float mostLeftPosition, float mostRightPosition) {}
 }

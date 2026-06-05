@@ -67,7 +67,7 @@ public abstract class TableFromMap implements Table {
 	@Value.Check
 	protected void check() {
 		boolean moreColumnsThanHeaderColumns = header().isPresent() && columns() > header().get().columns();
-		Preconditions.checkArgument(!moreColumnsThanHeaderColumns, "more columns in cells than in header");
+		Preconditions.checkArgument(!moreColumnsThanHeaderColumns, "more columns in cells than in headerRows");
 	}
 
 	@Override

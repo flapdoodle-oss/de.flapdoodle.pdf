@@ -38,7 +38,7 @@ class GridTest {
 		var width = nextFloat() * 999.9f + 0.1f;
 		var height = nextFloat() * 999.9f + 0.1f;
 
-		var testee = new Grid(width, height);
+		var testee = Grid.of(width, height);
 
 		assertThat(testee.columns()).isEqualTo(1);
 		assertThat(testee.rows()).isEqualTo(1);
@@ -51,7 +51,7 @@ class GridTest {
 		var width = nextFloat() * 999.9f + 0.1f;
 		var height = nextFloat() * 999.9f + 0.1f;
 
-		var testee = new Grid(Margin.none(), 3, width, 4, height);
+		var testee = Grid.of(Margin.none(), 3, width, 4, height);
 
 		assertThat(testee.columns()).isEqualTo(3);
 		assertThat(testee.rows()).isEqualTo(4);
@@ -68,7 +68,7 @@ class GridTest {
 		var width = nextFloat() * 999.9f + 0.1f;
 		var height = nextFloat() * 999.9f + 0.1f;
 
-		var testee = new Grid(Margin.none(), 3, width, 4, height);
+		var testee = Grid.of(Margin.none(), 3, width, 4, height);
 
 		assertThat(testee.nextCell(new Cell(0, 0))).contains(new Cell(1, 0));
 		assertThat(testee.nextCell(new Cell(2, 0))).contains(new Cell(0, 1));
@@ -81,7 +81,7 @@ class GridTest {
 		var width = nextFloat() * 999.9f + 0.1f;
 		var height = nextFloat() * 999.9f + 0.1f;
 
-		var testee = new Grid(Margin.none(), 3, width, 4, height);
+		var testee = Grid.of(Margin.none(), 3, width, 4, height);
 
 		assertThat(testee.cellInNextRow(new Cell(0, 0))).contains(new Cell(0, 1));
 		assertThat(testee.cellInNextRow(new Cell(2, 0))).contains(new Cell(2, 1));
@@ -94,7 +94,7 @@ class GridTest {
 		var width = nextFloat() * 999.9f + 0.1f;
 		var height = nextFloat() * 999.9f + 0.1f;
 
-		var testee = new Grid(Margin.none(), 3, width, 4, height);
+		var testee = Grid.of(Margin.none(), 3, width, 4, height);
 
 		for (int c=0;c<testee.columns();c++) {
 			assertThat(testee.get(new Cell(c, 1))).isEqualTo(new Dimension(width, height));

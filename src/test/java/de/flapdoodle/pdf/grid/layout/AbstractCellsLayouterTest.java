@@ -46,7 +46,7 @@ class AbstractCellsLayouterTest {
 		var pageHeight = 200f;
 		var leftOffset = 11f;
 
-		var grid = new Grid(3, 100f, 4, 200f);
+		var grid = Grid.of(3, 100f, 4, 200f);
 		var cells = Set.of(new Cell(0, 0), new Cell(1, 2));
 
 		var testee = new AbstractCellsLayouter() {

@@ -85,7 +85,7 @@ class ColumnTableRendererTest {
 	public void render(Document document, Supplier<PdfContentByte> directContent) {
 			var testee = new ColumnTableRenderer(directContent.get(), new DefaultRegionColumnRenderer());
 			var innerBox = PageBox.innerBox(document);
-		var minWidth = new MinimalTableWidth.Default().of(testee, table, innerBox.width());
+		var minWidth = new FindSmallestTableWidth().of(testee, table, innerBox.width()).width();
 			testee.render(table, table.maxRegion(), innerBox.withWidth(minWidth))
 				.commit().run();
 		}

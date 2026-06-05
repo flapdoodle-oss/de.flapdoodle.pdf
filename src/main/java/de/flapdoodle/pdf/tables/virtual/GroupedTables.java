@@ -44,7 +44,7 @@ public class GroupedTables implements Table {
 		int tableRowsSet = tables.stream().map(Table::rows).collect(Collectors.toSet()).size();
 		Preconditions.checkArgument(tableRowsSet == 1, "tables with different rows: %s", tables);
 		int tablesWithOrWithoutHeader = tables.stream().map(it -> it.header().isPresent()).collect(Collectors.toSet()).size();
-		Preconditions.checkArgument(tablesWithOrWithoutHeader == 1, "tables with or without header: %s", tables);
+		Preconditions.checkArgument(tablesWithOrWithoutHeader == 1, "tables with or without headerRows: %s", tables);
 
 		this.tables = tables;
 		this.columns = tables.stream().mapToInt(Table::columns).sum();

@@ -17,7 +17,7 @@
 package de.flapdoodle.pdf.tables;
 
 import de.flapdoodle.pdf.types.Floats;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,12 +26,13 @@ public final class Tables {
 	private Tables() {
 	}
 
-	public static Map<Integer, Float> columnWidths(Range columns, float tableWidth, ColumnWeights columnWeights) {
+	public static Map<Integer, Float> columnWidths(IntRange columns, float tableWidth, ColumnWeights columnWeights) {
 		if (columns.isEmpty()) throw new IllegalArgumentException("columns==0");
 		if (tableWidth <= 0f) throw new IllegalArgumentException("tableWidth <= 0 ("+ tableWidth +")");
 
-		var allColumnWeigts = columns.asRange()
+		var allColumnWeigts = columns
 			.stream()
+			.boxed()
 			.collect(Collectors.toMap(it -> it, it ->  columnWeights.get(it).orElse(1f)));
 
 		var weightSum = Floats.sum(allColumnWeigts.values());

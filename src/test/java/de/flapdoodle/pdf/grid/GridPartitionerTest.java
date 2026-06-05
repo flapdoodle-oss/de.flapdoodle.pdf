@@ -19,8 +19,8 @@ package de.flapdoodle.pdf.grid;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.Dimension;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Position;
-import de.flapdoodle.pdf.types.Range;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class GridPartitionerTest {
 		var gridColumnWidth = nextFloat() * 70f + 30f;
 		var gridRowHeight = nextFloat() * 110f + 50f;
 		var pageSize = new Dimension((2 * gridColumnWidth) + 5f, gridRowHeight + 5f);
-		var grid = new Grid(Margin.none(), 3, gridColumnWidth, 2, gridRowHeight);
+		var grid = Grid.of(Margin.none(), 3, gridColumnWidth, 2, gridRowHeight);
 
 		var cellSets = GridPartitioner.partition(grid, 0f, pageSize);
 
@@ -63,7 +63,7 @@ class GridPartitionerTest {
 		void gridWillFitOnto4Pages() {
 			var width = nextFloat() * 99f + 1f;
 			var height = nextFloat() * 99f + 1f;
-			var grid = new Grid(Margin.none(), 6, width, 2, height);
+			var grid = Grid.of(Margin.none(), 6, width, 2, height);
 			var pageSize = new Dimension(width * 3.1f, height * 1.1f);
 
 			var result = GridPartitioner.partition(grid, 0f, pageSize);
@@ -92,7 +92,7 @@ class GridPartitionerTest {
 		void gridWithInitialOffsetWillFitOnto4PagesWitFirstCellOnNewPage() {
 			var width = nextFloat() * 99f + 1f;
 			var height = nextFloat() * 99f + 1f;
-			var grid = new Grid(Margin.none(), 6, width, 2, height);
+			var grid = Grid.of(Margin.none(), 6, width, 2, height);
 			var pageSize = new Dimension(width * 3.1f, height * 1.1f);
 
 			var result = GridPartitioner.partition(grid, height * 0.9f, pageSize);
@@ -136,7 +136,7 @@ class GridPartitionerTest {
 			var result = GridPartitioner.partition(List.of(value), value * 1.1f);
 
 			assertThat(result).hasSize(1);
-			assertThat(result.get(0)).isEqualTo(Range.at(0));
+			assertThat(result.get(0)).isEqualTo(IntRange.at(0));
 		}
 
 		@Test
@@ -148,7 +148,7 @@ class GridPartitionerTest {
 
 			assertThat(result).hasSize(2);
 			assertThat(result.get(0).isEmpty()).isTrue();
-			assertThat(result.get(1)).isEqualTo(Range.at(0));
+			assertThat(result.get(1)).isEqualTo(IntRange.at(0));
 		}
 
 		@Test
@@ -159,8 +159,8 @@ class GridPartitionerTest {
 			var result = GridPartitioner.partition(List.of(value, value), value * 1.1f);
 
 			assertThat(result).hasSize(2);
-			assertThat(result.get(0)).isEqualTo(Range.at(0));
-			assertThat(result.get(1)).isEqualTo(new Range(1, 1));
+			assertThat(result.get(0)).isEqualTo(IntRange.at(0));
+			assertThat(result.get(1)).isEqualTo(IntRange.at(1));
 		}
 
 		@Test
@@ -171,8 +171,8 @@ class GridPartitionerTest {
 			var result = GridPartitioner.partition(List.of(value * 2f, value, value), value * 2f * 1.1f);
 
 			assertThat(result).hasSize(2);
-			assertThat(result.get(0)).isEqualTo(Range.at(0));
-			assertThat(result.get(1)).isEqualTo(new Range(1, 2));
+			assertThat(result.get(0)).isEqualTo(IntRange.at(0));
+			assertThat(result.get(1)).isEqualTo(IntRange.to(1, 2));
 		}
 
 		@Test
@@ -189,7 +189,7 @@ class GridPartitionerTest {
 
 			assertThat(result).hasSize(size);
 			result.forEach(range -> {
-				assertThat(range.count()).isEqualTo(3);
+				assertThat(range.size()).isEqualTo(3);
 			});
 		}
 
@@ -206,7 +206,7 @@ class GridPartitionerTest {
 
 			assertThat(result).hasSize(size);
 			result.forEach(range -> {
-				assertThat(range.count()).isEqualTo(1);
+				assertThat(range.size()).isEqualTo(1);
 			});
 		}
 	}

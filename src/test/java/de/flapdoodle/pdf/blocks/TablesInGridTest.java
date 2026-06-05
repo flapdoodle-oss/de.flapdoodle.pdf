@@ -19,6 +19,7 @@ package de.flapdoodle.pdf.blocks;
 import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.grid.Grid;
+import de.flapdoodle.pdf.grid.GridCellTableRegion;
 import de.flapdoodle.pdf.grid.TableSplitter;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.pages.PageBox;
@@ -52,7 +53,7 @@ class TablesInGridTest {
 			.addBlocks(TablesInGrid.builder()
 				.gridFactory(it -> {
 						var innerBox = PageBox.innerBox(it);
-						return new Grid(Margin.none(), 3, innerBox.width() / 3, 2, innerBox.height() / 2);
+						return Grid.of(Margin.none(), 3, innerBox.width() / 3, 2, innerBox.height() / 2);
 				})
 				.tableSplitterFactory(it -> new PutOneTableIntoOneCell())
 				.addTables(
@@ -75,7 +76,7 @@ class TablesInGridTest {
 			.addBlocks(TablesInGrid.builder()
 				.gridFactory(it -> {
 					var innerBox = PageBox.innerBox(it);
-					return new Grid(Margin.none(), 3, innerBox.width() / 3, 2, innerBox.height() / 2);
+					return Grid.of(Margin.none(), 3, innerBox.width() / 3, 2, innerBox.height() / 2);
 				})
 				.shrinkGrid(true)
 				.tableSplitterFactory(it -> new PutOneTableIntoOneCell())
@@ -107,13 +108,13 @@ class TablesInGridTest {
 
 	static class PutOneTableIntoOneCell implements TableSplitter {
 		@Override
-		public List<GridCellContent> split(Grid grid, List<Table> tables) {
-				var ret = new ArrayList<GridCellContent>();
+		public List<GridCellTableRegion> split(Grid grid, List<Table> tables) {
+				var ret = new ArrayList<GridCellTableRegion>();
 
 				var current = new Cell(0, 0);
 
 			for (Table it : tables) {
-				ret.add(new TableSplitter.GridCellContent(
+				ret.add(new GridCellTableRegion(
 					current,
 					it,
 					it.maxRegion(),

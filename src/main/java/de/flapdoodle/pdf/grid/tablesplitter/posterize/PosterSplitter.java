@@ -19,7 +19,7 @@ package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public interface PosterSplitter {
 
 	record Part(
 		int column,
-		Range range,
+		IntRange.Closed range,
 		Optional<Float> width
 	) {}
 }

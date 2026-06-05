@@ -28,7 +28,6 @@ import de.flapdoodle.testdoc.TabSize;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class BlocksTest {

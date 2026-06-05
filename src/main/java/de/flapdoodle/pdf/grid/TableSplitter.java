@@ -17,25 +17,13 @@
 package de.flapdoodle.pdf.grid;
 
 import de.flapdoodle.pdf.tables.Table;
-import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Region;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TableSplitter {
-	List<GridCellContent> split(
+	List<GridCellTableRegion> split(
 		Grid grid,
 		List<Table> tables
 	);
-
-	record GridCellContent(
-		Cell cell,
-		Table table,
-		Region region,
-		Optional<Float> width,
-		Optional<Float> height
-	) {
-	}
 
 }

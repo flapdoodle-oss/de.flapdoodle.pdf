@@ -41,7 +41,7 @@ class ItemPerCellTest {
 		var gridHeight = nextFloat() * 90f + 10f;
 		var renderHeight = nextFloat() * 90f + 10f;
 
-		var grid = new Grid(2, gridWidth, 2, gridHeight);
+		var grid = Grid.of(2, gridWidth, 2, gridHeight);
 		ItemRenderer<Column, String> itemRenderer = (box, item) -> Optional.of(renderHeight);
 
 		var testee = new ItemPerCell<>(itemRenderer);
@@ -71,7 +71,7 @@ class ItemPerCellTest {
 		var gridHeight = nextFloat() * 90f + 10f;
 		var renderHeight = nextFloat() * 90f + 10f;
 
-		var grid = new Grid(2, gridWidth, 2, gridHeight);
+		var grid = Grid.of(2, gridWidth, 2, gridHeight);
 		ItemRenderer<Column, String> itemRenderer = (box, item) -> Optional.of(renderHeight);
 
 		var testee = new ItemPerCell<>(itemRenderer);
@@ -90,7 +90,7 @@ class ItemPerCellTest {
 		var gridWidth = nextFloat() * 90f + 10f;
 		var gridHeight = nextFloat() * 90f + 10f;
 
-		var grid = new Grid(2, gridWidth, 2, gridHeight);
+		var grid = Grid.of(2, gridWidth, 2, gridHeight);
 		ItemRenderer<Column, String> itemRenderer = (box, item) -> Optional.empty();
 
 		var testee = new ItemPerCell<>(itemRenderer);

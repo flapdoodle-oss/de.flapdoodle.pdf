@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -43,7 +43,7 @@ class PutColumnIntoSlotIfAllOfItWillFitTest {
 		var slotWidths = List.of(columnWidth * 1.1f, columnWidth);
 
 		var result = testee.map(columnWidths, slotWidths);
-		assertThat(result).containsExactly(new Range(0, 0));
+		assertThat(result).containsExactly(IntRange.to(0, 0));
 	}
 
 	@Test
@@ -54,7 +54,7 @@ class PutColumnIntoSlotIfAllOfItWillFitTest {
 		var slotWidths = List.of(columnWidth * 1.99f, columnWidth);
 
 		var result = testee.map(columnWidths, slotWidths);
-		assertThat(result).containsExactly(new Range(0, 0), new Range(1, 1));
+		assertThat(result).containsExactly(IntRange.to(0, 0), IntRange.to(1, 1));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ class PutColumnIntoSlotIfAllOfItWillFitTest {
 		var slotWidths = List.of(columnWidth * 3.1f, columnWidth * 3.1f, columnWidth * 3.11f, columnWidth * 3.11f);
 
 		var result = testee.map(columnWidths, slotWidths);
-		assertThat(result).containsExactly(new Range(0, 2), new Range(3, 5), new Range(6, 8), new Range(9, 9));
+		assertThat(result).containsExactly(IntRange.to(0, 2), IntRange.to(3, 5), IntRange.to(6, 8), IntRange.to(9, 9));
 	}
 
 	@Test

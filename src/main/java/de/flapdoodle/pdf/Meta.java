@@ -18,7 +18,6 @@ package de.flapdoodle.pdf;
 
 import org.immutables.value.Value;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 

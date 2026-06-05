@@ -60,7 +60,7 @@ public abstract class TablesInGrid implements Block {
 		var tableRenderer = new ColumnTableRenderer(directContent.get(), regionRenderer);
 
 		var cellContent = MapExtensions.indexedBy(tableSplitterFactory().apply(tableRenderer)
-			.split(grid, tables()), TableSplitter.GridCellContent::cell);
+			.split(grid, tables()), GridCellTableRegion::cell);
 
 		if (shrinkGrid()) {
 			grid = grid.shrinkHeight(cellContent.entrySet().stream()
@@ -71,13 +71,13 @@ public abstract class TablesInGrid implements Block {
 				));
 		}
 
-		CellContentConsumer<TableSplitter.GridCellContent> onCell = (column, entry) ->
+		CellContentConsumer<GridCellTableRegion> onCell = (column, entry) ->
 			regionRenderer.render(column, entry.table(), entry.region());
 
-		BiFunction<TableSplitter.GridCellContent, PageBox, PageBox> processRenderBox = (entry, pageBox) ->
+		BiFunction<GridCellTableRegion, PageBox, PageBox> processRenderBox = (entry, pageBox) ->
 			entry.width().isPresent() ? pageBox.withWidth(entry.width().get()) : pageBox;
 
-		GridRenderer.<TableSplitter.GridCellContent>builder()
+		GridRenderer.<GridCellTableRegion>builder()
 			.processRenderBox(processRenderBox)
 			.cellBoxDecorator(cellBoxDecorator())
 			.renderBoxDecorator(renderBoxDecorator())

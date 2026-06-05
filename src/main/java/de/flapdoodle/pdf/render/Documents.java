@@ -27,7 +27,14 @@ public class Documents {
 
 	public static float partOfPageHeightLeft(Document document, Supplier<PdfContentByte> directContent) {
 		var innerBox = PageBox.innerBox(document);
+//		var pos = PdfContentByteExtension.verticalPosition(directContent.get());
+//		return (pos - innerBox.bottom()) / innerBox.height();
+		return pageHeightLeft(document, directContent) / innerBox.height();
+	}
+
+	public static float pageHeightLeft(Document document, Supplier<PdfContentByte> directContent) {
+		var innerBox = PageBox.innerBox(document);
 		var pos = PdfContentByteExtension.verticalPosition(directContent.get());
-		return (pos - innerBox.bottom()) / innerBox.height();
+		return (pos - innerBox.bottom());
 	}
 }

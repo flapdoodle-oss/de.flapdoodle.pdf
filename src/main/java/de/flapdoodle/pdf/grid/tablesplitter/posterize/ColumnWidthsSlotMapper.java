@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +29,5 @@ public interface ColumnWidthsSlotMapper {
 	 * into slots
 	 * |------|---------|-------|
 	 */
-	List<Range> map(Map<Integer, Float> columnWidths, List<Float> slots);
+	List<IntRange.Closed> map(Map<Integer, Float> columnWidths, List<Float> slots);
 }

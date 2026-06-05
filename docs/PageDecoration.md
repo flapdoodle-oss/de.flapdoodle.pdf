@@ -61,6 +61,6 @@ DocumentFactory factory = DocumentFactory.builder()
   .build();
 ```
 
-![pageHeaderAndFooter.png](page-header.png)
+![pageHeaderAndFooter.png](page-headerRows.png)
 
-[pageHeaderAndFooter.pdf](page-header.pdf)
+[pageHeaderAndFooter.pdf](page-headerRows.pdf)

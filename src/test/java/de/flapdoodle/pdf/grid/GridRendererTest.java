@@ -20,8 +20,10 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.ColumnText;
 import de.flapdoodle.pdf.DocumentFactory;
-import de.flapdoodle.pdf.blocks.grid.RenderGrid;
+import de.flapdoodle.pdf.blocks.Space;
 import de.flapdoodle.pdf.blocks.Text;
+import de.flapdoodle.pdf.blocks.grid.ImmutableRenderGrid;
+import de.flapdoodle.pdf.blocks.grid.RenderGrid;
 import de.flapdoodle.pdf.grid.layout.HorizontalSpaceBetweenCellsLayouter;
 import de.flapdoodle.pdf.grid.layout.NoSpaceBetweenCellsLayouter;
 import de.flapdoodle.pdf.layout.Margin;
@@ -30,7 +32,6 @@ import de.flapdoodle.pdf.types.Cell;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ class GridRendererTest {
 	@Test
 	@DisplayName("single cell grid must fit to page")
 	void singleCellGridMustFitToPage() {
-		var grid = new Grid(testMargin, 1, 100f, 1, 100f);
+		var grid = Grid.of(testMargin, 1, 100f, 1, 100f);
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
@@ -55,7 +56,7 @@ class GridRendererTest {
 	@Test
 	@DisplayName("grid must render after last content")
 	void gridMustRenderAfterLastContent() {
-		var grid = new Grid(testMargin, 1, 100f, 1, 100f);
+		var grid = Grid.of(testMargin, 1, 100f, 1, 100f);
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
@@ -70,7 +71,7 @@ class GridRendererTest {
 	void gridWithPageSizeCellsMustSplitToNumberOfCellsPages() {
 		var pageBox = PageBox.asPageBox(PageSize.A4).withMargin(DocumentFactory.DEFAULT_PAGE_MARGINS);
 
-		var grid = new Grid(testMargin, 2, pageBox.width(), 2, pageBox.height());
+		var grid = Grid.of(testMargin, 2, pageBox.width(), 2, pageBox.height());
 
 			assertThat(DocumentFactory.builder()
 				.pageSize(PageSize.A4)
@@ -85,7 +86,7 @@ class GridRendererTest {
 	void gridWithPageSizeCellsMustSplitToNumberOfCellsPagesWithFirstOnNewPage() {
 		var pageBox = PageBox.asPageBox(PageSize.A4).withMargin(DocumentFactory.DEFAULT_PAGE_MARGINS);
 
-		var grid = new Grid(testMargin, 2, pageBox.width(), 2, pageBox.height());
+		var grid = Grid.of(testMargin, 2, pageBox.width(), 2, pageBox.height());
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
@@ -99,7 +100,7 @@ class GridRendererTest {
 	@DisplayName("grid with custom layouter")
 	void gridWithCustomLayouter() {
 		var pageBox = PageBox.asPageBox(PageSize.A4).withMargin(DocumentFactory.DEFAULT_PAGE_MARGINS);
-		var grid = new Grid(testMargin, 4, (pageBox.width() / 2) - 20f, 4, pageBox.height() / 2);
+		var grid = Grid.of(testMargin, 4, (pageBox.width() / 2) - 20f, 4, pageBox.height() / 2);
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
@@ -113,7 +114,7 @@ class GridRendererTest {
 	@DisplayName("grid with custom layouter and grid fits to page")
 	void gridWithCustomLayouterAndGridFitsToPage() {
 		var pageBox = PageBox.asPageBox(PageSize.A4).withMargin(DocumentFactory.DEFAULT_PAGE_MARGINS);
-		var grid = new Grid(testMargin, 2, (pageBox.width() / 2) - 20f, 4, pageBox.height() / 2);
+		var grid = Grid.of(testMargin, 2, (pageBox.width() / 2) - 20f, 4, pageBox.height() / 2);
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
@@ -130,7 +131,7 @@ class GridRendererTest {
 
 		var columnsPerPage = 3;
 		var rowsPerPage = 3;
-		var grid = new Grid(testMargin, 2 * columnsPerPage, pageBox.width() / columnsPerPage, 2 * rowsPerPage, pageBox.height() / rowsPerPage);
+		var grid = Grid.of(testMargin, 2 * columnsPerPage, pageBox.width() / columnsPerPage, 2 * rowsPerPage, pageBox.height() / rowsPerPage);
 
 		assertThat(DocumentFactory.builder()
 			.pageSize(PageSize.A4)
@@ -138,6 +139,34 @@ class GridRendererTest {
 			.build())
 			.expectRendering()
 			.matchesResource(getClass(), "splitCellGroupsToPages.pdf");
+	}
+
+	@Test
+	void renderNonEmptyGridCellsIntoSpace() {
+		var pageBox = PageBox.asPageBox(PageSize.A4).withMargin(DocumentFactory.DEFAULT_PAGE_MARGINS);
+
+		var grid = Grid.builder()
+			.margin(testMargin)
+			.addHeights(pageBox.height()/4.0f, pageBox.height(), pageBox.height())
+			.addWidths(pageBox.width(), pageBox.width())
+			.build();
+
+		assertThat(DocumentFactory.builder()
+			.pageSize(PageSize.A4)
+			.addBlocks(
+				new Space(pageBox.height()/2),
+				new Text("something on this page will move the start down"),
+				ImmutableRenderGrid.copyOf(render(grid))
+					.withContentLookup(cell -> {
+						if (cell.row() == 0 && cell.column() == 1) {
+							return Optional.empty();
+						}
+						return Optional.of(cell.column() + ":" + cell.row());
+					})
+			)
+			.build())
+			.expectRendering()
+			.matchesResource(getClass(), "renderNonEmptyGridCellsIntoSpace.pdf");
 	}
 
 	private RenderGrid<String> render(Grid grid) {

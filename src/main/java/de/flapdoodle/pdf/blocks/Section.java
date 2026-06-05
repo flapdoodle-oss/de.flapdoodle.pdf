@@ -20,8 +20,8 @@ import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
-import de.flapdoodle.pdf.render.Documents;
 import de.flapdoodle.pdf.elements.Elements;
+import de.flapdoodle.pdf.render.Documents;
 import org.immutables.value.Value;
 
 import java.awt.*;

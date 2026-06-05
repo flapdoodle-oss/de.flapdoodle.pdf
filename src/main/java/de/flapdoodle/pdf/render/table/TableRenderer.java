@@ -18,21 +18,30 @@ package de.flapdoodle.pdf.render.table;
 
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.tables.Table;
+import de.flapdoodle.pdf.types.FloatArray;
 import de.flapdoodle.pdf.types.Region;
 
 @FunctionalInterface
 public interface TableRenderer {
+
+	@Deprecated
+	default Result render(Table table, Region region, PageBox pageBox) {
+		return render(table, TableAttributes.defaults(), region, pageBox);
+	}
 	/**
 	 * don't commit rendering to column from inside
 	 */
-	Result render(Table table, Region region, PageBox pageBox);
+	Result render(Table table, TableAttributes attributes, Region region, PageBox pageBox);
 
 	record Result(
 		int lastVisibleRow,
+		float tableWidth,
 		float tableHeight, // can contain invisible parts bc of clipping
+		FloatArray columnWidths,
+		FloatArray rowHeights,
 		Runnable commit
 	) {
-		void go() {
+		public void go() {
 			commit.run();
 		}
 	}

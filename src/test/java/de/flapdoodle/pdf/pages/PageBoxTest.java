@@ -19,15 +19,12 @@ package de.flapdoodle.pdf.pages;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
 import de.flapdoodle.pdf.tables.cells.VerticalAlignment;
 import de.flapdoodle.pdf.types.Dimension;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

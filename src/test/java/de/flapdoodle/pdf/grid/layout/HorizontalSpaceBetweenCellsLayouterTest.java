@@ -31,7 +31,7 @@ class HorizontalSpaceBetweenCellsLayouterTest {
 	@Test
 	@DisplayName("free space around if only one cell")
 	void freeSpaceAroundIfOnlyOneCell() {
-		var grid = new Grid(1, 100f, 3, 50f);
+		var grid = Grid.of(1, 100f, 3, 50f);
 		var cells = Set.of(new Cell(0, 1));
 		var container = new PageBox(0f, 0f, 200f, 30f);
 
@@ -43,7 +43,7 @@ class HorizontalSpaceBetweenCellsLayouterTest {
 	@Test
 	@DisplayName("free space between more than one cell")
 	void freeSpaceBetweenMoreThanOneCell() {
-		var grid = new Grid(2, 100f, 3, 50f);
+		var grid = Grid.of(2, 100f, 3, 50f);
 		var cells = Set.of(new Cell(0, 1), new Cell(1, 1));
 		var container = new PageBox(0f, 0f, 250f, 30f);
 

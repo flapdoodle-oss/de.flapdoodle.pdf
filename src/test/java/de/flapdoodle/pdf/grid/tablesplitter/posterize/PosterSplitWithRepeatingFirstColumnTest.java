@@ -21,11 +21,14 @@ import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.render.table.MinimalTableWidth;
+import de.flapdoodle.pdf.render.table.RenderedTableDimension;
+import de.flapdoodle.pdf.render.table.TableAttributes;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.TableFromMap;
 import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.FloatArray;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,25 +52,25 @@ class PosterSplitWithRepeatingFirstColumnTest {
 
 		var minimalTableWith = new MinimalTableWidth() {
 			@Override
-			public float of(TableRenderer renderer, Table table, float startingWidth) {
+			public RenderedTableDimension of(TableRenderer renderer, Table table, float startingWidth) {
 				if (table.columns() == 1)
-					return firstColumnWidth;
+					return new RenderedTableDimension(firstColumnWidth, 0f, FloatArray.from(), FloatArray.from());
 				if (table.columns() == tableColumnsWithoutFirstColumn)
-					return tableWithoutFirstColumnWidth;
+					return new RenderedTableDimension(tableWithoutFirstColumnWidth, 0f, FloatArray.from(), FloatArray.from());
 				throw new IllegalArgumentException("unexpected columns: "+table.columns());
 			}
 		};
 
 		var tableRenderer = new TableRenderer() {
 			@Override
-			public Result render(Table table, Region region, PageBox pageBox) {
+			public Result render(Table table, TableAttributes attributes, Region region, PageBox pageBox) {
 				throw new UnsupportedOperationException();
 			}
 		};
 
-		var grid = new Grid(Margin.none(), gridColumns, gridColumnWidth, 2, 200f);
+		var grid = Grid.of(Margin.none(), gridColumns, gridColumnWidth, 2, 200f);
 		var table = TableFromMap.builder()
-			.cells(new Region(new Range(0, tableColumnsWithoutFirstColumn), new Range(0, 4))
+			.cells(new Region(IntRange.to(0, tableColumnsWithoutFirstColumn), IntRange.to(0, 4))
 				.map(Cell::new)
 				.stream().collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row())))
 			.build();
@@ -91,15 +94,15 @@ class PosterSplitWithRepeatingFirstColumnTest {
 		assertThat(parts).hasSize(3);
 
 		assertThat(parts.get(0).column()).isEqualTo(0);
-		assertThat(parts.get(0).range()).isEqualTo(new Range(0, 3));
+		assertThat(parts.get(0).range()).isEqualTo(IntRange.to(0, 3));
 		assertThat(parts.get(0).width()).isEmpty();
 
 		assertThat(parts.get(1).column()).isEqualTo(1);
-		assertThat(parts.get(1).range()).isEqualTo(new Range(4, 7));
+		assertThat(parts.get(1).range()).isEqualTo(IntRange.to(4, 7));
 		assertThat(parts.get(1).width()).isEmpty();
 
 		assertThat(parts.get(2).column()).isEqualTo(2);
-		assertThat(parts.get(2).range()).isEqualTo(new Range(8, 11));
+		assertThat(parts.get(2).range()).isEqualTo(IntRange.to(8, 11));
 		assertThat(parts.get(2).width()).contains(expectedLastPartWidth);
 	}
 

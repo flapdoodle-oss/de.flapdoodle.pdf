@@ -17,7 +17,6 @@
 package de.flapdoodle.pdf.types;
 
 import de.flapdoodle.pdf.Optionals;
-import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import org.immutables.value.Value;
 
 import java.util.Optional;

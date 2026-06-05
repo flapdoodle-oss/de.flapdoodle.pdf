@@ -4,7 +4,7 @@
 
 ```java
 RenderGrid<String> renderGrid = RenderGrid.<String>builder()
-  .grid(new Grid(Margin.of(5.0f, 5.0f, 5.0f, 5.0f),
+  .grid(Grid.of(Margin.of(5.0f, 5.0f, 5.0f, 5.0f),
     List.of(100.0f, 50.0f),
     List.of(50.0f, 150.0f, 50.0f)))
   .cellBoxDecorator(GridCellDecorator.renderBorder(Color.DARK_GRAY))
@@ -27,7 +27,7 @@ RenderGrid<String> renderGrid = RenderGrid.<String>builder()
 TablesInGrid tablesInGrid = TablesInGrid.builder()
   .gridFactory(doc -> {
     PageBox innerBox = PageBox.innerBox(doc);
-    return new Grid(Margin.none(), 2, innerBox.width(), 4, innerBox.height());
+    return Grid.of(Margin.none(), 2, innerBox.width(), 4, innerBox.height());
   })
   .tableSplitterFactory(SplitTableIntoPoster::split)
   .addTables(table)
@@ -40,3 +40,20 @@ TablesInGrid tablesInGrid = TablesInGrid.builder()
 ![Page 4](grid-posterize-3.png)
 
 [PDF](grid-posterize.pdf)
+
+## auto posterize large table
+
+```java
+AutosplitTable autosplitTable = AutosplitTable.builder()
+  .table(table)
+  .repeatHeader(true)
+  .keyColumns(1)
+  .build();
+```
+
+![Page 1](grid-auto-posterize-0.png)
+![Page 2](grid-auto-posterize-1.png)
+![Page 3](grid-auto-posterize-2.png)
+![Page 4](grid-auto-posterize-3.png)
+
+[PDF](grid-auto-posterize.pdf)

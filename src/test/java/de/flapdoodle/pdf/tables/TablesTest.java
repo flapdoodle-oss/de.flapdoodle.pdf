@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.tables;
 
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class TablesTest {
 		@DisplayName("invalid parameter must fail")
 		void invalidParameterMustFail() {
 			assertThatThrownBy(() -> {
-				Tables.columnWidths(Range.EMPTY, 30f, ColumnWeights.EMPTY);
+				Tables.columnWidths(IntRange.Closed.EMPTY, 30f, ColumnWeights.EMPTY);
 			})
 				.isInstanceOf(IllegalArgumentException.class);
 		}
@@ -46,7 +46,7 @@ class TablesTest {
 			var columns = ThreadLocalRandom.current().nextInt(1, 1001);
 			var width = ThreadLocalRandom.current().nextFloat() * 999.9f + 0.1f;
 
-			var result = Tables.columnWidths(new Range(0, columns - 1), width, ColumnWeights.EMPTY);
+			var result = Tables.columnWidths(IntRange.until(0, columns), width, ColumnWeights.EMPTY);
 
 			assertThat(result).hasSize(columns);
 			result.values().forEach(value -> {
@@ -60,7 +60,7 @@ class TablesTest {
 			var width = ThreadLocalRandom.current().nextFloat() * 999.9f + 0.1f;
 
 			var columnWeights = ColumnWeights.fromMap(Map.of(0 , 1f, 1 , 2f, 2 , 4f));
-			var result = Tables.columnWidths(new Range(0, 2), width, columnWeights);
+			var result = Tables.columnWidths(IntRange.to(0, 2), width, columnWeights);
 
 			assertThat(result).hasSize(3);
 			assertThat(result.get(0)).isEqualTo(width / 7f);

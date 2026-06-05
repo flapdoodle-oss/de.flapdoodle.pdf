@@ -23,7 +23,6 @@ import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfWriter;
 import de.flapdoodle.pdf.pages.EnhancedPdfPageEventHelper;
 import de.flapdoodle.pdf.pages.PageBox;
-import de.flapdoodle.pdf.pages.PdfPageEvents;
 
 import java.awt.*;
 

@@ -19,8 +19,8 @@ package de.flapdoodle.pdf.grid;
 import de.flapdoodle.pdf.extensions.ListExtensions;
 import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.Dimension;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Position;
-import de.flapdoodle.pdf.types.Range;
 
 import java.util.*;
 
@@ -57,7 +57,7 @@ public final class GridPartitioner {
 		return List.copyOf(cellSets);
 	}
 
-	private static Set<Cell> getAll(Range columns, Range rows) {
+	private static Set<Cell> getAll(IntRange.Closed columns, IntRange.Closed rows) {
 		var set = new LinkedHashSet<Cell>();
 		rows.forEach(r ->
 			columns.forEach(c ->
@@ -65,14 +65,14 @@ public final class GridPartitioner {
 		return Collections.unmodifiableSet(set);
 	}
 
-	protected static List<Range> partition(List<Float> list, float max) {
+	protected static List<IntRange.Closed> partition(List<Float> list, float max) {
 		return partition(list, max, 0f);
 	}
 
-	protected static List<Range> partition(List<Float> list, float max, float initialOffset) {
+	protected static List<IntRange.Closed> partition(List<Float> list, float max, float initialOffset) {
 		if (list.isEmpty()) throw new IllegalArgumentException("list is empty");
 
-		var ret = new ArrayList<Range>();
+		var ret = new ArrayList<IntRange.Closed>();
 
 		var sum = initialOffset;
 		var lastStart = 0;
@@ -87,9 +87,9 @@ public final class GridPartitioner {
 			} else {
 				if (lastFit == -1) {
 					// first value did not fit, because of initialOffset
-					ret.add(Range.EMPTY);
+					ret.add(IntRange.Closed.EMPTY);
 				} else {
-					ret.add(new Range(lastStart, lastFit));
+					ret.add(IntRange.to(lastStart, lastFit));
 				}
 				lastStart = index;
 				lastFit = lastStart;
@@ -97,7 +97,7 @@ public final class GridPartitioner {
 			}
 		}
 
-		ret.add(new Range(lastStart, lastFit));
+		ret.add(IntRange.to(lastStart, lastFit));
 		return List.copyOf(ret);
 	}
 

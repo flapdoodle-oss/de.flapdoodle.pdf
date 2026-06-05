@@ -26,11 +26,15 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public record Region(
-	Range columns,
-	Range rows
+	IntRange.Closed columns,
+	IntRange.Closed rows
 ) {
+	public Region(IntRange.Open columns, IntRange.Open rows) {
+		this(columns.asClosed(), rows.asClosed());
+	}
+
 	public Region(int columnStart, int columnEnd, int rowStart, int rowEnd) {
-		this(new Range(columnStart, columnEnd), new Range(rowStart, rowEnd));
+		this(IntRange.to(columnStart, columnEnd), IntRange.to(rowStart, rowEnd));
 	}
 
 	public boolean contains(Region other) {
@@ -43,29 +47,29 @@ public record Region(
 
 	public Optional<Region> fromColumn(int column) {
 		if (column <= columns.end()) {
-			return Optional.of(new Region(new Range(column, columns.end()), rows));
+			return Optional.of(new Region(IntRange.to(column, columns.end()), rows));
 		}
 		return Optional.empty();
 	}
 
 	public Region untilColumn(int column) {
 		Preconditions.checkArgument(column <= columns.end(), "column(%s) > end(%s)", column, columns.end());
-		return new Region(new Range(columns.start(), column), rows);
+		return new Region(IntRange.to(columns.start(), column), rows);
 	}
 
-	public Region withColumns(Range columnRange) {
+	public Region withColumns(IntRange.Closed columnRange) {
 		Preconditions.checkArgument(columns.contains(columnRange), "columns(%s) not part of this region %s", columnRange, this);
 		return new Region(columnRange, rows);
 	}
 
 	public Region untilRow(int row) {
 		Preconditions.checkArgument(row <= rows.end(), "row(%s) > end(%s)", row, rows.end());
-		return new Region(columns, new Range(rows.start(), row));
+		return new Region(columns, IntRange.to(rows.start(), row));
 	}
 
 	public Optional<Region> fromRow(int row) {
 		if (row <= rows.end()) {
-			return Optional.of(new Region(columns, new Range(row, rows.end())));
+			return Optional.of(new Region(columns, IntRange.to(row, rows.end())));
 		}
 		return Optional.empty();
 	}

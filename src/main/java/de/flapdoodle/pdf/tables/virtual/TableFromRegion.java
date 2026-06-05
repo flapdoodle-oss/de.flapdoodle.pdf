@@ -24,7 +24,7 @@ import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyles;
 import de.flapdoodle.pdf.tables.cells.HeaderStyles;
 import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 
 import java.util.Optional;
@@ -42,7 +42,7 @@ public class TableFromRegion implements Table {
 		return column + region.columns().start();
 	}
 
-	public static Table columns(TableFromRegion src, Range range) {
+	public static Table columns(TableFromRegion src, IntRange.Closed range) {
 		return new TableFromRegion(src, src.maxRegion().withColumns(range));
 	}
 
@@ -69,12 +69,12 @@ public class TableFromRegion implements Table {
 
 	@Override
 	public int columns() {
-		return region.columns().count();
+		return region.columns().size();
 	}
 
 	@Override
 	public int rows() {
-		return region.rows().count();
+		return region.rows().size();
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class TableFromRegion implements Table {
 		}
 		@Override
 		public int columns() {
-			return region.columns().count();
+			return region.columns().size();
 		}
 		@Override
 		public HeaderStyles styles() {

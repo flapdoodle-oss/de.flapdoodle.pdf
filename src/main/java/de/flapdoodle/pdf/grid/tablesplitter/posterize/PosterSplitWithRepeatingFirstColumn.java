@@ -18,15 +18,16 @@ package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
 import de.flapdoodle.pdf.extensions.ListExtensions;
 import de.flapdoodle.pdf.grid.Grid;
+import de.flapdoodle.pdf.render.table.FindSmallestTableWidth;
 import de.flapdoodle.pdf.render.table.MinimalTableWidth;
-import de.flapdoodle.pdf.render.table.TableRenderHelper;
 import de.flapdoodle.pdf.render.table.TableRenderer;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.Tables;
 import de.flapdoodle.pdf.tables.virtual.GroupedTables;
 import de.flapdoodle.pdf.tables.virtual.TableFromRegion;
+import de.flapdoodle.pdf.types.FloatArray;
 import de.flapdoodle.pdf.types.Floats;
-import de.flapdoodle.pdf.types.Range;
+import de.flapdoodle.pdf.types.IntRange;
 
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +40,7 @@ public record PosterSplitWithRepeatingFirstColumn(
 	MinimalTableWidth minimalTableWidth
 ) implements PosterSplitter {
 	public PosterSplitWithRepeatingFirstColumn() {
-		this(new PutColumnIntoSlotIfMostOfItWillFit(), new MinimalTableWidth.Default());
+		this(new PutColumnIntoSlotIfMostOfItWillFit(), new FindSmallestTableWidth());
 	}
 	@Override
 	public Split split(TableRenderer tableRenderer, Grid grid, Table table) {
@@ -50,13 +51,13 @@ public record PosterSplitWithRepeatingFirstColumn(
 		var smallestGridCell = grid.innerWidths().stream()
 			.min(Comparator.naturalOrder())
 			.orElseThrow(() -> new IllegalArgumentException("no min?"));
-		var firstColumnWidth = minimalTableWidth().of(tableRenderer, firstColumnTable, smallestGridCell);
+		var firstColumnWidth = minimalTableWidth().of(tableRenderer, firstColumnTable, smallestGridCell).width();
 
 		var gridWithoutFirstColumn = grid.innerWidths().stream().map(it -> it - firstColumnWidth).toList();
-		var tableWidthWithoutFirstColumn = minimalTableWidth().of(tableRenderer, tableWithoutFirstColumn, Floats.sum(gridWithoutFirstColumn));
+		var tableWidthWithoutFirstColumn = minimalTableWidth().of(tableRenderer, tableWithoutFirstColumn, Floats.sum(gridWithoutFirstColumn)).width();
 
 		var columnWidths = Tables.columnWidths(
-			new Range(0, tableWithoutFirstColumn.columns() - 1),
+			IntRange.until(0, tableWithoutFirstColumn.columns()),
 			tableWidthWithoutFirstColumn,
 			tableWithoutFirstColumn.columnWeights()
 		);
@@ -78,7 +79,7 @@ public record PosterSplitWithRepeatingFirstColumn(
 				OverrideColumnWeights.using(firstColumnTable, List.of(firstColumnWidth)),
 				OverrideColumnWeights.using(
 					TableFromRegion.columns(tableWithoutFirstColumn, it.range()),
-					it.range().mapToFloatList(columnWidths::get)
+					 FloatArray.from(it.range().mapToFloat(columnWidths::get))
 				)))
 			.toList());
 
@@ -86,7 +87,7 @@ public record PosterSplitWithRepeatingFirstColumn(
 		var addFirstColumnToColumnRange = ListExtensions.mapIndexed(columnRanges, (index, it) ->
 			new Part(
 				it.column(),
-				new Range(it.range().start() + index, it.range().end() + index + 1),
+				IntRange.to(it.range().start() + index, it.range().end() + index + 1),
 				it.width().map(w -> w + firstColumnWidth)
 			));
 
