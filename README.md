@@ -4,7 +4,7 @@ We are a github organisation. You are invited to participate.
 
 ## de.flapdoodle.pdf
 
-openpdf base page renderer
+openpdf 3.x.x base page renderer
 
 ### Maven
 
@@ -13,7 +13,7 @@ Stable (Maven Central Repository, Released: 14.07.2026 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle.pdf</groupId>
 		<artifactId>de.flapdoodle.pdf</artifactId>
-		<version>1.4.0</version>
+		<version>3.0.0</version>
 	</dependency>
 
 ### Usage
