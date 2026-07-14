@@ -37,3 +37,13 @@ ${autoPosterizeTable}
 ![Page 4](${autoPosterizeTable.png-3})
 
 [PDF](${autoPosterizeTable.pdf})
+
+## auto posterize simple table
+
+```java
+${simpleTableWithText}
+```
+
+![Page 1](${simpleTableWithText.png-0})
+
+[PDF](${simpleTableWithText.pdf})

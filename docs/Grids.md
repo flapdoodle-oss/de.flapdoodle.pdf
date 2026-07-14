@@ -57,3 +57,15 @@ AutosplitTable autosplitTable = AutosplitTable.builder()
 ![Page 4](grid-auto-posterize-3.png)
 
 [PDF](grid-auto-posterize.pdf)
+
+## auto posterize simple table
+
+```java
+AutosplitTable simpleTable = AutosplitTable.builder()
+  .table(table)
+  .build();
+```
+
+![Page 1](grid-auto-simple-0.png)
+
+[PDF](grid-auto-simple.pdf)

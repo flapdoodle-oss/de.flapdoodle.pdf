@@ -32,14 +32,8 @@ import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.tables.ColumnWeights;
 import de.flapdoodle.pdf.tables.TableColumnsFromNameList;
 import de.flapdoodle.pdf.tables.TableFromMap;
-import de.flapdoodle.pdf.tables.cells.CellStyle;
-import de.flapdoodle.pdf.tables.cells.HeaderStyles;
-import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
-import de.flapdoodle.pdf.tables.cells.LayeredCellStyles;
-import de.flapdoodle.pdf.types.BorderProperty;
-import de.flapdoodle.pdf.types.Cell;
-import de.flapdoodle.pdf.types.IntRange;
-import de.flapdoodle.pdf.types.Region;
+import de.flapdoodle.pdf.tables.cells.*;
+import de.flapdoodle.pdf.types.*;
 import de.flapdoodle.testdoc.Recorder;
 import de.flapdoodle.testdoc.Recording;
 import de.flapdoodle.testdoc.TabSize;
@@ -156,6 +150,32 @@ public class GridStuffTest {
 		recording.file("png-1", "grid-auto-posterize-1.png", PdfImageGenerator.renderPageAsPng(content, 1));
 		recording.file("png-2", "grid-auto-posterize-2.png", PdfImageGenerator.renderPageAsPng(content, 2));
 		recording.file("png-3", "grid-auto-posterize-3.png", PdfImageGenerator.renderPageAsPng(content, 3));
+	}
+
+	@Test
+	public void simpleTableWithText() {
+		TableFromMap table = TableFromMap.builder()
+			.styles(LayeredCellStyles.empty()
+				.withDefault(CellStyle.empty()
+					.withBorder(BorderStyle.noBorder())
+					.withPadding(BorderProperty.of(20.f, 10.0f, 20.f, 10.f))
+					.withHorizontalAlignment(HorizontalAlignment.CENTER)))
+			.columnWeights(ColumnWeights.fromList(FloatArray.from(1f, 2f, 1f)))
+			.cells(new Region(IntRange.until(0, 3), IntRange.until(0, 2))
+				.map(Cell::new)
+				.stream()
+				.collect(Collectors.toMap(it -> it, it -> it.column() + ":" + it.row())))
+			.build();
+
+		recording.begin();
+		AutosplitTable simpleTable = AutosplitTable.builder()
+			.table(table)
+			.build();
+		recording.end();
+
+		byte[] content = render(simpleTable);
+		recording.file("pdf", "grid-auto-simple.pdf", content);
+		recording.file("png-0", "grid-auto-simple-0.png", PdfImageGenerator.renderPageAsPng(content, 0));
 	}
 
 	private byte[] render(Block... blocks) {
