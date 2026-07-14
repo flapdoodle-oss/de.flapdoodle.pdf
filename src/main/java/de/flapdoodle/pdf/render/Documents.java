@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.render;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.Document;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.render.direct.PdfContentByteExtension;
 

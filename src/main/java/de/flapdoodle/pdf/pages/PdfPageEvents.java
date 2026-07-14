@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.pdf.PdfPageEvent;
-import com.lowagie.text.pdf.events.PdfPageEventForwarder;
+import org.openpdf.text.pdf.PdfPageEvent;
+import org.openpdf.text.pdf.events.PdfPageEventForwarder;
 
 import java.util.Collection;
 

@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.grid;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.Document;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.columns.ColumnFactory;
 import de.flapdoodle.pdf.grid.layout.NoSpaceBetweenCellsLayouter;
 import de.flapdoodle.pdf.pages.PageBox;

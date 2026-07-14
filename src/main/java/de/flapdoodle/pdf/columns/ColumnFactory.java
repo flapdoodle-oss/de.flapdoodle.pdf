@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.columns;
 
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.ColumnText;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.pages.PageBox;
 
 public interface ColumnFactory {

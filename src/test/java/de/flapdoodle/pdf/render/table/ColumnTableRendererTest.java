@@ -16,9 +16,6 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.DocumentFactoryAssert;
@@ -31,6 +28,9 @@ import de.flapdoodle.pdf.tables.cells.LayeredCellStyles;
 import de.flapdoodle.pdf.types.Cell;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.Document;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.pdf.PdfContentByte;
 
 import java.util.List;
 import java.util.Map;

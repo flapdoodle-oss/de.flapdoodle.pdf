@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import com.lowagie.text.pdf.ColumnText;
+import org.openpdf.text.pdf.ColumnText;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.types.FloatArray;
 import de.flapdoodle.pdf.types.Region;

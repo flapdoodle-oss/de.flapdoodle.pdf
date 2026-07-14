@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.grid;
 
-import com.lowagie.text.pdf.ColumnText;
+import org.openpdf.text.pdf.ColumnText;
 
 @FunctionalInterface
 public interface CellContentConsumer<T> {

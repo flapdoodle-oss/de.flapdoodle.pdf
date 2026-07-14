@@ -17,7 +17,7 @@
 package de.flapdoodle.pdf.render.table;
 
 import com.google.common.base.Preconditions;
-import com.lowagie.text.PageSize;
+import org.openpdf.text.PageSize;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.pages.PagePosition;
 import de.flapdoodle.pdf.tables.Table;

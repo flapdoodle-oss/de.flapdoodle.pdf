@@ -16,11 +16,11 @@
  */
 package de.flapdoodle.pdf.blocks;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.Font;
+import org.openpdf.text.PageSize;
 
 import java.awt.*;
 

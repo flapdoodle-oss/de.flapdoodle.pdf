@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.grid;
 
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.pages.PageBox;
 
 import java.awt.*;

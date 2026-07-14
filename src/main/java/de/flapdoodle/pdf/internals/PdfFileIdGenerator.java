@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.internals;
 
-import com.lowagie.text.pdf.PdfObject;
+import org.openpdf.text.pdf.PdfObject;
 
 public interface PdfFileIdGenerator {
 	PdfObject generate();

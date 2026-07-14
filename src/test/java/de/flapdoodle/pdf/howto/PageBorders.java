@@ -16,13 +16,13 @@
  */
 package de.flapdoodle.pdf.howto;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPageEvent;
-import com.lowagie.text.pdf.PdfWriter;
 import de.flapdoodle.pdf.pages.EnhancedPdfPageEventHelper;
 import de.flapdoodle.pdf.pages.PageBox;
+import org.openpdf.text.Document;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.PdfPageEvent;
+import org.openpdf.text.pdf.PdfWriter;
 
 import java.awt.*;
 

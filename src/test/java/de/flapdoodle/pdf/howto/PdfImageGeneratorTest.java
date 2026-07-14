@@ -16,11 +16,10 @@
  */
 package de.flapdoodle.pdf.howto;
 
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Text;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.PageSize;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

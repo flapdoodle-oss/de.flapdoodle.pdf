@@ -16,10 +16,10 @@
  */
 package de.flapdoodle.pdf.render.direct;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.Font;
+import org.openpdf.text.FontFactory;
+import org.openpdf.text.Phrase;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.types.Floats;
 
 public class PdfContentByteExtension {

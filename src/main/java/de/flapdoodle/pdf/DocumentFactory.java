@@ -16,9 +16,9 @@
  */
 package de.flapdoodle.pdf;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.*;
+import org.openpdf.text.Document;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.*;
 import de.flapdoodle.pdf.internals.PdfFileIdGenerator;
 import de.flapdoodle.pdf.internals.StaticPdfFileIdGenerator;
 import de.flapdoodle.pdf.layout.Margin;

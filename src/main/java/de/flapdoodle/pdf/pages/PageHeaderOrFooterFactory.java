@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Paragraph;
+import org.openpdf.text.Paragraph;
 
 public interface PageHeaderOrFooterFactory {
 	Paragraph forPage(int page);

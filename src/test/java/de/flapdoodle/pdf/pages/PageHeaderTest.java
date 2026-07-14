@@ -16,10 +16,6 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.grid.CellContentLookup;
@@ -28,6 +24,10 @@ import de.flapdoodle.pdf.grid.GridCellDecorator;
 import de.flapdoodle.pdf.grid.GridRenderer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.Document;
+import org.openpdf.text.Font;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.pdf.PdfContentByte;
 
 import java.awt.*;
 import java.util.Map;

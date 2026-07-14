@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.render.column;
 
-import com.lowagie.text.pdf.ColumnText;
+import org.openpdf.text.pdf.ColumnText;
 
 public final class ColumnTexts {
 	private ColumnTexts() {

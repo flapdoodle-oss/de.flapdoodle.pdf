@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.tables.cells;
 
-import com.lowagie.text.Font;
+import org.openpdf.text.Font;
 import de.flapdoodle.pdf.Optionals;
 import de.flapdoodle.pdf.types.BorderProperty;
 import de.flapdoodle.pdf.types.ImmutableBorderProperty;

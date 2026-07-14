@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfWriter;
+import org.openpdf.text.Document;
+import org.openpdf.text.pdf.PdfWriter;
 import de.flapdoodle.pdf.columns.ColumnFactory;
 import org.immutables.value.Value;
 

@@ -16,13 +16,13 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.alignment.HorizontalAlignment;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPRow;
-import com.lowagie.text.pdf.PdfPTable;
+import org.openpdf.text.Font;
+import org.openpdf.text.Phrase;
+import org.openpdf.text.alignment.HorizontalAlignment;
+import org.openpdf.text.pdf.ColumnText;
+import org.openpdf.text.pdf.PdfPCell;
+import org.openpdf.text.pdf.PdfPRow;
+import org.openpdf.text.pdf.PdfPTable;
 import de.flapdoodle.pdf.render.column.ColumnTexts;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.cells.CellStyle;

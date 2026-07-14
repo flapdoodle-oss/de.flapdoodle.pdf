@@ -16,9 +16,9 @@
  */
 package de.flapdoodle.pdf.blocks.items;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.ColumnText;
+import org.openpdf.text.Font;
+import org.openpdf.text.Phrase;
+import org.openpdf.text.pdf.ColumnText;
 import de.flapdoodle.pdf.elements.Elements;
 import de.flapdoodle.pdf.render.column.ColumnTexts;
 import de.flapdoodle.pdf.render.table.DefaultRegionColumnRenderer;

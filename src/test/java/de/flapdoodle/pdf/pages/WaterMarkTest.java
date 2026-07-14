@@ -16,13 +16,13 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.DocumentFactoryAssert;
 import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.pdf.watermark.WaterMarkContent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.PageSize;
 
 import java.io.IOException;
 import java.time.ZoneId;

@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Document;
+import org.openpdf.text.Document;
 
 public interface OnDocumentInit {
 	void onInit(Document document);

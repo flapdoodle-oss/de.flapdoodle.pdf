@@ -17,9 +17,9 @@
 package de.flapdoodle.pdf.pages;
 
 import com.google.common.base.Preconditions;
-import com.lowagie.text.Document;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.ColumnText;
+import org.openpdf.text.Document;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.ColumnText;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
 import de.flapdoodle.pdf.tables.cells.VerticalAlignment;

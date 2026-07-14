@@ -16,11 +16,11 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.Element;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfWriter;
+import org.openpdf.text.Document;
+import org.openpdf.text.Element;
+import org.openpdf.text.pdf.BaseFont;
+import org.openpdf.text.pdf.PdfPageEventHelper;
+import org.openpdf.text.pdf.PdfWriter;
 import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.watermark.WaterMarkContent;
 

@@ -16,10 +16,10 @@
  */
 package de.flapdoodle.pdf.internals;
 
-import com.lowagie.text.ExceptionConverter;
-import com.lowagie.text.pdf.ByteBuffer;
-import com.lowagie.text.pdf.PdfLiteral;
-import com.lowagie.text.pdf.PdfObject;
+import org.openpdf.text.ExceptionConverter;
+import org.openpdf.text.pdf.ByteBuffer;
+import org.openpdf.text.pdf.PdfLiteral;
+import org.openpdf.text.pdf.PdfObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

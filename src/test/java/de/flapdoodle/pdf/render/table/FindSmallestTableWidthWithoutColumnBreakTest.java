@@ -16,9 +16,6 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.pages.PageBox;
@@ -33,6 +30,9 @@ import de.flapdoodle.pdf.types.IntRange;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.Document;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.pdf.PdfContentByte;
 
 import java.util.Map;
 import java.util.function.Supplier;

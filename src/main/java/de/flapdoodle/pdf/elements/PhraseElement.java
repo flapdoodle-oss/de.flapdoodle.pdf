@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.elements;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.Phrase;
+import org.openpdf.text.Font;
+import org.openpdf.text.Phrase;
 import org.immutables.value.Value;
 
 import java.util.Optional;

@@ -16,10 +16,10 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import com.lowagie.text.Element;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
+import org.openpdf.text.Element;
+import org.openpdf.text.Phrase;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.PdfPCell;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
 import de.flapdoodle.pdf.tables.cells.VerticalAlignment;

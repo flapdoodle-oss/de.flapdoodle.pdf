@@ -16,9 +16,6 @@
  */
 package de.flapdoodle.pdf.grid;
 
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.ColumnText;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Space;
 import de.flapdoodle.pdf.blocks.Text;
@@ -31,6 +28,9 @@ import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.types.Cell;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.Phrase;
+import org.openpdf.text.pdf.ColumnText;
 
 import java.util.List;
 import java.util.Optional;

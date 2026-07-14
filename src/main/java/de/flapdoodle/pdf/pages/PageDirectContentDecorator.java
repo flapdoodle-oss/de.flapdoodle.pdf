@@ -16,9 +16,9 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
+import org.openpdf.text.Document;
+import org.openpdf.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.PdfWriter;
 import org.immutables.value.Value;
 
 import java.util.function.BiConsumer;

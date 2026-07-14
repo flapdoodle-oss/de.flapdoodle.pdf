@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.blocks;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.Document;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 
 import java.util.function.Supplier;

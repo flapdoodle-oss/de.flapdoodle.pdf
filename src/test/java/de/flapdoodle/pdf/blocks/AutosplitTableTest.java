@@ -16,10 +16,8 @@
  */
 package de.flapdoodle.pdf.blocks;
 
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.tables.ColumnWeights;
-import de.flapdoodle.pdf.tables.ImmutableTableFromMap;
 import de.flapdoodle.pdf.tables.TableColumnsFromNameList;
 import de.flapdoodle.pdf.tables.TableFromMap;
 import de.flapdoodle.pdf.tables.cells.*;
@@ -28,6 +26,7 @@ import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.PageSize;
 
 import java.awt.*;
 import java.util.stream.Collectors;

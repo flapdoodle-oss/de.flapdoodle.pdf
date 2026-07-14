@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.Paragraph;
+import org.openpdf.text.Font;
+import org.openpdf.text.Paragraph;
 
 import java.util.Optional;
 

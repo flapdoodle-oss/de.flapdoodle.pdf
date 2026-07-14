@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.columns.ColumnFactory;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.tables.Table;

@@ -16,11 +16,11 @@
  */
 package de.flapdoodle.pdf.blocks.grid;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.grid.*;
 import org.immutables.value.Value;
+import org.openpdf.text.Document;
+import org.openpdf.text.pdf.PdfContentByte;
 
 import java.util.Optional;
 import java.util.function.Supplier;

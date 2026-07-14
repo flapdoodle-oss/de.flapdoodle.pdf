@@ -16,8 +16,6 @@
  */
 package de.flapdoodle.pdf.howto;
 
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Phrase;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.AutosplitTable;
@@ -39,6 +37,8 @@ import de.flapdoodle.testdoc.Recording;
 import de.flapdoodle.testdoc.TabSize;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.Phrase;
 
 import java.awt.*;
 import java.util.List;

@@ -16,8 +16,6 @@
  */
 package de.flapdoodle.pdf.howto;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Section;
@@ -27,6 +25,8 @@ import de.flapdoodle.testdoc.Recording;
 import de.flapdoodle.testdoc.TabSize;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openpdf.text.Font;
+import org.openpdf.text.PageSize;
 
 import java.io.IOException;
 

@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.pdf.howto;
 
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.Meta;
 import de.flapdoodle.pdf.blocks.Text;
@@ -25,6 +24,7 @@ import de.flapdoodle.testdoc.Recording;
 import de.flapdoodle.testdoc.TabSize;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openpdf.text.PageSize;
 
 import java.io.IOException;
 import java.time.LocalDate;

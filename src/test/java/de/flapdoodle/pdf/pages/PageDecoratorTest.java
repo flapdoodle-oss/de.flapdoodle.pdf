@@ -16,14 +16,14 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
 import de.flapdoodle.pdf.tables.cells.VerticalAlignment;
 import de.flapdoodle.pdf.types.Dimension;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.Image;
+import org.openpdf.text.PageSize;
 
 import java.io.IOException;
 import java.net.URL;

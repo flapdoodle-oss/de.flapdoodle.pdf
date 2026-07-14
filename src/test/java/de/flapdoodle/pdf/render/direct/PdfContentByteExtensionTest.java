@@ -16,12 +16,12 @@
  */
 package de.flapdoodle.pdf.render.direct;
 
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Space;
 import de.flapdoodle.pdf.blocks.Text;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.PageSize;
 
 import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
 

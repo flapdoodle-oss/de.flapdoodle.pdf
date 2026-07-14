@@ -5,7 +5,7 @@
     <groupId>de.flapdoodle.pdf</groupId>
     <artifactId>de.flapdoodle.pdf</artifactId>
     <name>Flapdoodle PDF Renderer</name>
-    <version>1.4.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
 
     <description>java8s</description>
     <url>http://github.com/flapdoodle-oss/de.flapdoodle.pdf</url>
@@ -224,7 +224,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                        	<source>17</source>
+                        	<source>21</source>
                             <doclint>none</doclint>
                         </configuration>
                     </execution>
@@ -245,7 +245,7 @@
                 <configuration>
                     <toolchains>
                         <jdk>
-                            <version>[17,)</version>
+                            <version>[21,)</version>
                         </jdk>
                     </toolchains>
                 </configuration>
@@ -437,9 +437,9 @@
     <properties>
         <junit.version>6.0.3</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>17</java.version>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.source>17</maven.compiler.source>
+        <java.version>21</java.version>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
 
         <immutables.version>2.12.2</immutables.version>
         <!-- eclipse apt switch -->
@@ -519,8 +519,7 @@
         <dependency>
             <groupId>com.github.librepdf</groupId>
             <artifactId>openpdf</artifactId>
-            <!-- java17 can only use 2.x.x -->
-            <version>2.0.5</version>
+            <version>3.0.5</version>
         </dependency>
 
         <dependency>

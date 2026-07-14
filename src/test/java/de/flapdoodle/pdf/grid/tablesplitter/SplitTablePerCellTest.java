@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.pdf.grid.tablesplitter;
 
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.TablesInGrid;
 import de.flapdoodle.pdf.grid.Grid;
@@ -31,6 +30,7 @@ import de.flapdoodle.pdf.tables.cells.LayeredCellStyles;
 import de.flapdoodle.pdf.types.Cell;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.PageSize;
 
 import java.awt.*;
 import java.util.List;

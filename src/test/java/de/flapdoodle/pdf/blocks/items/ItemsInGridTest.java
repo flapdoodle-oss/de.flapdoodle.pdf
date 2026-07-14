@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.pdf.blocks.items;
 
-import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.pages.PageBox;
@@ -26,6 +25,7 @@ import de.flapdoodle.pdf.types.IntRange;
 import de.flapdoodle.pdf.types.Region;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openpdf.text.PageSize;
 
 import java.util.List;
 import java.util.stream.Collectors;

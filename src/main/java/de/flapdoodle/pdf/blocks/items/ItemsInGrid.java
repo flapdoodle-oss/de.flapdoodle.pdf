@@ -16,9 +16,9 @@
  */
 package de.flapdoodle.pdf.blocks.items;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.openpdf.text.Document;
+import org.openpdf.text.pdf.ColumnText;
+import org.openpdf.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.columns.ColumnFactory;
 import de.flapdoodle.pdf.extensions.MapExtensions;

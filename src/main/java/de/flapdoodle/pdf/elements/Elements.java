@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.pdf.elements;
 
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
+import org.openpdf.text.Element;
+import org.openpdf.text.Font;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
