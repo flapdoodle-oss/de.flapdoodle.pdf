@@ -96,3 +96,63 @@ DocumentFactory factory = DocumentFactory.builder()
 ![pageHeaderAndFooter.png](page-headerRows.png)
 
 [pageHeaderAndFooter.pdf](page-headerRows.pdf)
+
+## Layered Page Decoration
+
+```java
+BorderProperty<BorderStyle> cellBorder = BorderProperty.<BorderStyle>of(BorderStyle.noBorder())
+  .withBottom(BorderStyle.of(Color.BLACK, 0.5f));
+
+CellStyle leftCellStyle = CellStyle.empty()
+  .withHorizontalAlignment(HorizontalAlignment.RIGHT)
+  .withPadding(BorderProperty.of(4f).withRight(0f))
+  .withBorder(cellBorder);
+
+CellStyle rightCellStyle = CellStyle.empty()
+  .withHorizontalAlignment(HorizontalAlignment.LEFT)
+  .withPadding(BorderProperty.of(4f).withLeft(0f))
+  .withBorder(cellBorder);
+
+PdfPageEventHelper header = LayeredElementsPageTemplate.builder()
+  .pageElementFactory(page -> Optional.of(TableElement.builder()
+    .columns(TableElement.Columns.count(2))
+    .addCells(PdfPCellFactory.builder()
+      .phrase(PhraseElement.of("Page " + page))
+      .cellStyle(leftCellStyle)
+      .build())
+    .addCells(PdfPCellFactory.builder()
+      .cellStyle(rightCellStyle)
+      .build())
+    .build()
+    .create()))
+  .templateElementFactory(pages -> TableElement.builder()
+    .columns(TableElement.Columns.count(2))
+    .addCells(PdfPCellFactory.builder()
+      .cellStyle(leftCellStyle)
+      .build())
+    .addCells(PdfPCellFactory.builder()
+      .phrase(PhraseElement.of("/" + pages))
+      .cellStyle(rightCellStyle)
+      .build())
+    .build()
+    .create())
+  .boxFactory(document -> PageBox.fullPageBox(document)
+    .rowAt(20f, VerticalAlignment.TOP))
+  .dimension(doc -> PageBox.fullPageBox(doc)
+    .rowAt(20f, VerticalAlignment.TOP)
+    .dimension())
+  .build()
+  .asPageEvent();
+
+DocumentFactory factory = DocumentFactory.builder()
+  .pageSize(PageSize.A4)
+  .addOnPageEvents(PageBorders.renderDocumentHints())
+  .addBlocks(new Text("First Page"), new NewPage(), new Text("Second Page"))
+  .addOnPageEvents(header)
+  .build();
+```
+
+![layeredPageHeader.png-0](page-layered-headerRows-0.png)
+![layeredPageHeader.png-1](page-layered-headerRows-1.png)
+
+[layeredPageHeader.pdf](page-layered-headerRows.pdf)

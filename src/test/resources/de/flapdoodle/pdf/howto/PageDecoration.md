@@ -31,3 +31,14 @@ ${pageHeaderAndFooter.factory}
 
 [pageHeaderAndFooter.pdf](${pageHeaderAndFooter.pdf})
 
+## Layered Page Decoration
+
+```java
+${layeredPageHeader.factory}
+```
+
+![layeredPageHeader.png-0](${layeredPageHeader.png-0})
+![layeredPageHeader.png-1](${layeredPageHeader.png-1})
+
+[layeredPageHeader.pdf](${layeredPageHeader.pdf})
+
