@@ -1,5 +1,5 @@
 # Page Decorations
-                  
+
 
 ## Background Image
 
@@ -10,6 +10,16 @@ ${backgroundImage.factory}
 ![backgroundImage.png](${backgroundImage.png})
 
 [backgroundImage.pdf](${backgroundImage.pdf})
+
+## Direct Content
+
+```java
+${directContent.factory}
+```
+
+![directContent.png](${directContent.png})
+
+[directContent.pdf](${directContent.pdf})
 
 ## Header and Footer
 

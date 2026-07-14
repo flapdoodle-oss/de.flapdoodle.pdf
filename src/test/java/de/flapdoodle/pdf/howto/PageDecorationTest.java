@@ -25,6 +25,7 @@ import de.flapdoodle.pdf.elements.PhraseElement;
 import de.flapdoodle.pdf.elements.TableElement;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.pages.PageDecorator;
+import de.flapdoodle.pdf.pages.PageDirectContentDecorator;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
@@ -69,6 +70,40 @@ public class PageDecorationTest {
 
 		recording.file("pdf", "page-backgroundImage.pdf", content);
 		recording.file("png", "page-backgroundImage.png", PdfImageGenerator.renderPageAsPng(content, 0));
+	}
+
+	@Test
+	void directContent() throws IOException {
+		recording.begin("factory");
+		DocumentFactory factory = DocumentFactory.builder()
+			.pageSize(PageSize.A4)
+			.addBlocks(new Text("Direct Content"))
+			.addOnPageEvents(PageBorders.renderDocumentHints())
+			.addOnPageEvents(PageDirectContentDecorator.builder()
+				.renderer((doc, cb) -> {
+					PageBox pageBox = PageBox.innerBox(doc);
+					float left = pageBox.left();
+					float right = pageBox.left() + pageBox.width() / 10f;
+					float bottom = pageBox.bottom();
+					float top = pageBox.bottom() + pageBox.height() / 10f;
+
+					cb.setLineWidth(1f);
+					cb.setRGBColorFill(128,0,0);
+					cb.moveTo(left, bottom);
+					cb.lineTo(left, top);
+					cb.lineTo(right, bottom);
+					cb.lineTo(left, bottom);
+					cb.fill();
+					cb.resetRGBColorFill();
+				})
+				.build())
+			.build();
+		recording.end();
+
+		byte[] content = IO.withOutputStream(factory::render);
+
+		recording.file("pdf", "page-direct-content.pdf", content);
+		recording.file("png", "page-direct-content.png", PdfImageGenerator.renderPageAsPng(content, 0));
 	}
 
 	@Test

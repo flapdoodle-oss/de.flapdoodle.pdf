@@ -1,5 +1,5 @@
 # Page Decorations
-                  
+
 
 ## Background Image
 
@@ -19,6 +19,38 @@ DocumentFactory factory = DocumentFactory.builder()
 ![backgroundImage.png](page-backgroundImage.png)
 
 [backgroundImage.pdf](page-backgroundImage.pdf)
+
+## Direct Content
+
+```java
+DocumentFactory factory = DocumentFactory.builder()
+  .pageSize(PageSize.A4)
+  .addBlocks(new Text("Direct Content"))
+  .addOnPageEvents(PageBorders.renderDocumentHints())
+  .addOnPageEvents(PageDirectContentDecorator.builder()
+    .renderer((doc, cb) -> {
+      PageBox pageBox = PageBox.innerBox(doc);
+      float left = pageBox.left();
+      float right = pageBox.left() + pageBox.width() / 10f;
+      float bottom = pageBox.bottom();
+      float top = pageBox.bottom() + pageBox.height() / 10f;
+
+      cb.setLineWidth(1f);
+      cb.setRGBColorFill(128,0,0);
+      cb.moveTo(left, bottom);
+      cb.lineTo(left, top);
+      cb.lineTo(right, bottom);
+      cb.lineTo(left, bottom);
+      cb.fill();
+      cb.resetRGBColorFill();
+    })
+    .build())
+  .build();
+```
+
+![directContent.png](page-direct-content.png)
+
+[directContent.pdf](page-direct-content.pdf)
 
 ## Header and Footer
 
