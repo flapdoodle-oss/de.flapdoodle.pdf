@@ -16,6 +16,8 @@ Stable (Maven Central Repository, Released: 14.07.2026 - wait 24hrs for [maven c
 		<version>3.0.0</version>
 	</dependency>
 
+There is an openpdf 2.x.x based version on branch openpdf-2.                                       
+
 ### Usage
 
 - [Basics](docs/Basics.md)
