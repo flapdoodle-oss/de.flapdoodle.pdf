@@ -37,6 +37,10 @@ public abstract class PdfPCellFactory {
 
 	protected abstract Optional<ElementSupplier<Image>> image();
 
+	protected abstract Optional<ElementSupplier<Element>> element();
+
+	protected abstract Optional<CellHeight> cellHeight();
+
 	@Value.Default
 	protected CellStyle cellStyle() {
 		return CellStyle.empty()
@@ -45,16 +49,23 @@ public abstract class PdfPCellFactory {
 
 	@Value.Check
 	protected void check() {
-		long activeElements = Stream.of(phrase(), image())
+		long activeElements = Stream.of(phrase(), image(), element())
 			.filter(Optional::isPresent)
 			.count();
 		
-		Preconditions.checkArgument(activeElements <= 1, "you must only set one: phrase, image");
+		Preconditions.checkArgument(activeElements <= 1, "you must only set one: phrase, image or element");
 	}
 
 	public PdfPCell create(PdfPCell defaultCell) {
 		PdfPCell cell = PdfPCells.clone(defaultCell);
 
+		cellHeight().ifPresent(cellHeight -> {
+			switch (cellHeight) {
+				case CellHeight.MinHeight min -> cell.setMinimumHeight(min.height);
+				case CellHeight.FixedHeight fixed -> cell.setFixedHeight(fixed.height);
+			}
+		});
+		
 		PdfPCells.applyStyle(cell, cellStyle());
 
 //		cell.setBorder(Rectangle.NO_BORDER);
@@ -65,7 +76,13 @@ public abstract class PdfPCellFactory {
 
 		set(cell, phrase(), PdfPCell::setPhrase);
 		set(cell, image(), PdfPCell::setImage);
+		set(cell, element(), PdfPCell::addElement);
 		return cell;
+	}
+
+	public sealed interface CellHeight {
+		record FixedHeight(float height) implements CellHeight {}
+		record MinHeight(float height) implements CellHeight {}
 	}
 
 	private static <T extends Element> void set(PdfPCell cell, Optional<ElementSupplier<T>> factory, BiConsumer<PdfPCell, T> setter) {
