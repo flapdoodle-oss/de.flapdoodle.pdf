@@ -13,7 +13,7 @@ Stable (Maven Central Repository, Released: 14.07.2026 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle.pdf</groupId>
 		<artifactId>de.flapdoodle.pdf</artifactId>
-		<version>3.0.0</version>
+		<version>3.1.0</version>
 	</dependency>
 
 There is an openpdf 2.x.x based version on branch openpdf-2.                                       
