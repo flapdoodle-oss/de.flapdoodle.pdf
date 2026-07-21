@@ -16,6 +16,7 @@
  */
 package de.flapdoodle.pdf.elements;
 
+import org.openpdf.text.Chunk;
 import org.openpdf.text.Font;
 import org.openpdf.text.Phrase;
 import org.immutables.value.Value;
@@ -25,12 +26,14 @@ import java.util.Optional;
 @Value.Immutable
 public abstract class PhraseElement implements ElementSupplier<Phrase> {
 
+	@Value.Default
+	protected float leading() { return Float.NaN; }
 	protected abstract String text();
 	protected abstract Optional<Font> font();
 
 	@Override
 	public Phrase create() {
-		return new Phrase(text(), font().orElse(new Font()));
+		return new Phrase(leading(), text(), font().orElse(new Font()));
 	}
 
 	public static ImmutablePhraseElement.Builder builder() {
@@ -49,5 +52,14 @@ public abstract class PhraseElement implements ElementSupplier<Phrase> {
 
 	public static ImmutablePhraseElement of(String text, Optional<Font> font) {
 		return builder().text(text).font(font).build();
+	}
+
+	public static void setFont(Phrase phrase, Font font) {
+		phrase.setFont(font);
+		phrase.getChunks().forEach(chunk -> {
+			if (chunk instanceof Chunk) {
+				((Chunk) chunk).setFont(font);
+			}
+		});
 	}
 }

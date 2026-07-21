@@ -17,9 +17,7 @@
 package de.flapdoodle.pdf.elements;
 
 import com.google.common.base.Preconditions;
-import org.openpdf.text.Element;
-import org.openpdf.text.Image;
-import org.openpdf.text.Phrase;
+import org.openpdf.text.*;
 import org.openpdf.text.pdf.PdfPCell;
 import de.flapdoodle.pdf.render.table.PdfPCells;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
@@ -28,6 +26,7 @@ import org.immutables.value.Value;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @Value.Immutable
@@ -52,7 +51,7 @@ public abstract class PdfPCellFactory {
 		long activeElements = Stream.of(phrase(), image(), element())
 			.filter(Optional::isPresent)
 			.count();
-		
+
 		Preconditions.checkArgument(activeElements <= 1, "you must only set one: phrase, image or element");
 	}
 
@@ -65,16 +64,10 @@ public abstract class PdfPCellFactory {
 				case CellHeight.FixedHeight fixed -> cell.setFixedHeight(fixed.height);
 			}
 		});
-		
+
 		PdfPCells.applyStyle(cell, cellStyle());
 
-//		cell.setBorder(Rectangle.NO_BORDER);
-//		cell.setBorderWidth(0f);
-//		background().ifPresent(cell::setBackgroundColor);
-//		cell.setPadding(2f);
-//		cell.setPaddingBottom(5f);
-
-		set(cell, phrase(), PdfPCell::setPhrase);
+		set(cell, phrase(), andThen(PdfPCell::setPhrase, setFont(cellStyle().font())));
 		set(cell, image(), PdfPCell::setImage);
 		set(cell, element(), PdfPCell::addElement);
 		return cell;
@@ -83,6 +76,14 @@ public abstract class PdfPCellFactory {
 	public sealed interface CellHeight {
 		record FixedHeight(float height) implements CellHeight {}
 		record MinHeight(float height) implements CellHeight {}
+	}
+
+	private static Consumer<Phrase> setFont(Optional<Font> font) {
+		return phrase -> font.ifPresent(f -> PhraseElement.setFont(phrase,f));
+	}
+
+	private static <T extends Element> BiConsumer<PdfPCell, T> andThen(BiConsumer<PdfPCell, T> first, Consumer<T> second) {
+		return first.andThen((pdfPCell, t) -> second.accept(t));
 	}
 
 	private static <T extends Element> void set(PdfPCell cell, Optional<ElementSupplier<T>> factory, BiConsumer<PdfPCell, T> setter) {

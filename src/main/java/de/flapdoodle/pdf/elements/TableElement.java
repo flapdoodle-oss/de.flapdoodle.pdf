@@ -27,10 +27,35 @@ import java.util.List;
 public abstract class TableElement implements ElementSupplier<PdfPTable> {
 
 	protected abstract Columns columns();
-	
+
 	@Value.Default
 	protected float widthPercentage() {
 		return 100.0f;
+	}
+
+	@Value.Default
+	protected float spacingBefore() {
+		return 0.0f;
+	}
+
+	@Value.Default
+	protected float spacingAfter() {
+		return 0.0f;
+	}
+
+	@Value.Default
+	protected boolean splitRows() {
+		return true;
+	}
+
+	@Value.Default
+	protected boolean splitLate() {
+		return true;
+	}
+
+	@Value.Default
+	protected boolean keepTogether() {
+		return false;
 	}
 
 	protected abstract List<PdfPCellFactory> cells();
@@ -51,6 +76,11 @@ public abstract class TableElement implements ElementSupplier<PdfPTable> {
 	public PdfPTable create() {
 		PdfPTable table = createTable(columns());
 		table.setWidthPercentage(widthPercentage());
+		table.setSpacingBefore(spacingBefore());
+		table.setSpacingAfter(spacingAfter());
+		table.setSplitRows(splitRows());
+		table.setSplitLate(splitLate());
+		table.setKeepTogether(keepTogether());
 		cells().forEach(f -> {
 			table.addCell(f.create(table.getDefaultCell()));
 		});
