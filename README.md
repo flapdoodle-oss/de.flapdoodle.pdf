@@ -13,9 +13,17 @@ Stable (Maven Central Repository, Released: 21.07.2026 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle.pdf</groupId>
 		<artifactId>de.flapdoodle.pdf</artifactId>
-		<version>1.6.0</version>
+		<version>1.6.1</version>
 	</dependency>
 
+	<dependency>
+		<groupId>de.flapdoodle.pdf</groupId>
+		<artifactId>de.flapdoodle.pdf</artifactId>
+		<version>1.6.1</version>
+		<type>test-jar</type>
+	  <scope>test</scope>
+	</dependency>
+	
 ### Usage
 
 - [Basics](docs/Basics.md)
