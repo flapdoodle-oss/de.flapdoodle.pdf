@@ -33,11 +33,11 @@ public class DocumentFactoryAssert extends AbstractAssert<DocumentFactoryAssert,
 		return new DocumentFactoryAssert(documentFactory);
 	}
 
-	public ResourceByteArrayAssert expectRendering() {
+	public PdfByteArrayAssert expectRendering() {
 		return expectRendering(null);
 	}
 
-	public ResourceByteArrayAssert expectRendering(String writeToFileName) {
+	public PdfByteArrayAssert expectRendering(String writeToFileName) {
 		try (ByteArrayOutputStream it = new ByteArrayOutputStream()) {
 			actual.render(it);
 
@@ -49,7 +49,7 @@ public class DocumentFactoryAssert extends AbstractAssert<DocumentFactoryAssert,
 				}
 			}
 
-			return ResourceByteArrayAssert.assertThat(content);
+			return PdfByteArrayAssert.assertThat(content);
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);

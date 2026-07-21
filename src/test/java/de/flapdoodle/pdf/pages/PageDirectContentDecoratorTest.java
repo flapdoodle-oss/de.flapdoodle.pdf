@@ -20,7 +20,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Text;
-import de.flapdoodle.pdf.howto.PageBorders;
+import de.flapdoodle.pdf.PageBorders;
 import de.flapdoodle.pdf.render.Documents;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
 import de.flapdoodle.pdf.tables.cells.VerticalAlignment;

@@ -21,7 +21,7 @@ import de.flapdoodle.pdf.blocks.NewPage;
 import de.flapdoodle.pdf.blocks.Section;
 import de.flapdoodle.pdf.elements.PdfPCellFactory;
 import de.flapdoodle.pdf.elements.TableElement;
-import de.flapdoodle.pdf.howto.PageBorders;
+import de.flapdoodle.pdf.PageBorders;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
@@ -37,7 +37,6 @@ import com.lowagie.text.pdf.ColumnText;
 import java.util.Optional;
 
 import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LayeredElementsPageTemplateTest {
 
