@@ -49,6 +49,12 @@ public interface CellStyle {
 		return ImmutableCellStyle.of();
 	}
 
+	static ImmutableCellStyle noBorder() {
+		return  ImmutableCellStyle.builder()
+			.bordeStyle(BorderProperty.of(BorderStyle.noBorder()))
+			.build();
+	}
+
 	default CellStyle overrideWith(CellStyle specific) {
 		if (specific != null) {
 			return ImmutableCellStyle.copyOf(this)
@@ -65,7 +71,7 @@ public interface CellStyle {
 
 	default ImmutableCellStyle withBorder(BorderStyle border) {
 		return ImmutableCellStyle.copyOf(this)
-			.withBordeStyle(BorderProperty.of(border, border, border, border));
+			.withBordeStyle(BorderProperty.of(border));
 	}
 
 	default ImmutableCellStyle withBorder(BorderProperty<BorderStyle> border) {

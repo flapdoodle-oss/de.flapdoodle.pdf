@@ -18,6 +18,7 @@ package de.flapdoodle.pdf.elements;
 
 import com.google.common.base.Preconditions;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
@@ -28,6 +29,7 @@ import org.immutables.value.Value;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @Value.Immutable
@@ -52,7 +54,7 @@ public abstract class PdfPCellFactory {
 		long activeElements = Stream.of(phrase(), image(), element())
 			.filter(Optional::isPresent)
 			.count();
-		
+
 		Preconditions.checkArgument(activeElements <= 1, "you must only set one: phrase, image or element");
 	}
 
@@ -66,16 +68,10 @@ public abstract class PdfPCellFactory {
 				cell.setFixedHeight(fixed.height);
 			}
 		});
-		
+
 		PdfPCells.applyStyle(cell, cellStyle());
 
-//		cell.setBorder(Rectangle.NO_BORDER);
-//		cell.setBorderWidth(0f);
-//		background().ifPresent(cell::setBackgroundColor);
-//		cell.setPadding(2f);
-//		cell.setPaddingBottom(5f);
-
-		set(cell, phrase(), PdfPCell::setPhrase);
+		set(cell, phrase(), andThen(PdfPCell::setPhrase, setFont(cellStyle().font())));
 		set(cell, image(), PdfPCell::setImage);
 		set(cell, element(), PdfPCell::addElement);
 		return cell;
@@ -84,6 +80,14 @@ public abstract class PdfPCellFactory {
 	public sealed interface CellHeight {
 		record FixedHeight(float height) implements CellHeight {}
 		record MinHeight(float height) implements CellHeight {}
+	}
+
+	private static Consumer<Phrase> setFont(Optional<Font> font) {
+		return phrase -> font.ifPresent(f -> PhraseElement.setFont(phrase,f));
+	}
+
+	private static <T extends Element> BiConsumer<PdfPCell, T> andThen(BiConsumer<PdfPCell, T> first, Consumer<T> second) {
+		return first.andThen((pdfPCell, t) -> second.accept(t));
 	}
 
 	private static <T extends Element> void set(PdfPCell cell, Optional<ElementSupplier<T>> factory, BiConsumer<PdfPCell, T> setter) {
