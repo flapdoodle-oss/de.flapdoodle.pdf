@@ -26,9 +26,9 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.fail;
 
-public class ResourceByteArrayAssert extends AbstractByteArrayAssert<ResourceByteArrayAssert> {
-	protected ResourceByteArrayAssert(byte[] actual) {
-		super(actual, ResourceByteArrayAssert.class);
+public class PdfByteArrayAssert extends AbstractByteArrayAssert<PdfByteArrayAssert> {
+	protected PdfByteArrayAssert(byte[] actual) {
+		super(actual, PdfByteArrayAssert.class);
 	}
 
 	public void matchesResource(Class<?> baseClass,String name) {
@@ -49,6 +49,31 @@ public class ResourceByteArrayAssert extends AbstractByteArrayAssert<ResourceByt
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public PdfByteArrayAssert matchesRenderedPageWithResource(int pageNumber, Class<?> baseClass, String name) {
+		var resourceURL = baseClass.getResource(name);
+
+		try(var resourceStream = baseClass.getResourceAsStream(name)) {
+			if (resourceStream == null) {
+				fail("resource stream for " + baseClass + " / " + name + " not found" + persistToTempFile(actual, name, resourceURL));
+				return myself;
+			}
+
+			byte[] expectedPdf = resourceStream.readAllBytes();
+
+			byte[] actualImage = PdfImageGenerator.renderPageAsPng(actual(), pageNumber);
+			byte[] expectedImage = PdfImageGenerator.renderPageAsPng(expectedPdf, pageNumber);
+
+			Assertions.assertThat(Arrays.equals(actualImage, expectedImage))
+				.describedAs(() -> "expect match" + persistToTempFile(actual, name, resourceURL))
+				.isTrue();
+
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		return myself;
 	}
 
 	private String persistToTempFile(byte[] data, String fileName, URL resourceURL) {
@@ -73,7 +98,7 @@ public class ResourceByteArrayAssert extends AbstractByteArrayAssert<ResourceByt
 	}
 
 
-	public static ResourceByteArrayAssert assertThat(byte[] actual) {
-		return new ResourceByteArrayAssert(actual);
+	public static PdfByteArrayAssert assertThat(byte[] actual) {
+		return new PdfByteArrayAssert(actual);
 	}
 }

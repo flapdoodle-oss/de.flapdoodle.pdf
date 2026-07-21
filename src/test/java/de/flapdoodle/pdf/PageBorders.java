@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.pdf.howto;
+package de.flapdoodle.pdf;
 
 import de.flapdoodle.pdf.pages.EnhancedPdfPageEventHelper;
 import de.flapdoodle.pdf.pages.PageBox;

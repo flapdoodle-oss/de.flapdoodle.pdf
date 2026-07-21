@@ -18,7 +18,7 @@ package de.flapdoodle.pdf.pages;
 
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Text;
-import de.flapdoodle.pdf.howto.PageBorders;
+import de.flapdoodle.pdf.PageBorders;
 import org.junit.jupiter.api.Test;
 import org.openpdf.text.PageSize;
 

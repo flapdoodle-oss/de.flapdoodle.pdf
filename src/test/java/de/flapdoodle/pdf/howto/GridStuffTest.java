@@ -18,6 +18,8 @@ package de.flapdoodle.pdf.howto;
 
 import de.flapdoodle.pdf.Block;
 import de.flapdoodle.pdf.DocumentFactory;
+import de.flapdoodle.pdf.PageBorders;
+import de.flapdoodle.pdf.PdfImageGenerator;
 import de.flapdoodle.pdf.blocks.AutosplitTable;
 import de.flapdoodle.pdf.blocks.TablesInGrid;
 import de.flapdoodle.pdf.blocks.grid.RenderGrid;

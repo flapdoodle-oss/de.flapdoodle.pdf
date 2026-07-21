@@ -17,6 +17,8 @@
 package de.flapdoodle.pdf.howto;
 
 import de.flapdoodle.pdf.DocumentFactory;
+import de.flapdoodle.pdf.PageBorders;
+import de.flapdoodle.pdf.PdfImageGenerator;
 import de.flapdoodle.pdf.blocks.NewPage;
 import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.pdf.elements.PdfPCellFactory;
@@ -26,7 +28,6 @@ import de.flapdoodle.pdf.pages.*;
 import de.flapdoodle.pdf.tables.cells.*;
 import de.flapdoodle.pdf.types.BorderProperty;
 import de.flapdoodle.pdf.types.Dimension;
-import de.flapdoodle.pdf.types.ImmutableBorderProperty;
 import de.flapdoodle.testdoc.Recorder;
 import de.flapdoodle.testdoc.Recording;
 import de.flapdoodle.testdoc.TabSize;

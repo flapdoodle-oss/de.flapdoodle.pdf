@@ -18,6 +18,7 @@ package de.flapdoodle.pdf.howto;
 
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.Meta;
+import de.flapdoodle.pdf.PdfImageGenerator;
 import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.testdoc.Recorder;
 import de.flapdoodle.testdoc.Recording;

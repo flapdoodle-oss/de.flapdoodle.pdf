@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.pdf.howto;
+package de.flapdoodle.pdf;
 
-import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.Text;
+import de.flapdoodle.pdf.howto.IO;
 import org.junit.jupiter.api.Test;
 import org.openpdf.text.PageSize;
 

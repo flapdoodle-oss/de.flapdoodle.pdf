@@ -19,11 +19,9 @@ package de.flapdoodle.pdf.pages;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.blocks.NewPage;
 import de.flapdoodle.pdf.blocks.Section;
-import de.flapdoodle.pdf.blocks.Text;
 import de.flapdoodle.pdf.elements.PdfPCellFactory;
 import de.flapdoodle.pdf.elements.TableElement;
-import de.flapdoodle.pdf.howto.PageBorders;
-import de.flapdoodle.pdf.render.column.ColumnTexts;
+import de.flapdoodle.pdf.PageBorders;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
@@ -33,11 +31,9 @@ import org.openpdf.text.*;
 import org.openpdf.text.pdf.BaseFont;
 import org.openpdf.text.pdf.ColumnText;
 
-import javax.security.auth.Subject;
 import java.io.IOException;
 
 import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PageTemplateTest {
 
