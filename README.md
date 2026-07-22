@@ -13,13 +13,13 @@ Stable (Maven Central Repository, Released: 22.07.2026 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle.pdf</groupId>
 		<artifactId>de.flapdoodle.pdf</artifactId>
-		<version>1.6.2</version>
+		<version>1.7.0</version>
 	</dependency>
 
 	<dependency>
 		<groupId>de.flapdoodle.pdf</groupId>
 		<artifactId>de.flapdoodle.pdf</artifactId>
-		<version>1.6.2</version>
+		<version>1.7.0</version>
 		<type>test-jar</type>
 	  <scope>test</scope>
 	</dependency>
