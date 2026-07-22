@@ -78,7 +78,7 @@ public abstract class PhraseElement implements ElementSupplier<Phrase> {
 		});
 	}
 
-	sealed interface Part {
+	public sealed interface Part {
 		record Text(String value, Optional<Font> font) implements Part {
 			public Text {
 				Preconditions.checkNotNull(value, "value must not be null");
