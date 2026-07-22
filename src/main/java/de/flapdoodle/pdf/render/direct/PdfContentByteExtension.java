@@ -22,6 +22,8 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfContentByte;
 import de.flapdoodle.pdf.types.Floats;
 
+import java.util.function.Consumer;
+
 public class PdfContentByteExtension {
 
 	private static final Phrase SMALL_NEW_LINE = new Phrase("\n", FontFactory.getFont(FontFactory.HELVETICA, 1f, Font.NORMAL));
@@ -49,6 +51,15 @@ public class PdfContentByteExtension {
 			} else {
 				lastPosition = newVerticalPosition;
 			}
+		}
+	}
+
+	public static void withRestoreState(PdfContentByte contentByte, Runnable action) {
+		try {
+			contentByte.saveState();
+			action.run();
+		} finally {
+			contentByte.restoreState();
 		}
 	}
 

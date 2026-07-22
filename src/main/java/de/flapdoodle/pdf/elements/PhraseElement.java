@@ -16,24 +16,41 @@
  */
 package de.flapdoodle.pdf.elements;
 
+import com.google.common.base.Preconditions;
+import org.immutables.value.Value;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Font;
 import com.lowagie.text.Phrase;
-import org.immutables.value.Value;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Value.Immutable
 public abstract class PhraseElement implements ElementSupplier<Phrase> {
 
 	@Value.Default
-	protected float leading() { return Float.NaN; }
-	protected abstract String text();
+	protected float leading() {
+		return Float.NaN;
+	}
+
+	protected abstract List<Part> parts();
+
 	protected abstract Optional<Font> font();
 
 	@Override
 	public Phrase create() {
-		return new Phrase(leading(), text(), font().orElse(new Font()));
+		Font font = font().orElse(new Font());
+		Phrase phrase = new Phrase(leading(), null, font);
+		parts().forEach(part -> {
+			if (Objects.requireNonNull(part) instanceof Part.Text text) {
+				phrase.add(new Chunk(text.value, text.font().orElse(font)));
+			} else if (part instanceof Part.Tag tag) {
+				phrase.add(new Chunk(tag.value, tag.font().orElse(font))
+					.setGenericTag(tag.tag));
+			}
+		});
+		return phrase;
 	}
 
 	public static ImmutablePhraseElement.Builder builder() {
@@ -42,16 +59,16 @@ public abstract class PhraseElement implements ElementSupplier<Phrase> {
 
 	public static ImmutablePhraseElement of(String text) {
 		return builder()
-			.text(text)
+			.addParts(new Part.Text(text))
 			.build();
 	}
 
 	public static ImmutablePhraseElement of(String text, Font font) {
-		return builder().text(text).font(font).build();
+		return builder().addParts(new Part.Text(text)).font(font).build();
 	}
 
 	public static ImmutablePhraseElement of(String text, Optional<Font> font) {
-		return builder().text(text).font(font).build();
+		return builder().addParts(new Part.Text(text)).font(font).build();
 	}
 
 	public static void setFont(Phrase phrase, Font font) {
@@ -62,4 +79,34 @@ public abstract class PhraseElement implements ElementSupplier<Phrase> {
 			}
 		});
 	}
+
+	sealed interface Part {
+		record Text(String value, Optional<Font> font) implements Part {
+			public Text {
+				Preconditions.checkNotNull(value, "value must not be null");
+				Preconditions.checkNotNull(font, "font must not be null");
+			}
+			public Text(String value) {
+				this(value, Optional.empty());
+			}
+			public Text(String value, Font font) {
+				this(value, Optional.of(font));
+			}
+		}
+
+		record Tag(String value, String tag, Optional<Font> font) implements Part {
+			public Tag {
+				Preconditions.checkNotNull(value, "value must not be null");
+				Preconditions.checkNotNull(tag, "tag must not be null");
+				Preconditions.checkNotNull(font, "font must not be null");
+			}
+			public Tag(String value, String tag) {
+				this(value, tag, Optional.empty());
+			}
+			public Tag(String value, String tag, Font font) {
+				this(value, tag, Optional.of(font));
+			}
+		}
+	}
+
 }
