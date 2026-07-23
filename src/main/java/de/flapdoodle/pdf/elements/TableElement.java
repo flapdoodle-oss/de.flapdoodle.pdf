@@ -58,7 +58,17 @@ public abstract class TableElement implements ElementSupplier<PdfPTable> {
 		return false;
 	}
 
-	protected abstract List<PdfPCellFactory> cells();
+	public abstract List<PdfPCellFactory> cells();
+
+	@Value.Lazy
+	public int numberOfColumns() {
+		return numberOfColumns(columns());
+	}
+
+	@Value.Auxiliary
+	public ImmutableTableElement copy() {
+		return ImmutableTableElement.copyOf(this);
+	}
 
 	@Value.Check
 	protected void check() {
@@ -113,8 +123,6 @@ public abstract class TableElement implements ElementSupplier<PdfPTable> {
 		throw new IllegalArgumentException("columns must be of type Columns.Count, Columns.RelativeWeights");
 	}
 
-
-
 	public sealed interface Columns {
 		record Count(int count) implements Columns {
 		}
@@ -126,7 +134,7 @@ public abstract class TableElement implements ElementSupplier<PdfPTable> {
 			return new Count(count);
 		}
 
-		static Columns relativeWeights(float ... weights) {
+		static Columns relativeWeights(float... weights) {
 			return new RelativeWeights(FloatArray.from(weights));
 		}
 	}
