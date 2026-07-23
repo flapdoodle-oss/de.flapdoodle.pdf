@@ -40,6 +40,12 @@ public abstract class PdfPCellFactory {
 	protected abstract Optional<CellHeight> cellHeight();
 
 	@Value.Default
+	protected int colSpan() { return 1; }
+
+	@Value.Default
+	protected int rowSpan() { return 1; }
+
+	@Value.Default
 	protected CellStyle cellStyle() {
 		return CellStyle.empty()
 			.withHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -52,10 +58,14 @@ public abstract class PdfPCellFactory {
 			.count();
 
 		Preconditions.checkArgument(activeElements <= 1, "you must only set one: phrase, image or element");
+		Preconditions.checkArgument(colSpan()>=1,"colSpan(%s) must be >=1", colSpan());
+		Preconditions.checkArgument(rowSpan()>=1,"rowSpan(%s) must be >=1", rowSpan());
 	}
 
 	public PdfPCell create(PdfPCell defaultCell) {
 		PdfPCell cell = PdfPCells.clone(defaultCell);
+		if (colSpan()>1) cell.setColspan(colSpan());
+		if (rowSpan()>1) cell.setRowspan(rowSpan());
 
 		cellHeight().ifPresent(cellHeight -> {
 			if (cellHeight instanceof CellHeight.MinHeight min) {
