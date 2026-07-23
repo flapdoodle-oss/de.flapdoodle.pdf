@@ -21,6 +21,7 @@ import de.flapdoodle.pdf.DocumentFactoryAssert;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.types.BorderProperty;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openpdf.text.Font;
 import org.openpdf.text.PageSize;
@@ -29,6 +30,7 @@ import org.openpdf.text.Phrase;
 import java.awt.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PdfPCellFactoryTest {
 	@Test
@@ -40,6 +42,19 @@ class PdfPCellFactoryTest {
 			.build();
 
 		assertThat(cellFactory).isNotNull();
+	}
+
+	@Test
+	void checksTest() {
+		assertThatThrownBy(() -> PdfPCellFactory.builder().colSpan(0).build())
+			.hasMessageContaining("colSpan");
+		assertThatThrownBy(() -> PdfPCellFactory.builder().rowSpan(0).build())
+			.hasMessageContaining("rowSpan");
+		assertThatThrownBy(() -> PdfPCellFactory.builder()
+			.phrase(PhraseElement.of("phrase"))
+			.element(PhraseElement.of("element"))
+			.build())
+			.hasMessageContaining("you must only set one");
 	}
 
 	@Test

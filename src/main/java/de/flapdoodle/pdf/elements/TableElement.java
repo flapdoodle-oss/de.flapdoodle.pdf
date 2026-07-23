@@ -63,11 +63,17 @@ public abstract class TableElement implements ElementSupplier<PdfPTable> {
 	@Value.Check
 	protected void check() {
 		Preconditions.checkArgument(widthPercentage() > 0, "widthPercentage must be > 0");
+
 		int numberOfColumns = numberOfColumns(columns());
-		int invisibleCells = cells().size() % numberOfColumns;
-		
+		int numberOfCells = cells().stream()
+			.map(cell -> cell.rowSpan() * cell.colSpan())
+			.mapToInt(i -> i)
+			.sum();
+
+		int invisibleCells = numberOfCells % numberOfColumns;
+
 		Preconditions.checkArgument(invisibleCells == 0,
-			"%s cells does not match %s columns", cells().size(), numberOfColumns
+			"%s cells does not match %s columns", numberOfCells, numberOfColumns
 		);
 	}
 
