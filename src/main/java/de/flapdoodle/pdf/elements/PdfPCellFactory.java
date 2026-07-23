@@ -16,6 +16,7 @@
  */
 package de.flapdoodle.pdf.elements;
 
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import de.flapdoodle.pdf.render.table.PdfPCells;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
@@ -40,15 +41,19 @@ public abstract class PdfPCellFactory {
 	protected abstract Optional<CellHeight> cellHeight();
 
 	@Value.Default
-	protected int colSpan() { return 1; }
+	public int colSpan() { return 1; }
 
 	@Value.Default
-	protected int rowSpan() { return 1; }
+	public int rowSpan() { return 1; }
 
 	@Value.Default
-	protected CellStyle cellStyle() {
+	public CellStyle cellStyle() {
 		return CellStyle.empty()
 			.withHorizontalAlignment(HorizontalAlignment.CENTER);
+	}
+
+	public ImmutablePdfPCellFactory copy() {
+		return ImmutablePdfPCellFactory.copyOf(this);
 	}
 
 	@Value.Check

@@ -20,6 +20,7 @@ import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.types.BorderProperty;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openpdf.text.Font;
 import org.openpdf.text.PageSize;
@@ -28,6 +29,7 @@ import org.openpdf.text.Phrase;
 import java.awt.*;
 
 import static de.flapdoodle.pdf.DocumentFactoryAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TableElementTest {
 
@@ -160,5 +162,25 @@ class TableElementTest {
 			.build())
 			.expectRendering()
 			.matchesResource(getClass(), "tableElement-broken.pdf");
+	}
+
+	@Test
+	public void copyTable() {
+		TableElement source = TableElement.builder()
+			.columns(TableElement.Columns.relativeWeights(3, 2, 1))
+			.build();
+
+		assertThat(source.numberOfColumns()).isEqualTo(3);
+		assertThat(source.cells().size()).isEqualTo(0);
+
+		ImmutableTableElement copy = source.copy().withCells(
+			PdfPCellFactory.builder().build(),
+			PdfPCellFactory.builder().build(),
+			PdfPCellFactory.builder().build()
+		);
+
+		assertThat(copy.numberOfColumns()).isEqualTo(3);
+		assertThat(copy.cells().size()).isEqualTo(3);
+
 	}
 }

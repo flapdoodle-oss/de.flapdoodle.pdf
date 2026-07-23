@@ -49,10 +49,14 @@ public interface BorderProperty<T> {
 			.withBottom(Optionals.firstOf(padding.bottom(), this.bottom()));
 	}
 
+	@Value.Auxiliary
+	default ImmutableBorderProperty<T> copy() {
+		return ImmutableBorderProperty.copyOf(this);
+	}
+
 	static <T> ImmutableBorderProperty.Builder<T> builder() {
 		return ImmutableBorderProperty.builder();
 	}
-
 	static <T> ImmutableBorderProperty<T> of() {
 		return ImmutableBorderProperty.of();
 	}
