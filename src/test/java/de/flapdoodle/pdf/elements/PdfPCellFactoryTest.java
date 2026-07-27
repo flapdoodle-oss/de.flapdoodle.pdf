@@ -16,18 +16,24 @@
  */
 package de.flapdoodle.pdf.elements;
 
+import com.google.common.base.Preconditions;
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.DocumentFactoryAssert;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
+import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;
+import de.flapdoodle.pdf.tables.cells.VerticalAlignment;
 import de.flapdoodle.pdf.types.BorderProperty;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openpdf.text.Font;
+import org.openpdf.text.Image;
 import org.openpdf.text.PageSize;
 import org.openpdf.text.Phrase;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -80,5 +86,53 @@ class PdfPCellFactoryTest {
 			.expectRendering()
 			.matchesResource(getClass(), "tableInCell.pdf");
 
+	}
+
+	@Test
+	void renderImageInCell() {
+		DocumentFactoryAssert.assertThat(DocumentFactory.builder()
+				.pageSize(PageSize.A4)
+				.addBlocks((document, directContent) -> {
+					document.add(TableElement.builder()
+						.columns(TableElement.Columns.relativeWeights(2f, 1f))
+
+						.addCells(PdfPCellFactory.builder()
+							.cellStyle(CellStyle.empty().withBordeStyle(BorderProperty.of(BorderStyle.of(Color.BLACK, 1f))))
+							.image(image("quad.jpg"))
+							.build())
+						.addCells(PdfPCellFactory.builder()
+							.cellStyle(CellStyle.empty().withBordeStyle(BorderProperty.of(BorderStyle.of(Color.BLACK, 1f))))
+							.image(image("rectangle.png"))
+							.build())
+						.addCells(PdfPCellFactory.builder()
+							.cellStyle(CellStyle.empty()
+								.withBordeStyle(BorderProperty.of(BorderStyle.of(Color.BLACK, 1f)))
+								.withHorizontalAlignment(HorizontalAlignment.CENTER)
+								.withVerticalAlignment(VerticalAlignment.MIDDLE))
+							.image(image("rectangle.png"))
+							.build())
+						.addCells(PdfPCellFactory.builder()
+							.cellStyle(CellStyle.empty()
+								.withBordeStyle(BorderProperty.of(BorderStyle.of(Color.BLACK, 1f)))
+								.withHorizontalAlignment(HorizontalAlignment.CENTER)
+								.withVerticalAlignment(VerticalAlignment.MIDDLE))
+							.image(image("quad.jpg"))
+							.build())
+						.build().create());
+				})
+				.build())
+			.expectRendering()
+			.matchesResource(getClass(), "imageInCell.pdf");
+	}
+
+	private static ElementSupplier<Image> image(String name) {
+		return () -> {
+			try {
+				return Image.getInstance(Preconditions.checkNotNull(PdfPCellFactoryTest.class.getResource(name),"image $s not found", name));
+			}
+			catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		};
 	}
 }
