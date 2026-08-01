@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
-import com.google.common.math.DoubleMath;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.layout.Margin;
 import de.flapdoodle.pdf.pages.PageBox;
@@ -33,7 +32,6 @@ import de.flapdoodle.pdf.types.Region;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.RoundingMode;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,7 +84,7 @@ class PosterSplitWithRepeatingFirstColumnTest {
 		assertThat(newTable.columns()).isEqualTo(12);
 
 		var tableColumnWith = tableWithoutFirstColumnWidth / tableColumnsWithoutFirstColumn;
-		var numberOfColumnsGridCell = DoubleMath.roundToInt(((gridColumnWidth - firstColumnWidth) / tableColumnWith), RoundingMode.HALF_DOWN);
+		var numberOfColumnsGridCell = (int) ((gridColumnWidth - firstColumnWidth) / tableColumnWith);
 		var numberOfColumsInLastCell = tableColumnsWithoutFirstColumn - 2 * numberOfColumnsGridCell;
 
 		var expectedLastPartWidth = firstColumnWidth + numberOfColumsInLastCell * tableColumnWith;

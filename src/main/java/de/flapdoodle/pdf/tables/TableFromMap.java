@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.tables;
 
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyles;
 import de.flapdoodle.pdf.types.Cell;

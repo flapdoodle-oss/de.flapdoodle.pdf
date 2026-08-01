@@ -544,11 +544,5 @@
             <!-- java17 can only use 2.x.x -->
             <version>2.0.5</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>33.6.0-jre</version>
-        </dependency>
     </dependencies>
 </project>

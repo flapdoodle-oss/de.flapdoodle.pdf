@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.types;
 
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 
 import java.util.ArrayList;
 import java.util.Collections;

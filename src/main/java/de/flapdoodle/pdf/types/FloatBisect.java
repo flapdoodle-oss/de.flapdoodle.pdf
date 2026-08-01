@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.types;
 
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 
 public record FloatBisect(
 	float lower, float middle, float upper, float delta

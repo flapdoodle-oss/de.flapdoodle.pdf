@@ -16,9 +16,8 @@
  */
 package de.flapdoodle.pdf.blocks.split;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
+import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.pdf.checks.VisibleForTesting;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.render.table.ImmutableTableAttributes;
 import de.flapdoodle.pdf.render.table.RenderedTableDimension;
@@ -124,7 +123,7 @@ public class DefaultRenderedTableSplitter implements RenderedTableSplitter {
 			"repeating part (%s) does not fit into all boxes (%s)", repeatingWidth, boxes
 		);
 
-		ArrayList<IntRange.Closed> result = Lists.newArrayList();
+		ArrayList<IntRange.Closed> result = new ArrayList<>();
 
 		int box = 0;
 		int current = repeatFirstN;

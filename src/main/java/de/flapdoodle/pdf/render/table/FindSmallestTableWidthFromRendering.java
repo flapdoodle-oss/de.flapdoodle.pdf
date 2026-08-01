@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.types.FloatBisect;
