@@ -16,8 +16,7 @@
  */
 package de.flapdoodle.pdf.elements;
 
-import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 import de.flapdoodle.pdf.render.table.PdfPCells;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;

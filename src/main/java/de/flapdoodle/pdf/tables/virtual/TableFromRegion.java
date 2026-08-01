@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.tables.virtual;
 
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 import de.flapdoodle.pdf.tables.ColumnWeights;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.tables.TableColumns;

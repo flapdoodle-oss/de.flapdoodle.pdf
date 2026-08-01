@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.pages;
 
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 import org.openpdf.text.Document;
 import org.openpdf.text.Rectangle;
 import org.openpdf.text.pdf.ColumnText;

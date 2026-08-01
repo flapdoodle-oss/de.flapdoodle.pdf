@@ -23,7 +23,6 @@ import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.Dimension;
 import de.flapdoodle.pdf.types.Position;
 import org.immutables.value.Value;
-import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Map;
@@ -188,7 +187,7 @@ public abstract class Grid {
 		}));
 	}
 
-	public static ImmutableGrid.@NonNull Builder builder() {
+	public static ImmutableGrid.Builder builder() {
 		return ImmutableGrid.builder();
 	}
 

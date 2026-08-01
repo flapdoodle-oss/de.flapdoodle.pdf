@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.elements;
 
-import com.google.common.base.Preconditions;
+import de.flapdoodle.pdf.checks.Preconditions;
 import de.flapdoodle.pdf.types.FloatArray;
 import org.immutables.value.Value;
 import org.openpdf.text.pdf.PdfPTable;

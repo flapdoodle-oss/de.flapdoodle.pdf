@@ -16,8 +16,7 @@
  */
 package de.flapdoodle.pdf.types;
 
-import com.google.common.base.Preconditions;
-import org.jspecify.annotations.NonNull;
+import de.flapdoodle.pdf.checks.Preconditions;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -54,7 +53,7 @@ public sealed abstract class IntRange implements Iterable<Integer> {
 	public abstract IntStream stream();
 
 	@Override
-	public @NonNull Iterator<Integer> iterator() {
+	public Iterator<Integer> iterator() {
 		return new Iterator<>() {
 			private int current = start;
 
