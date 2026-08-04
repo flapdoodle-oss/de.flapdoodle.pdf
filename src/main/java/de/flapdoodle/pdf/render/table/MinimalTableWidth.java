@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import com.lowagie.text.PageSize;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.pages.PagePosition;

@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.grid.tablesplitter.posterize;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import de.flapdoodle.pdf.types.Floats;
 import de.flapdoodle.pdf.types.IntRange;
 

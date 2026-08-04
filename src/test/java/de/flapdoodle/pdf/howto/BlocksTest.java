@@ -24,9 +24,9 @@ import de.flapdoodle.pdf.PageBorders;
 import de.flapdoodle.pdf.PdfImageGenerator;
 import de.flapdoodle.pdf.blocks.Section;
 import de.flapdoodle.pdf.blocks.Text;
-import de.flapdoodle.testdoc.Recorder;
-import de.flapdoodle.testdoc.Recording;
-import de.flapdoodle.testdoc.TabSize;
+import de.flapdoodle.commons.testdoc.Recorder;
+import de.flapdoodle.commons.testdoc.Recording;
+import de.flapdoodle.commons.testdoc.TabSize;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

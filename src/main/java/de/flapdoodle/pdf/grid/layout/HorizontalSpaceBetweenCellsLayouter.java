@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.grid.layout;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import de.flapdoodle.pdf.grid.Grid;
 import de.flapdoodle.pdf.pages.PageBox;
 import de.flapdoodle.pdf.types.Cell;

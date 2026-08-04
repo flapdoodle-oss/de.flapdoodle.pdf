@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.elements;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import com.lowagie.text.pdf.PdfPTable;
 import de.flapdoodle.pdf.types.FloatArray;
 import org.immutables.value.Value;

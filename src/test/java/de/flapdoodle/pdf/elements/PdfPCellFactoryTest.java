@@ -18,7 +18,7 @@ package de.flapdoodle.pdf.elements;
 
 import de.flapdoodle.pdf.DocumentFactory;
 import de.flapdoodle.pdf.DocumentFactoryAssert;
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import de.flapdoodle.pdf.tables.cells.BorderStyle;
 import de.flapdoodle.pdf.tables.cells.CellStyle;
 import de.flapdoodle.pdf.tables.cells.HorizontalAlignment;

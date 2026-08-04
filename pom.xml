@@ -155,7 +155,7 @@
                         <exclude>**/live/**</exclude>
                     </excludes>
                     <systemPropertyVariables>
-                        <de.flapdoodle.testdoc.destination>${project.basedir}/docs</de.flapdoodle.testdoc.destination>
+                        <de.flapdoodle.commons.testdoc.destination>${project.basedir}/docs</de.flapdoodle.commons.testdoc.destination>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -467,9 +467,15 @@
         <!-- eclipse apt switch -->
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
         <pitest.skip>true</pitest.skip>
+        <flapdoodle-commons.version>1.2.0</flapdoodle-commons.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>de.flapdoodle.commons</groupId>
+            <artifactId>de.flapdoodle.commons.checks</artifactId>
+            <version>${flapdoodle-commons.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -501,6 +507,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>de.flapdoodle.commons</groupId>
+            <artifactId>de.flapdoodle.commons.testdoc</artifactId>
+            <version>${flapdoodle-commons.version}</version>
+            <scope>test</scope>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.junit.vintage</groupId>-->
 <!--            <artifactId>junit-vintage-engine</artifactId>-->
@@ -511,12 +523,6 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.27.7</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.flapdoodle.testdoc</groupId>
-            <artifactId>de.flapdoodle.testdoc</artifactId>
-            <version>1.7.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

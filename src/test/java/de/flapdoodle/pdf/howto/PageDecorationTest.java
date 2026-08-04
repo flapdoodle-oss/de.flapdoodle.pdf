@@ -31,9 +31,9 @@ import de.flapdoodle.pdf.pages.*;
 import de.flapdoodle.pdf.tables.cells.*;
 import de.flapdoodle.pdf.types.BorderProperty;
 import de.flapdoodle.pdf.types.Dimension;
-import de.flapdoodle.testdoc.Recorder;
-import de.flapdoodle.testdoc.Recording;
-import de.flapdoodle.testdoc.TabSize;
+import de.flapdoodle.commons.testdoc.Recorder;
+import de.flapdoodle.commons.testdoc.Recording;
+import de.flapdoodle.commons.testdoc.TabSize;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
