@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.types;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

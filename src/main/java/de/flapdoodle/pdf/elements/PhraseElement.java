@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.elements;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import org.immutables.value.Value;
 import org.openpdf.text.Chunk;
 import org.openpdf.text.Font;

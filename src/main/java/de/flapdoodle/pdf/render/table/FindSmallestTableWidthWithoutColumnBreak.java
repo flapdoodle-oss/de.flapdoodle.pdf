@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.render.table;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import org.openpdf.text.PageSize;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.types.Floats;

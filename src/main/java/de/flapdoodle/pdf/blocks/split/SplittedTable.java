@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.blocks.split;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import de.flapdoodle.pdf.render.table.TableAttributes;
 import de.flapdoodle.pdf.tables.ColumnWeights;
 import de.flapdoodle.pdf.tables.Table;

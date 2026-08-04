@@ -16,7 +16,7 @@
  */
 package de.flapdoodle.pdf.tables.virtual;
 
-import de.flapdoodle.pdf.checks.Preconditions;
+import de.flapdoodle.commons.checks.Preconditions;
 import de.flapdoodle.pdf.tables.Table;
 import de.flapdoodle.pdf.types.Cell;
 import de.flapdoodle.pdf.types.IntRange;
